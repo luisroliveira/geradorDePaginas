@@ -6,9 +6,12 @@ headears = {"Authorization": f"Bearer {API_KEY}", "Content-Type":"application/js
 link = "https://api.openai.com/v1/chat/completions"
 id_modelo = "gpt-3.5-turbo"
 
+produto = "microondas"
+textoEntrada = "crie 5 frases de efeito, sendo pesuasivos, para vender " + produto
+
 body_mensagem = {
     "model": id_modelo,
-    "messages": [{"role":"user", "content":"crie 5 frases de efeitos, sendo persuasivos, para vender microondas"}]
+    "messages": [{"role": "user", "content": textoEntrada}]
 }
 
 body_mensagem = json.dumps(body_mensagem)
