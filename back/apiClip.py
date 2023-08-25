@@ -28,5 +28,5 @@ def apiRemoveBackGround(nomeArquivo):
         r.raise_for_status()
 
 
-nomeArquivoImagem = "pessoa.jpg"
-apiRemoveBackGround(nomeArquivoImagem)
+# nomeArquivoImagem = "pessoa.jpg"
+# apiRemoveBackGround(nomeArquivoImagem)

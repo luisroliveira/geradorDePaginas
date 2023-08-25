@@ -21,8 +21,6 @@ def apiChatGpt(textoEntrada):
     return mensagem
 
 
-texto = "crie 5 frases de efeito curtas para vender microondas"
-
-textoSaida =  apiChatGpt(texto)
-
-print(textoSaida)
+# texto = "crie 5 frases de efeito curtas para vender microondas"
+# textoSaida =  apiChatGpt(texto)
+# print(textoSaida)
