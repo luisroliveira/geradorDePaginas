@@ -1,4 +1,4 @@
-from senha import API_KEY
+from senhaChat import API_KEY
 import requests
 import json
 
