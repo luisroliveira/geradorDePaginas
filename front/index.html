@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="styles.css">
-<title>Formulário do produto</title>
-</head>
-<body>
-  <div class="container">
-    <h1>Formulário do produto</h1>
-    <form id="form">
-      <input type="text" placeholder="Digite o nome do produto" id="input-word" required>
-      <input type="file" id="input-image" accept="image/*">
-      <label for="input-image">Selecione a imagem do produto</label>
-      <img id="selected-image" src="#" alt="Imagem selecionada">
-      <button id="btn-avancar" class="styled-button">Avançar</button>
-    </form>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Formulário do produto</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="nameAndDescription">
+        <h1>Nome da ferramenta</h1>
+        <p>Descrição/tutorial sobre a ferramenta</p>
+      </div>
+      <div>
+        <h1>Formulário do produto</h1>
+        <form id="form">
+          <div>
+            <input type="text" placeholder="Digite o nome do produto" id="input-word" required/>
+          </div>
+          <div>
+            <textarea id="prodDescr" cols="50" rows="10" placeholder="Descrição do produto" required></textarea>
+          </div>
+          <div>
+            <input type="file" id="input-image" accept="image/*" />
+            <label for="input-image" id="img-label">Selecione a imagem do produto</label>
+            <img id="selected-image" src="#" alt="Imagem selecionada" />
+          </div>
+          <button id="btn-avancar" class="styled-button">Avançar</button>
+        </form>
+      </div>
+    </div>
 
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
