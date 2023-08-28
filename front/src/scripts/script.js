@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const image = inputImage.value
 
     // Função para fazer uma solicitação ao servidor
+    let string = "crie 5 frases de efeito curtas para vender " + word
+    console.log(string)
     chamarServidorService.chamarServidor('funcao_1', word)
 
     //   // Redireciona para a nova página, passando os dados via URL
