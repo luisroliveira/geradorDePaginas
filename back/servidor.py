@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import json
-from apiClip import apiRemoveBackGround
+from apiClip import apiChangeBackGround
 from apiChat import apiChatGpt
 from flask_cors import CORS
 
@@ -24,6 +24,20 @@ def upload_image():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/change-background", methods=["POST"])
+def change_img_bg():
+    try:
+        image_file = request.files["image"]  # Obtém o arquivo de imagem do formulário
+
+        # Faça algo com o arquivo de imagem, como salvar no servidor
+        # Por exemplo, para salvar a imagem em um diretório chamado "uploads":
+        prompt = "On the wall of a house by the sea with a window nearby"
+        apiChangeBackGround(image_file, prompt)
+
+        return jsonify({"message": "Imagem enviada com sucesso!"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/', methods=['POST', 'OPTIONS'])
 def handle_request():
     if request.method == 'OPTIONS':
@@ -41,9 +55,7 @@ def handle_request():
         funcao = data.get('funcao')
         parametro = data.get('parametro')
         
-        if funcao == "apiRemoveBackGround":
-            resultado = apiRemoveBackGround(parametro)
-        elif funcao == "apiChatGpt":
+        if funcao == "apiChatGpt":
             resultado = apiChatGpt(parametro)
         elif funcao == "funcao_1":
             resultado = funcao_1(parametro)

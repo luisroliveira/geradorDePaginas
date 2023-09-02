@@ -1,7 +1,7 @@
 from senhaClip import API_KEY
 import requests
 
-def apiSetBackGround(nomeArquivo, prompt):
+def apiChangeBackGroundTest(nomeArquivo, prompt):
     # Link da API
     link = "https://clipdrop-api.co/replace-background/v1"
     pathImagem = "imagensSaida/" + nomeArquivo  
@@ -28,8 +28,35 @@ def apiSetBackGround(nomeArquivo, prompt):
     else:
         r.raise_for_status()
 
+def apiChangeBackGround(image_file, prompt):
+    # Link da API
+    link = "https://clipdrop-api.co/replace-background/v1"
+    
+    nomeArquivo = "teste.jpeg"
 
-def apiRemoveBackGround(nomeArquivo): 
+    # Vai abrir a imagem e colocar na variável image_data
+    image_data = image_file.read()
+
+    # Comunicação com a API
+    r = requests.post(link,
+    files = {
+        'image_file': ('teste.jpg', image_data, 'image/jpeg'),
+        },
+    data = {'prompt': prompt},
+    headers = { 'x-api-key': API_KEY}
+    )
+
+    # Caso ocorra tudo certo, a imagem será salva na pasta imagensSaida
+    if r.ok:
+        pathSaida = "imagensBackground/" + nomeArquivo
+        with open(pathSaida, 'wb') as output_file:
+            output_file.write(r.content)
+        print("Imagem de saída salva com sucesso!")
+    else:
+        r.raise_for_status()
+
+
+def apiRemoveBackGroundTest(nomeArquivo): 
     # Link da API
     link = "https://clipdrop-api.co/remove-background/v1"
     pathImagem = "imagensEntrada/" + nomeArquivo  
@@ -51,16 +78,39 @@ def apiRemoveBackGround(nomeArquivo):
         pathSaida = "imagensSaida/" + nomeArquivo
         with open(pathSaida, 'wb') as output_file:
             output_file.write(r.content)
-        print("Imagem de saída salva com sucesso!")
+        print("Background definido com sucesso!")
+    else:
+        r.raise_for_status()
+
+def apiRemoveBackGround(image_file): 
+    # Link da API
+    link = "https://clipdrop-api.co/remove-background/v1"
+
+    nomeArquivo = "teste.jpeg"
+    
+    # Vai abrir a imagem e colocar na variável image_data
+    image_data = image_file.read()
+
+    # Comunicação com a API
+    r = requests.post(link,
+    files = {
+        'image_file': ('teste.jpg', image_data, 'image/jpeg'),
+        },
+    headers = { 'x-api-key': API_KEY}
+    )
+
+    # Caso ocorra tudo certo, a imagem será salva na pasta imagensSaida
+    if r.ok:
+        print("Background removido com sucesso!")
+        return r
     else:
         r.raise_for_status()
 
 
 
-
 prompt = "On the wall of a house by the sea with a window nearby"
 nomeArquivoImagem = "prancha.jpeg"
-apiSetBackGround(nomeArquivoImagem, prompt)
+apiChangeBackGroundTest(nomeArquivoImagem, prompt)
 
 
-# apiRemoveBackGround(nomeArquivoImagem)
+# apiRemoveBackGroundTest(nomeArquivoImagem)

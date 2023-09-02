@@ -57,6 +57,21 @@ class ChamarServidorService {
         console.error("Erro ao enviar imagem:", error);
       })
   }
+
+  mudarBackground(imagem) {
+    fetch("http://localhost:8000//change-background", {
+      method: "POST",
+      body: imagem,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Manipule a resposta do backend, se necessário
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Erro ao enviar imagem:", error);
+      })
+  }
 }
 
 const chamarServidorService = new ChamarServidorService()
@@ -90,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var formData = new FormData()
     formData.append('image', imageFile)
     // Enviar imagem para o servidor
-    chamarServidorService.enviarImagem(formData)
+    chamarServidorService.mudarBackground(formData)
     
     // Função para fazer uma solicitação ao servidor
     chamarServidorService.enviarNomeProduto(word)
