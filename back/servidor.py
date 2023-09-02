@@ -2,12 +2,27 @@ from flask import Flask, request, jsonify
 import json
 from apiClip import apiRemoveBackGround
 from apiChat import apiChatGpt
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 def funcao_1(parametro):
     resultado = f"Olá da Função 1, {parametro}!"
     return resultado
+
+@app.route("/upload", methods=["POST"])
+def upload_image():
+    try:
+        image_file = request.files["image"]  # Obtém o arquivo de imagem do formulário
+
+        # Faça algo com o arquivo de imagem, como salvar no servidor
+        # Por exemplo, para salvar a imagem em um diretório chamado "uploads":
+        image_file.save("imagensSaida/teste.jpeg")
+
+        return jsonify({"message": "Imagem enviada com sucesso!"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/', methods=['POST', 'OPTIONS'])
 def handle_request():
