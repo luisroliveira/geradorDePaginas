@@ -1,3 +1,28 @@
+class CriarElementos {
+  constructor () {}
+
+  criarDivParaImg (imageURL) {
+    // Crie a div com a classe "option-box" e atributos correspondentes
+    var imgOptionDiv = document.createElement("div");
+    imgOptionDiv.className = "option-box";
+    imgOptionDiv.id = "option-1";
+
+    // Crie a tag <img>
+    var imgElement = document.createElement("img");
+    imgElement.src = imageURL; // Substitua pelo caminho da sua imagem
+    imgElement.alt = "Descrição da imagem";
+
+    // Anexe a tag <img> à div "imgOptionDiv"
+    imgOptionDiv.appendChild(imgElement);
+
+    // Adicione um manipulador de evento de clique
+    imgOptionDiv.onclick = function() {
+      selectOption(1); // Substitua esta função pelo seu código real
+    };
+    return imgOptionDiv;
+  }
+}
+
 class ChamarServidorService {
   constructor () {}
 
@@ -24,14 +49,19 @@ class ChamarServidorService {
 }
 
 const chamarServidorService = new ChamarServidorService()
+const criarElementos = new CriarElementos()
 
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
   const imageUrl = urlParams.get("image_url");
 
   if (imageUrl) {
-    const displayImage = document.getElementById("displayImage");
-    displayImage.src = imageUrl;
+    const imgOptionDiv = criarElementos.criarDivParaImg(imageUrl);
+    // Selecione a div com a classe "options" para anexar a nova div
+    var optionsDiv = document.querySelector(".options");
+
+    // Anexe a nova div à div "options"
+    optionsDiv.appendChild(imgOptionDiv);
   }
 })
 
