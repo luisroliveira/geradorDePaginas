@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import json
 from apiClip import apiChangeBackGround
 from apiChat import apiChatGpt
@@ -6,6 +6,8 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+UPLOAD_FOLDER = 'imagensBackground/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def funcao_1(parametro):
     resultado = f"Olá da Função 1, {parametro}!"
@@ -29,13 +31,27 @@ def change_img_bg():
     try:
         image_file = request.files["image"]  # Obtém o arquivo de imagem do formulário
 
-        # Faça algo com o arquivo de imagem, como salvar no servidor
-        # Por exemplo, para salvar a imagem em um diretório chamado "uploads":
-        prompt = "On the wall of a house by the sea with a window nearby"
-        apiChangeBackGround(image_file, prompt)
-
-        return jsonify({"message": "Imagem enviada com sucesso!"})
+        if image_file:
+            # Faça algo com o arquivo de imagem, como salvar no servidor
+            # Por exemplo, para salvar a imagem em um diretório chamado "uploads":
+            prompt = "On the wall of a house by the sea with a window nearby"
+            pathImagem = apiChangeBackGround(image_file, prompt, app.config['UPLOAD_FOLDER'])
+            # URL da imagem
+            image_url = f"http://localhost:8000/change-background/{pathImagem}"
+            return jsonify({"message": "Imagem enviada com sucesso!", "image_url": image_url})
+        else:
+            return jsonify({"error": "Nenhum arquivo de imagem recebido"}), 400
     except Exception as e:
+        print("Erro no change img background")
+        return jsonify({"error": str(e)}), 500
+
+# Rota para acessar a imagem
+@app.route("/change-background/<filename>", methods=["GET"])
+def get_image(filename):
+    try:
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    except Exception as e:
+        print("Erro no get img")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/', methods=['POST', 'OPTIONS'])

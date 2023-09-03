@@ -23,38 +23,16 @@ class ChamarServidorService {
   }
 }
 
-const inputImage = document.getElementById('input-image')
-const selectedImage = document.getElementById('selected-image')
 const chamarServidorService = new ChamarServidorService()
 
-inputImage.addEventListener('change', function () {
-  const file = inputImage.files[0]
-  if (file) {
-    selectedImage.src = URL.createObjectURL(file)
+document.addEventListener("DOMContentLoaded", function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const imageUrl = urlParams.get("image_url");
+
+  if (imageUrl) {
+    const displayImage = document.getElementById("displayImage");
+    displayImage.src = imageUrl;
   }
-})
-
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('form')
-  const btnAvancar = document.getElementById('btn-avancar')
-  const inputWord = document.getElementById('input-word')
-
-  btnAvancar.addEventListener('click', function (event) {
-    event.preventDefault() // Impede o envio do formulário padrão
-
-    // Obtém a palavra inserida
-    const word = inputWord.value
-    const image = inputImage.value
-
-    // Função para fazer uma solicitação ao servidor
-    let string = "crie 5 frases de efeito curtas para vender " + word
-    console.log(string)
-    chamarServidorService.chamarServidor('funcao_1', word)
-
-    //   // Redireciona para a nova página, passando os dados via URL
-    //   const queryParams = new URLSearchParams(formData);
-    //   window.location.href = "outra_pagina.html?" + queryParams.toString();
-  })
 })
 
 let selectedOption = null;

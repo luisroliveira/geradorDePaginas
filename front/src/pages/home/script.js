@@ -65,8 +65,11 @@ class ChamarServidorService {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Manipule a resposta do backend, se necessário
-        console.log(data);
+        if(data.image_url) {
+          window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(data.image_url)}`;
+        } else {
+          console.error("URL da imagem não encontrada na resposta.");
+        }
       })
       .catch((error) => {
         console.error("Erro ao enviar imagem:", error);
