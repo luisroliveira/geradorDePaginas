@@ -115,9 +115,9 @@ def apiRemoveBackGround(image_file):
 
 
 
-prompt = "On the wall of a house by the sea with a window nearby"
-nomeArquivoImagem = "prancha.jpeg"
-apiChangeBackGroundTest(nomeArquivoImagem, prompt)
+# prompt = "On the wall of a house by the sea with a window nearby"
+# nomeArquivoImagem = "prancha.jpeg"
+# apiChangeBackGroundTest(nomeArquivoImagem, prompt)
 
 
 # apiRemoveBackGroundTest(nomeArquivoImagem)
