@@ -1,46 +1,29 @@
 class ChamarServidorService {
   constructor () {}
 
-  enviarNomeProduto(nomeProduto) {
-    const funcaoParaChamar = 'funcao_1' // Nome da função que você deseja chamar
-    const parametro = nomeProduto
-  
-    fetch('http://localhost:8000', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
-    })
-      .then(response => response.json())
-      .then(data => {
-        const resultado = data.resultado
-        console.log(resultado)
-      })
-      .catch(error => {
-        console.error('Erro:', error)
-      })
-  }
+  enviarNomeEDescricaoProduto(nome, descricao) {
+    const funcaoParaChamar = 'apiChatGpt' // Nome da função que você deseja chamar
+    const parametro = "Nome: " + nome + "\n" + "Descrição: " + descricao
 
-  enviarDescricaoProduto(descricao) {
-    const funcaoParaChamar = 'funcao_1' // Nome da função que você deseja chamar
-    const parametro = descricao
-  
-    fetch('http://localhost:8000', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
-    })
+    return new Promise((resolve, reject) => {
+      fetch('http://localhost:8000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
+      })
       .then(response => response.json())
       .then(data => {
-        const resultado = data.resultado
-        console.log(resultado)
-      })
-      .catch(error => {
-        console.error('Erro:', error)
-      })
+          const resultado = data.resultado
+          localStorage.setItem("NomeDescricao", data.resultado)
+          resolve(resultado)
+        })
+        .catch(error => {
+          console.error('Erro:', error)
+          reject(error)
+        })
+    })
   }
 
   enviarImagem(imagem) {
@@ -59,21 +42,24 @@ class ChamarServidorService {
   }
 
   mudarBackground(imagem) {
-    fetch("http://localhost:8000//change-background", {
-      method: "POST",
-      body: imagem,
+    return new Promise((resolve, reject) => {
+      fetch("http://localhost:8000//change-background", {
+        method: "POST",
+        body: imagem,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.image_url) {
+            resolve(data.image_url)
+          } else {
+            console.error("URL da imagem não encontrada na resposta.");
+          }
+        })
+        .catch((error) => {
+          console.error("Erro ao enviar imagem:", error);
+          reject(error)
+        })
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if(data.image_url) {
-          window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(data.image_url)}`;
-        } else {
-          console.error("URL da imagem não encontrada na resposta.");
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao enviar imagem:", error);
-      })
   }
 }
 
@@ -103,19 +89,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const word = inputWord.value
     const description = inputDescription.value
     const imageFile = inputImage.files[0]
-    
     // Cria um formData para enviar a imagem para o backend
     var formData = new FormData()
     formData.append('image', imageFile)
-    // Enviar imagem para o servidor
-    chamarServidorService.mudarBackground(formData)
     
-    // Função para fazer uma solicitação ao servidor
-    chamarServidorService.enviarNomeProduto(word)
-    chamarServidorService.enviarDescricaoProduto(description)
-
-    //   // Redireciona para a nova página, passando os dados via URL
-    //   const queryParams = new URLSearchParams(formData);
-    //   window.location.href = "outra_pagina.html?" + queryParams.toString();
+    // Criação das Promises (chamadas para o servidor)
+    var nomeDescricaoPromise = chamarServidorService.enviarNomeEDescricaoProduto(word, description)
+    var mudarBackgroundPromise = chamarServidorService.mudarBackground(formData)
+  
+    // Tomar uma ação apenas quando as promises forem concluídas
+    Promise.all([nomeDescricaoPromise, mudarBackgroundPromise])
+      .then(function(results) {
+        // Redirecionar para a segunda página e passar a imagem como parâmetro
+        var image_url = results[1];
+        window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
+      })
+      .catch(function(error){
+        console.error("Erro ao fazer chamadas ao servidor:", error)
+      }) 
   })
 })
