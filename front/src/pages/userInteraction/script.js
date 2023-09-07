@@ -5,7 +5,7 @@ class CriarElementos {
     // Crie a div com a classe "option-box" e atributos correspondentes
     var imgOptionDiv = document.createElement("div");
     imgOptionDiv.className = "option-box";
-    imgOptionDiv.id = "option-1";
+    imgOptionDiv.id = "img-option";
 
     // Crie a tag <img>
     var imgElement = document.createElement("img");
@@ -81,12 +81,13 @@ class ChamarServidorService {
 
 const chamarServidorService = new ChamarServidorService()
 const criarElementos = new CriarElementos()
+const btnAvancar = document.getElementById('btn-avancar')
+const btnRegerar = document.getElementById('btn-regerar')
+const btnSelecionar = document.getElementById('btn-selecionar')
 
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
   const imageUrl = urlParams.get("image_url");
-  const btnAvancar = document.getElementById('btn-avancar')
-  const btnRegerar = document.getElementById('btn-regerar')
 
   if (imageUrl) {
     const imgOptionDiv = criarElementos.criarDivParaImg(imageUrl);
@@ -123,12 +124,20 @@ document.addEventListener("DOMContentLoaded", function () {
   })
 })
 
-let selectedOption = null;
-    
-function selectOption(optionNumber) {
+let selectedImage = null;
+// Função para selecionar a imagem
+function selecionarImagem() {
+  // Selecionar a imagem
+  var imageElement = document.getElementById("image");
+  selectedImage = imageElement.src;
 
-  const selectedBox = document.getElementById(`option-${optionNumber}`);
+  // Mudar o css da opção de imagem
+  const selectedBox = document.getElementById("img-option");
   selectedBox.classList.add('selected');
-  
-  console.log('Opção selecionada:', optionNumber);
+
+  // Esconder o botão "Selecionar Imagem"
+  btnSelecionar.style.display = "none";
+
+  // Mostrar o botão "Avançar"
+  btnAvancar.style.display = "inline";
 }

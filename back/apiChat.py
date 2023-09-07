@@ -1,6 +1,7 @@
 from senhaChat import API_KEY
 import requests
 import json
+from convertJson import convert_to_json
 
 def apiChatGpt(textoEntrada):
     # headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type":"application/json"}
@@ -34,8 +35,9 @@ def apiChatGpt(textoEntrada):
     2. "Alcance a perfeição em cada corte com Barber+."
     3. "Barber+, elevando sua experiência de barbear ao máximo.""
     """
+    json_msg = convert_to_json(mensagem)
 
-    return mensagem
+    return json_msg
 
 
 # texto = "crie 5 frases de efeito curtas para vender bolsa"

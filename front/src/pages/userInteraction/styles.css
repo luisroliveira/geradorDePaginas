@@ -12,13 +12,16 @@ body {
 .option-box {
     margin: 10px;
     border: 2px solid #000;
+    border-radius: 10px;
+    overflow: hidden;
     text-align: center;
     font-size: 16px;
     cursor: pointer;
 }
 
 .selected {
-    background-color: #3498db;
+    border: 10px solid green;
+    border-radius: 10px;
 }
 
 .container {
