@@ -24,10 +24,6 @@ class CriarElementos {
     imgOptionDiv.appendChild(inputElement);
     imgOptionDiv.appendChild(imgElement);
 
-    // Adicione um manipulador de evento de clique
-    imgOptionDiv.onclick = function() {
-      selectOption(1); // Substitua esta função pelo seu código real
-    };
     return imgOptionDiv;
   }
 }
@@ -97,32 +93,32 @@ document.addEventListener("DOMContentLoaded", function () {
     // Anexe a nova div à div "options"
     optionsDiv.appendChild(imgOptionDiv);
   }
-
-  btnRegerar.addEventListener('click', function () {
-    // Adicionar a imagem na tag de input
-    var imageElement = document.getElementById("image");
-    if (imageElement) {
-      var imageURL = imageElement.src;
-      chamarServidorService.addImageToInput(imageURL)
-        .then(function() {
-          // Pegar a imagem do input
-          const inputImage = document.getElementById('imageFileInput')
-          const imageFile = inputImage.files[0]
-          // Cria um formData para enviar a imagem para o backend
-          var formData = new FormData()
-          formData.append('image', imageFile)
-          // Enviar imagem para o servidor
-          return chamarServidorService.mudarBackground(formData)
-        })
-        .then(function() {
-          console.log("Operação concluída com sucesso!")
-        })
-        .catch(function(error) {
-          console.error("Erro: " + error)
-        })
-    }
-  })
 })
+
+function regerarImagem() {
+  // Adicionar a imagem na tag de input
+  var imageElement = document.getElementById("image");
+  if (imageElement) {
+    var imageURL = imageElement.src;
+    chamarServidorService.addImageToInput(imageURL)
+      .then(function() {
+        // Pegar a imagem do input
+        const inputImage = document.getElementById('imageFileInput')
+        const imageFile = inputImage.files[0]
+        // Cria um formData para enviar a imagem para o backend
+        var formData = new FormData()
+        formData.append('image', imageFile)
+        // Enviar imagem para o servidor
+        return chamarServidorService.mudarBackground(formData)
+      })
+      .then(function() {
+        console.log("Operação concluída com sucesso!")
+      })
+      .catch(function(error) {
+        console.error("Erro: " + error)
+      })
+  }
+}
 
 let selectedImage = null;
 // Função para selecionar a imagem
@@ -140,4 +136,12 @@ function selecionarImagem() {
 
   // Mostrar o botão "Avançar"
   btnAvancar.style.display = "inline";
+}
+
+function printData() {
+  var frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
+  var chaves = Object.keys(frasesArmazenadas)
+  chaves.forEach(function(chave) {
+    console.log(chave + ': ' + frasesArmazenadas[chave])
+  })
 }

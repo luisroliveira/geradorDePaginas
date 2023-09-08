@@ -15,9 +15,9 @@ class ChamarServidorService {
       })
       .then(response => response.json())
       .then(data => {
-          const resultado = data.resultado
-          localStorage.setItem("NomeDescricao", data.resultado)
-          resolve(resultado)
+          const resultadoJson = JSON.stringify(data.resultado)
+          localStorage.setItem("ResultadoGpt", resultadoJson)
+          resolve(resultadoJson)
         })
         .catch(error => {
           console.error('Erro:', error)
