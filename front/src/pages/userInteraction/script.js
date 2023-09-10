@@ -26,6 +26,34 @@ class CriarElementos {
 
     return imgOptionDiv;
   }
+
+  criarDivParaOpcaoTexto (texto) {
+    // Crie a div com a classe "option-box" e atributos correspondentes
+    var txtOptionDiv = document.createElement("div");
+    txtOptionDiv.classList.add("option-txt");
+    txtOptionDiv.textContent = texto;
+
+    // Adicionar um evento de clique a cada div de opção
+    txtOptionDiv.addEventListener('click', function() {
+      // Remove a classe "selected" de todas as opções
+      var opcoesDivs = document.querySelectorAll('.option-txt');
+      opcoesDivs.forEach(function(div) {
+          div.classList.remove('selected');
+      });
+
+      // Adiciona a classe "selected" à opção clicada
+      txtOptionDiv.classList.add('selected');
+    });
+    return txtOptionDiv;
+  }
+
+  criarOpcoesFrases (frasesOptions) {
+    // Selecione a div com a classe "options" para anexar a nova div
+    var optionsDiv = document.querySelector(".options");
+    frasesOptions.forEach(function(option) {
+      optionsDiv.appendChild(option);
+    });
+  }
 }
 
 class ChamarServidorService {
@@ -138,10 +166,33 @@ function selecionarImagem() {
   btnAvancar.style.display = "inline";
 }
 
-function printData() {
-  var frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
-  var chaves = Object.keys(frasesArmazenadas)
-  chaves.forEach(function(chave) {
-    console.log(chave + ': ' + frasesArmazenadas[chave])
-  })
+function clearImg() {
+  const optionsDiv = document.querySelector(".options");
+  while (optionsDiv.lastElementChild) {
+    optionsDiv.removeChild(optionsDiv.lastElementChild);
+  }  
+  // var frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
+  // for (var chave in frasesArmazenadas) {
+  //   if (frasesArmazenadas.hasOwnProperty(chave)) {
+  //     console.log('Chave: ' + chave);
+  //     var listaDeValores = frasesArmazenadas[chave];
+      
+  //     for (var i = 0; i < listaDeValores.length; i++) {
+  //         console.log('Valor ' + (i + 1) + ': ' + listaDeValores[i]);
+  //     }
+  //   }
+  // }
+}
+
+function startTextQuestions() {
+  clearImg()
+  const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
+  const chaves = Object.keys(frasesArmazenadas)
+  const frases = frasesArmazenadas[chaves[0]]
+  var frasesOptions = []
+  frases.forEach(function(frase) { 
+    const txtOptionDiv = criarElementos.criarDivParaOpcaoTexto(frase);
+    frasesOptions.push(txtOptionDiv)
+  });
+  criarElementos.criarOpcoesFrases(frasesOptions)
 }
