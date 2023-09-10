@@ -47,7 +47,7 @@ class CriarElementos {
     return txtOptionDiv;
   }
 
-  criarOpcoesFrases (frasesOptions) {
+  criarOpcoesGpt (frasesOptions) {
     // Selecione a div com a classe "options" para anexar a nova div
     var optionsDiv = document.querySelector(".options");
     frasesOptions.forEach(function(option) {
@@ -166,7 +166,7 @@ function selecionarImagem() {
   btnAvancar.style.display = "inline";
 }
 
-function clearImg() {
+function clearOptions() {
   const optionsDiv = document.querySelector(".options");
   while (optionsDiv.lastElementChild) {
     optionsDiv.removeChild(optionsDiv.lastElementChild);
@@ -184,8 +184,8 @@ function clearImg() {
   // }
 }
 
-function startTextQuestions() {
-  clearImg()
+function mostrarOpcoesFrases() {
+  clearOptions()
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
   const chaves = Object.keys(frasesArmazenadas)
   const frases = frasesArmazenadas[chaves[0]]
@@ -194,5 +194,72 @@ function startTextQuestions() {
     const txtOptionDiv = criarElementos.criarDivParaOpcaoTexto(frase);
     frasesOptions.push(txtOptionDiv)
   });
-  criarElementos.criarOpcoesFrases(frasesOptions)
+  criarElementos.criarOpcoesGpt(frasesOptions)
+  // Mudar a função chamada no botão Avançar
+  document.getElementById('btn-avancar').setAttribute('onclick', 'escolherFraseMostrarTexto()');
+}
+
+let selectedFrase = null;
+
+function escolherFraseMostrarTexto() {
+  var fraseSelecionada = document.querySelector(".selected");
+  if (fraseSelecionada) {
+    selectedFrase = fraseSelecionada.textContent;
+    mostrarTexto();
+  } else {
+    alert('Selecione uma opção antes de avançar.');
+  }
+}
+
+function mostrarTexto() {
+  clearOptions()
+  const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
+  const chaves = Object.keys(frasesArmazenadas)
+  const textos = frasesArmazenadas[chaves[1]]
+  var textosOptions = []
+  textos.forEach(function(texto) { 
+    const txtOptionDiv = criarElementos.criarDivParaOpcaoTexto(texto);
+    textosOptions.push(txtOptionDiv)
+  });
+  criarElementos.criarOpcoesGpt(textosOptions)
+  // Mudar a função chamada no botão Avançar
+  document.getElementById('btn-avancar').setAttribute('onclick', 'escolherTextoMostrarSlogan()');
+}
+
+let selectedTexto = null;
+
+function escolherTextoMostrarSlogan() {
+  var textoSelecionado = document.querySelector(".selected");
+  if (textoSelecionado) {
+    selectedTexto = textoSelecionado.textContent;
+    mostrarSlogan();
+  } else {
+    alert('Selecione uma opção antes de avançar.');
+  }
+}
+
+function mostrarSlogan() {
+  clearOptions()
+  const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
+  const chaves = Object.keys(frasesArmazenadas)
+  const slogans = frasesArmazenadas[chaves[2]]
+  var slogansOptions = []
+  slogans.forEach(function(slogan) { 
+    const txtOptionDiv = criarElementos.criarDivParaOpcaoTexto(slogan);
+    slogansOptions.push(txtOptionDiv)
+  });
+  criarElementos.criarOpcoesGpt(slogansOptions)
+  // Mudar a função chamada no botão Avançar
+  document.getElementById('btn-avancar').setAttribute('onclick', 'escolherSlogan()');
+}
+
+let selectedSlogan = null;
+
+function escolherSlogan() {
+  var sloganSelecionado = document.querySelector(".selected");
+  if (sloganSelecionado) {
+    selectedSlogan = sloganSelecionado.textContent;
+  } else {
+    alert('Selecione uma opção antes de avançar.');
+  }
 }
