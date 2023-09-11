@@ -96,15 +96,22 @@ document.addEventListener('DOMContentLoaded', function () {
     // Criação das Promises (chamadas para o servidor)
     var nomeDescricaoPromise = chamarServidorService.enviarNomeEDescricaoProduto(word, description)
     var mudarBackgroundPromise = chamarServidorService.mudarBackground(formData)
+
+    // Mostrar a sobreposição escura e o spinner
+    document.body.classList.add('overlay-visible');
   
     // Tomar uma ação apenas quando as promises forem concluídas
     Promise.all([nomeDescricaoPromise, mudarBackgroundPromise])
       .then(function(results) {
         // Redirecionar para a segunda página e passar a imagem como parâmetro
         var image_url = results[1];
+        // Ocultar a sobreposição escura e o spinner
+        document.body.classList.remove('overlay-visible');
         window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
       })
       .catch(function(error){
+        // Ocultar a sobreposição escura e o spinner
+        document.body.classList.remove('overlay-visible');
         console.error("Erro ao fazer chamadas ao servidor:", error)
       }) 
   })
