@@ -103,6 +103,17 @@ class ChamarServidorService {
   }
 }
 
+var selectedOptions = {
+  selectedImage: null,
+  selectedFrase: null,
+  selectedTexto: null,
+  selectedSlogan: null
+};
+
+function selecionarOpcao(opcao, valor) {
+  selectedOptions[opcao] = valor;
+}
+
 const chamarServidorService = new ChamarServidorService()
 const criarElementos = new CriarElementos()
 const btnAvancar = document.getElementById('btn-avancar')
@@ -148,12 +159,10 @@ function regerarImagem() {
   }
 }
 
-let selectedImage = null;
-// Função para selecionar a imagem
 function selecionarImagem() {
   // Selecionar a imagem
   var imageElement = document.getElementById("image");
-  selectedImage = imageElement.src;
+  selecionarOpcao('selectedImage', imageElement.src);
 
   // Mudar o css da opção de imagem
   const selectedBox = document.getElementById("img-option");
@@ -170,41 +179,36 @@ function clearOptions() {
   const optionsDiv = document.querySelector(".options");
   while (optionsDiv.lastElementChild) {
     optionsDiv.removeChild(optionsDiv.lastElementChild);
-  }  
-  // var frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
-  // for (var chave in frasesArmazenadas) {
-  //   if (frasesArmazenadas.hasOwnProperty(chave)) {
-  //     console.log('Chave: ' + chave);
-  //     var listaDeValores = frasesArmazenadas[chave];
-      
-  //     for (var i = 0; i < listaDeValores.length; i++) {
-  //         console.log('Valor ' + (i + 1) + ': ' + listaDeValores[i]);
-  //     }
-  //   }
-  // }
+  }
 }
 
 function mostrarOpcoesFrases() {
+  // Limpar a div de opções
   clearOptions()
+
+  // Pegar as frases retornadas pelo GPT
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
   const chaves = Object.keys(frasesArmazenadas)
   const frases = frasesArmazenadas[chaves[0]]
+
+  // Criar as divs de opção para cada frase
   var frasesOptions = []
   frases.forEach(function(frase) { 
     const txtOptionDiv = criarElementos.criarDivParaOpcaoTexto(frase);
     frasesOptions.push(txtOptionDiv)
   });
+
+  // Anexar as divs de opção à div "options"
   criarElementos.criarOpcoesGpt(frasesOptions)
+
   // Mudar a função chamada no botão Avançar
   document.getElementById('btn-avancar').setAttribute('onclick', 'escolherFraseMostrarTexto()');
 }
 
-let selectedFrase = null;
-
 function escolherFraseMostrarTexto() {
   var fraseSelecionada = document.querySelector(".selected");
   if (fraseSelecionada) {
-    selectedFrase = fraseSelecionada.textContent;
+    selecionarOpcao('selectedFrase', fraseSelecionada.textContent);
     mostrarTexto();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -212,26 +216,32 @@ function escolherFraseMostrarTexto() {
 }
 
 function mostrarTexto() {
+  // Limpar a div de opções
   clearOptions()
+
+  // Pegar os textos retornados pelo GPT
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
   const chaves = Object.keys(frasesArmazenadas)
   const textos = frasesArmazenadas[chaves[1]]
+
+  // Criar as divs de opção para cada texto
   var textosOptions = []
   textos.forEach(function(texto) { 
     const txtOptionDiv = criarElementos.criarDivParaOpcaoTexto(texto);
     textosOptions.push(txtOptionDiv)
   });
+
+  // Anexar as divs de opção à div "options"
   criarElementos.criarOpcoesGpt(textosOptions)
+
   // Mudar a função chamada no botão Avançar
   document.getElementById('btn-avancar').setAttribute('onclick', 'escolherTextoMostrarSlogan()');
 }
 
-let selectedTexto = null;
-
 function escolherTextoMostrarSlogan() {
   var textoSelecionado = document.querySelector(".selected");
   if (textoSelecionado) {
-    selectedTexto = textoSelecionado.textContent;
+    selecionarOpcao('selectedTexto', textoSelecionado.textContent);
     mostrarSlogan();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -239,27 +249,38 @@ function escolherTextoMostrarSlogan() {
 }
 
 function mostrarSlogan() {
+  // Limpar a div de opções
   clearOptions()
+
+  // Pegar os slogans retornados pelo GPT
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
   const chaves = Object.keys(frasesArmazenadas)
   const slogans = frasesArmazenadas[chaves[2]]
+
+  // Criar as divs de opção para cada slogan
   var slogansOptions = []
   slogans.forEach(function(slogan) { 
     const txtOptionDiv = criarElementos.criarDivParaOpcaoTexto(slogan);
     slogansOptions.push(txtOptionDiv)
   });
+
+  // Anexar as divs de opção à div "options"
   criarElementos.criarOpcoesGpt(slogansOptions)
+
   // Mudar a função chamada no botão Avançar
   document.getElementById('btn-avancar').setAttribute('onclick', 'escolherSlogan()');
 }
 
-let selectedSlogan = null;
-
 function escolherSlogan() {
   var sloganSelecionado = document.querySelector(".selected");
   if (sloganSelecionado) {
-    selectedSlogan = sloganSelecionado.textContent;
+    selecionarOpcao('selectedSlogan', sloganSelecionado.textContent);
+    printAll();
   } else {
     alert('Selecione uma opção antes de avançar.');
   }
+}
+
+function printAll() {
+  console.log(selectedOptions);
 }
