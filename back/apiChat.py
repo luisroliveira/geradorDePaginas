@@ -6,11 +6,30 @@ from convertJson import convert_to_json
 def apiChatGpt(textoEntrada):
     # headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type":"application/json"}
     # link = "https://api.openai.com/v1/chat/completions"
-    # id_modelo = "gpt-3.5-turbo"
+    # id_modelo = "gpt-4"
 
     # body_mensagem = {
     #     "model": id_modelo,
-    #     "messages": [{"role": "user", "content": textoEntrada}]
+    #     "messages": [
+    #         {
+    #             "role": "system",
+    #             "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Seu objetivo é gerar 5 frases persuasivas, 2 textos persuasivos e 3 slogans que eu possa colocar em uma landing page de vendas. Mantenha as frases concisas. Cada texto deve possuir 1 parágrafo e ser feito para retratar a situação de uso do produto e sua proposta de valor. Além disso, não comece o texto pedindo para imaginar algo. Os slogans devem ser feitos de forma bem criativa. 
+    #             Responda nos seguintes templates: 
+    #             'Frases Persuasivas:
+    #             1. "Frase 1"'
+
+    #             'Texto Persuasivo:
+    #             1. "texto 1"'
+
+    #             'Slogans:
+    #             1. "Slogan 1"'
+    #             """
+    #         },
+    #         {
+    #             "role": "user", 
+    #             "content": textoEntrada
+    #         }
+    #     ]
     # }
 
     # body_mensagem = json.dumps(body_mensagem)
