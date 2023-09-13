@@ -1,9 +1,9 @@
 class ChamarServidorService {
   constructor () {}
 
-  enviarNomeEDescricaoProduto(nome, descricao) {
+  enviarNomeEDescricaoProduto(nome, what, descricao) {
     const funcaoParaChamar = 'apiChatGpt' // Nome da função que você deseja chamar
-    const parametro = "Nome: " + nome + "\n" + "Descrição: " + descricao
+    const parametro = "Nome: " + nome + "\n" + "Produto: " + what + "\n" + "Descrição: " + descricao
 
     return new Promise((resolve, reject) => {
       fetch('http://localhost:8000', {
@@ -15,7 +15,7 @@ class ChamarServidorService {
       })
       .then(response => response.json())
       .then(data => {
-          const resultadoJson = JSON.stringify(data.resultado)
+          const resultadoJson = JSON.stringify(data.resultado) // REMOVER O STRINGIFY QUANDO FOR USAR A API
           localStorage.setItem("ResultadoGpt", resultadoJson)
           resolve(resultadoJson)
         })
@@ -41,11 +41,11 @@ class ChamarServidorService {
       })
   }
 
-  mudarBackground(imagem) {
+  mudarBackground(formData) {
     return new Promise((resolve, reject) => {
       fetch("http://localhost:8000//change-background", {
         method: "POST",
-        body: imagem,
+        body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
@@ -81,38 +81,42 @@ document.addEventListener('DOMContentLoaded', function () {
   btnAvancar.addEventListener('click', function (event) {
     event.preventDefault() // Impede o envio do formulário padrão
 
-    // Get name and description
+    // Get name, what the product is and its description
     const inputWord = form.querySelector('#input-word')
+    const inputWhat = form.querySelector('#input-what')
     const inputDescription = form.querySelector('#prodDescr')
 
     // Obtém os dados inseridos
     const word = inputWord.value
+    const what = inputWhat.value
     const description = inputDescription.value
     const imageFile = inputImage.files[0]
     // Cria um formData para enviar a imagem para o backend
     var formData = new FormData()
     formData.append('image', imageFile)
     
-    // Criação das Promises (chamadas para o servidor)
-    var nomeDescricaoPromise = chamarServidorService.enviarNomeEDescricaoProduto(word, description)
-    var mudarBackgroundPromise = chamarServidorService.mudarBackground(formData)
-
     // Mostrar a sobreposição escura e o spinner
     document.body.classList.add('overlay-visible');
-  
-    // Tomar uma ação apenas quando as promises forem concluídas
-    Promise.all([nomeDescricaoPromise, mudarBackgroundPromise])
-      .then(function(results) {
-        // Redirecionar para a segunda página e passar a imagem como parâmetro
-        var image_url = results[1];
+
+    // Criação das Promises (chamadas para o servidor)
+    chamarServidorService.enviarNomeEDescricaoProduto(word, what, description)
+      .then((resultado) => {
+        const resultadoGpt = JSON.parse(resultado) || []
+        const chaves = Object.keys(resultadoGpt)
+        const descricao = resultadoGpt[chaves[3]][0]
+        var prompt = descricao
+        formData.append('prompt', prompt)
+        return chamarServidorService.mudarBackground(formData)
+      })
+      .then((image_url) => {
         // Ocultar a sobreposição escura e o spinner
         document.body.classList.remove('overlay-visible');
         window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
       })
-      .catch(function(error){
+      .catch((error) => {
         // Ocultar a sobreposição escura e o spinner
         document.body.classList.remove('overlay-visible');
         console.error("Erro ao fazer chamadas ao servidor:", error)
-      }) 
+      })
   })
 })

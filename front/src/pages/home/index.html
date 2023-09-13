@@ -18,11 +18,14 @@
       <div id="formDiv">
         <h1>Formulário do produto</h1>
         <form id="form">
-          <div id="nameDiv">
-            <input type="text" placeholder="Digite o nome do produto" id="input-word" required/>
+          <div id="nameDiv" class="txtInputDiv">
+            <input type="text" placeholder="Ex: Café+" id="input-word" required/>
           </div>
-          <div id="descriptionDiv">
-            <textarea id="prodDescr" cols="50" rows="10" placeholder="Descrição do produto" required></textarea>
+          <div id="whatIsDiv" class="txtInputDiv">
+            <input type="text" placeholder="Ex: Cafeteira" id="input-what" required/>
+          </div>
+          <div id="descriptionDiv" class="txtInputDiv">
+            <textarea id="prodDescr" cols="50" rows="10" placeholder="Ex: Cafeteira que faz café" required></textarea>
           </div>
           <div id="imageDiv">
             <input type="file" id="input-image" accept="image/*" />

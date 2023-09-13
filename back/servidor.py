@@ -30,11 +30,11 @@ def upload_image():
 def change_img_bg():
     try:
         image_file = request.files["image"]  # Obtém o arquivo de imagem do formulário
+        prompt = request.form["prompt"]  # Obtém o texto do formulário
 
         if image_file:
             # Faça algo com o arquivo de imagem, como salvar no servidor
             # Por exemplo, para salvar a imagem em um diretório chamado "uploads":
-            prompt = "On the wall of a house by the sea with a window nearby"
             pathImagem = apiChangeBackGround(image_file, prompt, app.config['UPLOAD_FOLDER'])
             # URL da imagem
             image_url = f"http://localhost:8000/change-background/{pathImagem}"
