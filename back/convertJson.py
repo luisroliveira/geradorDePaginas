@@ -13,6 +13,7 @@ def convert_to_json(input_text):
     json_response = {
         "Frases Persuasivas": persuasive_phrases,
         "Textos Persuasivos": persuasive_text,
-        "Slogans": slogans
+        "Slogans": slogans,
+        "Descricao": ["On the wall of a house by the sea with a window nearby"]
     }
     return json_response

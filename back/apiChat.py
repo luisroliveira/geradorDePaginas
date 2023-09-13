@@ -13,16 +13,14 @@ def apiChatGpt(textoEntrada):
     #     "messages": [
     #         {
     #             "role": "system",
-    #             "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Seu objetivo é gerar 5 frases persuasivas, 2 textos persuasivos e 3 slogans que eu possa colocar em uma landing page de vendas. Mantenha as frases concisas. Cada texto deve possuir 1 parágrafo e ser feito para retratar a situação de uso do produto e sua proposta de valor. Além disso, não comece o texto pedindo para imaginar algo. Os slogans devem ser feitos de forma bem criativa. 
-    #             Responda nos seguintes templates: 
-    #             'Frases Persuasivas:
-    #             1. "Frase 1"'
-
-    #             'Texto Persuasivo:
-    #             1. "texto 1"'
-
-    #             'Slogans:
-    #             1. "Slogan 1"'
+    #             "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Seu objetivo é gerar 5 frases persuasivas, 2 textos persuasivos e 3 slogans que eu possa colocar em uma landing page de vendas. Além disso, tenho uma imagem do produto e quero mudar o background dela. Descreva em detalhes como deve ser o background para a imagem considerando o contexto de uso do produto. Mantenha as frases concisas. Cada texto deve possuir 1 parágrafo e ser feito para retratar a situação de uso do produto e sua proposta de valor. Além disso, não comece o texto pedindo para imaginar algo. Os slogans devem ser feitos de forma bem criativa. As descrições de background devem ser feitas em inglês, limitadas a 1 frase e deve conter: Local onde o produto deve estar, características desse local, tipo de iluminação e sentimento que a imagem deve passar. 
+    #             Responda no seguinte template JSON:
+    #             {
+    #             "Frases Persuasivas": ["Frase  1"],
+    #             "Texto Persuasivo": ["Texto 1"],
+    #             "Slogan": ["Slogan 1"],
+    #             "Descricao": ["Description 1"]
+    #             }
     #             """
     #         },
     #         {
@@ -54,6 +52,7 @@ def apiChatGpt(textoEntrada):
     2. "Alcance a perfeição em cada corte com Barber+."
     3. "Barber+, elevando sua experiência de barbear ao máximo.""
     """
+    
     json_msg = convert_to_json(mensagem)
 
     return json_msg
