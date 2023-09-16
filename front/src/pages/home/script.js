@@ -1,12 +1,15 @@
 class ChamarServidorService {
-  constructor () {}
+  constructor () {
+    this.urlServidor = 'http://localhost:8000'
+  }
 
   enviarNomeEDescricaoProduto(nome, what, descricao) {
     const funcaoParaChamar = 'apiChatGpt' // Nome da função que você deseja chamar
     const parametro = "Nome: " + nome + "\n" + "Produto: " + what + "\n" + "Descrição: " + descricao
+    const urlServidor = this.urlServidor
 
     return new Promise((resolve, reject) => {
-      fetch('http://localhost:8000', {
+      fetch(urlServidor, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -26,24 +29,11 @@ class ChamarServidorService {
     })
   }
 
-  enviarImagem(imagem) {
-    fetch("http://localhost:8000/upload", {
-      method: "POST",
-      body: imagem,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Manipule a resposta do backend, se necessário
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Erro ao enviar imagem:", error);
-      })
-  }
-
   mudarBackground(formData) {
+    const urlServidor = this.urlServidor + '/change-background'
+
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:8000//change-background", {
+      fetch(urlServidor, {
         method: "POST",
         body: formData,
       })
@@ -53,7 +43,6 @@ class ChamarServidorService {
             resolve(data.image_url)
           } else {
             throw Error("URL da imagem não encontrada na resposta.");
-            console.error("URL da imagem não encontrada na resposta.");
           }
         })
         .catch((error) => {
@@ -105,7 +94,7 @@ function makeRequests(nome, oQueEh, descricao, imageFile) {
     .then((image_url) => {
       // Ocultar a sobreposição escura e o spinner
       document.body.classList.remove('overlay-visible');
-      window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
+      // window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
     })
     .catch((error) => {
       // Ocultar a sobreposição escura e o spinner

@@ -57,7 +57,9 @@ class CriarElementos {
 }
 
 class ChamarServidorService {
-  constructor () {}
+  constructor () {
+    this.urlServidor = 'http://localhost:8000'
+  }
 
   addImageToInput (imageURL) {
     return new Promise((resolve, reject) => {
@@ -82,7 +84,9 @@ class ChamarServidorService {
   }
 
   mudarBackground(imagem) {
-    fetch("http://localhost:8000//change-background", {
+    const urlServidor = this.urlServidor + '/change-background'
+
+    fetch(urlServidor, {
       method: "POST",
       body: imagem,
     })
