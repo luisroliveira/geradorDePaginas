@@ -52,6 +52,7 @@ class ChamarServidorService {
           if(data.image_url) {
             resolve(data.image_url)
           } else {
+            throw Error("URL da imagem não encontrada na resposta.");
             console.error("URL da imagem não encontrada na resposta.");
           }
         })
@@ -64,59 +65,73 @@ class ChamarServidorService {
 }
 
 const chamarServidorService = new ChamarServidorService()
-// Get image
-const inputImage = document.getElementById('input-image')
-const selectedImage = document.getElementById('selected-image')
-inputImage.addEventListener('change', function () {
-  const file = inputImage.files[0]
-  if (file) {
-    selectedImage.src = URL.createObjectURL(file)
+
+function showImg() {
+  const inputImagem = document.getElementById('input-image');
+  const imagemPreview = document.getElementById('selected-image');
+  // Verifica se um arquivo foi selecionado
+  if (inputImagem.files && inputImagem.files[0]) {
+    const leitor = new FileReader();
+
+    // Configura um ouvinte de evento para quando o arquivo estiver pronto para ser exibido
+    leitor.onload = function(e) {
+      imagemPreview.src = e.target.result;
+      imagemPreview.style.display = 'inline-block'; // Mostra a imagem
+    };
+
+    // Lê o arquivo selecionado como uma URL de dados (data URL)
+    leitor.readAsDataURL(inputImagem.files[0]);
   }
-})
+}
 
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('form')
-  const btnAvancar = document.getElementById('btn-avancar')
+function makeRequests(nome, oQueEh, descricao, imageFile) {
+  // Cria um formData para enviar a imagem para o backend
+  var formData = new FormData()
+  formData.append('image', imageFile)
   
-  btnAvancar.addEventListener('click', function (event) {
-    event.preventDefault() // Impede o envio do formulário padrão
+  // Mostrar a sobreposição escura e o spinner
+  document.body.classList.add('overlay-visible');
 
-    // Get name, what the product is and its description
-    const inputWord = form.querySelector('#input-word')
-    const inputWhat = form.querySelector('#input-what')
-    const inputDescription = form.querySelector('#prodDescr')
+  // Criação das Promises (chamadas para o servidor)
+  chamarServidorService.enviarNomeEDescricaoProduto(nome, oQueEh, descricao)
+    .then((resultado) => {
+      const resultadoGpt = JSON.parse(resultado) || []
+      const chaves = Object.keys(resultadoGpt)
+      const descricao = resultadoGpt[chaves[3]][0]
+      var prompt = descricao
+      formData.append('prompt', prompt)
+      return chamarServidorService.mudarBackground(formData)
+    })
+    .then((image_url) => {
+      // Ocultar a sobreposição escura e o spinner
+      document.body.classList.remove('overlay-visible');
+      window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
+    })
+    .catch((error) => {
+      // Ocultar a sobreposição escura e o spinner
+      document.body.classList.remove('overlay-visible');
+      console.error("Erro ao fazer chamadas ao servidor:", error)
+    })
+}
 
-    // Obtém os dados inseridos
-    const word = inputWord.value
-    const what = inputWhat.value
-    const description = inputDescription.value
-    const imageFile = inputImage.files[0]
-    // Cria um formData para enviar a imagem para o backend
-    var formData = new FormData()
-    formData.append('image', imageFile)
-    
-    // Mostrar a sobreposição escura e o spinner
-    document.body.classList.add('overlay-visible');
+function submitForm(event) {
+  event.preventDefault()
 
-    // Criação das Promises (chamadas para o servidor)
-    chamarServidorService.enviarNomeEDescricaoProduto(word, what, description)
-      .then((resultado) => {
-        const resultadoGpt = JSON.parse(resultado) || []
-        const chaves = Object.keys(resultadoGpt)
-        const descricao = resultadoGpt[chaves[3]][0]
-        var prompt = descricao
-        formData.append('prompt', prompt)
-        return chamarServidorService.mudarBackground(formData)
-      })
-      .then((image_url) => {
-        // Ocultar a sobreposição escura e o spinner
-        document.body.classList.remove('overlay-visible');
-        window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
-      })
-      .catch((error) => {
-        // Ocultar a sobreposição escura e o spinner
-        document.body.classList.remove('overlay-visible');
-        console.error("Erro ao fazer chamadas ao servidor:", error)
-      })
-  })
-})
+  // Obtém o formulário
+  const form = document.getElementById('form')
+
+  // Obtém os dados inseridos
+  const nome = form.querySelector('#input-word').value
+  const oQueEh = form.querySelector('#input-what').value
+  const descricao = form.querySelector('#prodDescr').value
+  const inputImage = document.getElementById('input-image');
+  const imageFile = inputImage.files[0]
+
+  // Valida os dados inseridos
+  if (nome === '' || oQueEh === '' || descricao === '' || imageFile === undefined) {
+    alert('Por favor, preencha todos os campos antes de avançar.');
+  } else {
+    // Faz as chamadas para o servidor
+    makeRequests(nome, oQueEh, descricao, imageFile)
+  }
+}
