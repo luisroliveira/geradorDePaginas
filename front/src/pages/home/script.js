@@ -73,10 +73,26 @@ function showImg() {
   }
 }
 
+function armazenarVariaveis(nome, oQueEh, descricao) {
+  // Criar um objeto JSON com as variáveis
+  const dados = {
+    nome: nome,
+    oQueEh: oQueEh,
+    descricao: descricao
+  };
+
+  // Converter o objeto JSON para uma string JSON
+  const dadosJSON = JSON.stringify(dados);
+
+  // Armazenar a string JSON no localStorage com uma chave específica
+  localStorage.setItem('dadosDoProduto', dadosJSON);
+}
+
 function makeRequests(nome, oQueEh, descricao, imageFile) {
+  armazenarVariaveis(nome, oQueEh, descricao);
   // Cria um formData para enviar a imagem para o backend
-  var formData = new FormData()
-  formData.append('image', imageFile)
+  var formData = new FormData();
+  formData.append('image', imageFile);
   
   // Mostrar a sobreposição escura e o spinner
   document.body.classList.add('overlay-visible');
@@ -94,7 +110,7 @@ function makeRequests(nome, oQueEh, descricao, imageFile) {
     .then((image_url) => {
       // Ocultar a sobreposição escura e o spinner
       document.body.classList.remove('overlay-visible');
-      // window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
+      window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
     })
     .catch((error) => {
       // Ocultar a sobreposição escura e o spinner
@@ -117,7 +133,7 @@ function submitForm(event) {
   const imageFile = inputImage.files[0]
 
   // Valida os dados inseridos
-  if (nome === '' || oQueEh === '' || descricao === '' || imageFile === undefined) {
+  if (nome.trim() === '' || oQueEh.trim() === '' || descricao.trim() === '' || imageFile === undefined) {
     alert('Por favor, preencha todos os campos antes de avançar.');
   } else {
     // Faz as chamadas para o servidor

@@ -118,6 +118,14 @@ function selecionarOpcao(opcao, valor) {
   selectedOptions[opcao] = valor;
 }
 
+function armazenarOpcoesSelecionadas() {
+  // Converter o objeto JSON para uma string JSON
+  const dadosJSON = JSON.stringify(selectedOptions);
+
+  // Armazenar a string JSON no localStorage com uma chave específica
+  localStorage.setItem('opcoesSelecionadas', dadosJSON);
+}
+
 const chamarServidorService = new ChamarServidorService()
 const criarElementos = new CriarElementos()
 const btnAvancar = document.getElementById('btn-avancar')
@@ -167,6 +175,7 @@ function selecionarImagem() {
   // Selecionar a imagem
   var imageElement = document.getElementById("image");
   selecionarOpcao('selectedImage', imageElement.src);
+  armazenarOpcoesSelecionadas();
 
   // Mudar o css da opção de imagem
   const selectedBox = document.getElementById("img-option");
@@ -213,6 +222,7 @@ function escolherFraseMostrarTexto() {
   var fraseSelecionada = document.querySelector(".selected");
   if (fraseSelecionada) {
     selecionarOpcao('selectedFrase', fraseSelecionada.textContent);
+    armazenarOpcoesSelecionadas(); 
     mostrarTexto();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -246,6 +256,7 @@ function escolherTextoMostrarSlogan() {
   var textoSelecionado = document.querySelector(".selected");
   if (textoSelecionado) {
     selecionarOpcao('selectedTexto', textoSelecionado.textContent);
+    armazenarOpcoesSelecionadas();
     mostrarSlogan();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -279,6 +290,7 @@ function escolherSlogan() {
   var sloganSelecionado = document.querySelector(".selected");
   if (sloganSelecionado) {
     selecionarOpcao('selectedSlogan', sloganSelecionado.textContent);
+    armazenarOpcoesSelecionadas();
     printAll();
   } else {
     alert('Selecione uma opção antes de avançar.');
