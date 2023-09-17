@@ -134,15 +134,19 @@ const btnSelecionar = document.getElementById('btn-selecionar')
 
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
-  const imageUrl = urlParams.get("image_url");
+  const imageUrl1 = urlParams.get("image_url1");
+  const imageUrl2 = urlParams.get("image_url2");
 
-  if (imageUrl) {
-    const imgOptionDiv = criarElementos.criarDivParaImg(imageUrl);
+  if (imageUrl1 && imageUrl2) {
+    const imgOptionDiv1 = criarElementos.criarDivParaImg(imageUrl1);
+    const imgOptionDiv2 = criarElementos.criarDivParaImg(imageUrl2);
     // Selecione a div com a classe "options" para anexar a nova div
     var optionsDiv = document.querySelector(".options");
+    optionsDiv.style.flexDirection = "row";
 
     // Anexe a nova div à div "options"
-    optionsDiv.appendChild(imgOptionDiv);
+    optionsDiv.appendChild(imgOptionDiv1);
+    optionsDiv.appendChild(imgOptionDiv2);
   }
 })
 
@@ -198,6 +202,10 @@ function clearOptions() {
 function mostrarOpcoesFrases() {
   // Limpar a div de opções
   clearOptions()
+
+  // Mudar o css da div "options"
+  var optionsDiv = document.querySelector(".options");
+  optionsDiv.style.flexDirection = "column";
 
   // Pegar as frases retornadas pelo GPT
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []

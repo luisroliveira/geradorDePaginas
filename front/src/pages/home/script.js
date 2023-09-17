@@ -90,9 +90,6 @@ function armazenarVariaveis(nome, oQueEh, descricao) {
 
 function makeRequests(nome, oQueEh, descricao, imageFile) {
   armazenarVariaveis(nome, oQueEh, descricao);
-  // Cria um formData para enviar a imagem para o backend
-  var formData = new FormData();
-  formData.append('image', imageFile);
   
   // Mostrar a sobreposição escura e o spinner
   document.body.classList.add('overlay-visible');
@@ -102,15 +99,32 @@ function makeRequests(nome, oQueEh, descricao, imageFile) {
     .then((resultado) => {
       const resultadoGpt = JSON.parse(resultado) || []
       const chaves = Object.keys(resultadoGpt)
-      const descricao = resultadoGpt[chaves[3]][0]
-      var prompt = descricao
-      formData.append('prompt', prompt)
-      return chamarServidorService.mudarBackground(formData)
+      const descricao1 = resultadoGpt[chaves[3]][0]
+      const descricao2 = resultadoGpt[chaves[3]][1]
+      var prompt1 = descricao1
+      var prompt2 = descricao2
+
+      // Cria um formData para enviar a imagem para o backend
+      var formData1 = new FormData();
+      formData1.append('image', imageFile);
+      formData1.append('prompt', prompt1);
+      // Fazer a primeira chamada de geração de imagem
+      const mudarBackgroundPromise1 = chamarServidorService.mudarBackground(formData1);
+
+      // Cria um formData para enviar a imagem para o backend
+      var formData2 = new FormData();
+      formData2.append('image', imageFile);
+      formData2.append('prompt', prompt2);
+      // Fazer a segunda chamada de geração de imagem
+      const mudarBackgroundPromise2 = chamarServidorService.mudarBackground(formData2);
+
+      // Usar Promise.all para aguardar ambas as chamadas
+      return Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2]);
     })
-    .then((image_url) => {
+    .then(([image_url1, image_url2]) => {
       // Ocultar a sobreposição escura e o spinner
       document.body.classList.remove('overlay-visible');
-      window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
+      window.location.href = `../userInteraction/userInteraction.html?image_url1=${encodeURIComponent(image_url1)}&image_url2=${encodeURIComponent(image_url2)}`
     })
     .catch((error) => {
       // Ocultar a sobreposição escura e o spinner

@@ -1,5 +1,14 @@
 from senhaClip import API_KEY
 import requests
+import os
+import uuid
+
+def generate_unique_filename(folder_path, extension):
+    while True:
+        unique_filename = str(uuid.uuid4()) + extension
+        file_path = os.path.join(folder_path, unique_filename)
+        if not os.path.exists(file_path):
+            return unique_filename
 
 def apiChangeBackGroundTest(nomeArquivo, prompt):
     pass
@@ -30,7 +39,8 @@ def apiChangeBackGroundTest(nomeArquivo, prompt):
     #     r.raise_for_status()
 
 def apiChangeBackGround(image_file, prompt, saveDirectory):
-    nomeArquivo = "teste.jpeg"
+    extension = ".jpeg"
+    nomeArquivo = generate_unique_filename(saveDirectory, extension)
 
     # Para rodar fazendo a chamada para a API, comentar as 3 linhas abaixo e descomentar as outras
     pathSaida = saveDirectory + nomeArquivo
