@@ -163,6 +163,7 @@ function selecionarImagem() {
   // Selecionar a imagem
   var imageElement = document.getElementById("image");
   selecionarOpcao('selectedImage', imageElement.src);
+  localStorage.setItem('productImage', imageElement.src);
 
   // Mudar o css da opção de imagem
   const selectedBox = document.getElementById("img-option");
@@ -209,6 +210,7 @@ function escolherFraseMostrarTexto() {
   var fraseSelecionada = document.querySelector(".selected");
   if (fraseSelecionada) {
     selecionarOpcao('selectedFrase', fraseSelecionada.textContent);
+    localStorage.setItem('productFrase', fraseSelecionada.textContent);
     mostrarTexto();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -242,6 +244,7 @@ function escolherTextoMostrarSlogan() {
   var textoSelecionado = document.querySelector(".selected");
   if (textoSelecionado) {
     selecionarOpcao('selectedTexto', textoSelecionado.textContent);
+    localStorage.setItem('productDescricao', textoSelecionado.textContent);
     mostrarSlogan();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -275,6 +278,7 @@ function escolherSlogan() {
   var sloganSelecionado = document.querySelector(".selected");
   if (sloganSelecionado) {
     selecionarOpcao('selectedSlogan', sloganSelecionado.textContent);
+    localStorage.setItem('productSlogan', sloganSelecionado.textContent);
     printAll();
   } else {
     alert('Selecione uma opção antes de avançar.');

@@ -91,6 +91,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const what = inputWhat.value
     const description = inputDescription.value
     const imageFile = inputImage.files[0]
+
+    // Armazene o nome do produto no localStorage
+    localStorage.setItem('nomeProduto', word);
+    
     // Cria um formData para enviar a imagem para o backend
     var formData = new FormData()
     formData.append('image', imageFile)

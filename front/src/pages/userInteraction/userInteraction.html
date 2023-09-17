@@ -7,25 +7,27 @@
     <title>Update page</title>
   </head>
   <body>
-    <div class="container">
-      <div id="question">
-        <h1>"Pergunta para o usuário"</h1>
-      </div>
-      <div id="optionsBox">
-        <h2>Selecione uma das seguintes opções</h2>
-        <div class="options">
+    <div class="overall">
+      <div class="container1">
+        <div id="question">
+          <h1>"Pergunta para o usuário"</h1>
         </div>
-        <div class="buttons-div">
-          <button id="btn-regerar" class="styled-button" onclick="regerarImagem()">Gerar novamente</button>
-          <button id="btn-selecionar" class="styled-button" onclick="selecionarImagem()">Selecionar imagem</button>
-          <button id="btn-avancar" style="display: none;" class="styled-button" onclick="mostrarOpcoesFrases()">Avançar</button>
+        <div id="optionsBox">
+          <h2>Selecione uma das seguintes opções</h2>
+          <div class="options">
+          </div>
+          <div class="buttons-div">
+            <button id="btn-regerar" class="styled-button" onclick="regerarImagem()">Gerar novamente</button>
+            <button id="btn-selecionar" class="styled-button" onclick="selecionarImagem()">Selecionar imagem</button>
+            <button id="btn-avancar" style="display: none;" class="styled-button" onclick="mostrarOpcoesFrases()">Avançar</button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="container">
-      <h1>site-preview</h1>
-      <div id="site-preview">
-        <iframe src="../../../assets/HOME_TEMPLATE2.html" frameborder="0" width="100%" height="100%"></iframe>
+      <div class="container2">
+        <h1>Preview do Site</h1>
+        <div class="site-preview">
+          <iframe src="../../../assets/HOME_TEMPLATE2.html" frameborder="0" class="responsive-iframe"></iframe>
+        </div>
       </div>
     </div>
     <script src="script.js"></script>

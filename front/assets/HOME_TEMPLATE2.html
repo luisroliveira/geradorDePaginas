@@ -5248,14 +5248,12 @@
       .comp-kr36zivj .i1GPOs text {
         fill: #A238FF;
         font: normal normal normal 17px/1.4em questrial, sans-serif;
-        text-decoration: ;
         font-size: 90px
       }
 
       .comp-kr36zivj .i1GPOs .bGBBgJ {
         fill: #000000;
         font: normal normal normal 17px/1.4em questrial, sans-serif;
-        text-decoration: ;
         font-size: 90px
       }
 
@@ -8130,7 +8128,7 @@
                                   </a></div>
                                 <div id="comp-kr37vduc" class="KcpHeO tz5f0K comp-kr37vduc wixui-rich-text" data-testid="richTextElement">
                                   <p class="font_5 wixui-rich-text__text" style="line-height:normal; font-size:25px;">
-                                    <span style="letter-spacing:normal;" class="wixui-rich-text__text"><a href="https://www.wix.com/templatespt/2964-product-landing" target="_self" class="wixui-rich-text__text">NOME DA LOJA</a></span>
+                                    <span style="letter-spacing:normal;" class="wixui-rich-text__text"><a href="" target="_self" class="wixui-rich-text__text nome_loja">NOME DA LOJA</a></span>
                                   </p>
                                 </div>
                               </div>
@@ -8186,7 +8184,21 @@
                                       <div id="comp-kr4lgwc9" class="MazNVa comp-kr4lgwc9 wixui-image">
                                         <div data-testid="linkElement" class="j7pOnl">
                                           <wow-image id="img_comp-kr4lgwc9" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr4lgwc9&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:548,&quot;targetHeight&quot;:540,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:7000,&quot;height&quot;:4734,&quot;uri&quot;:&quot;c837a6_8abd90a25be34a758931e215516dbd7f~mv2.png&quot;,&quot;name&quot;:&quot;new first fold.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;crop&quot;:{&quot;x&quot;:1756,&quot;y&quot;:452,&quot;width&quot;:3479,&quot;height&quot;:3461,&quot;svgId&quot;:&quot;909695c1e003409ba70b5561666c7c4d.svg&quot;}}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_8abd90a25be34a758931e215516dbd7f~mv2.png/v1/crop/x_1756,y_452,w_3479,h_3461/fill/w_548,h_540,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/new%20first%20fold.png">
-                                            <img src="./HOME_TEMPLATE2_files/produto-sem-imagem.png.webp" alt="" style="width: 548px; height: 540px; object-fit: cover;" width="548" height="540" fetchpriority="high">
+                                            <img id="productImage" class="img_prod" src="./HOME_TEMPLATE2_files/produto-sem-imagem.png.webp" alt="" style="width: 548px; height: 540px; object-fit: cover;" width="548" height="540" fetchpriority="high">
+                                            <script>
+                                              // Recupere o nome do produto do localStorage
+                                              const imgProduto = localStorage.getItem('productImage');
+                                      
+                                              if (imgProduto) {
+                                                  // Exiba o nome do produto em algum lugar da página
+                                                  const productImgDiv = document.getElementById('productImage');
+                                                  productImgDiv.src = `${imgProduto}`;
+                                              } else {
+                                                  // Caso o nome do produto não esteja definido no localStorage
+                                                  const productImgDiv = document.getElementById('productImage');
+                                                  productImgDiv.src = './HOME_TEMPLATE2_files/produto-sem-imagem.png.webp';
+                                              }
+                                            </script>
                                           </wow-image>
                                         </div>
                                       </div>
@@ -8209,14 +8221,60 @@
                                                 <div data-mesh-id="comp-ksptwmgkinlineContent" data-testid="inline-content" class="">
                                                   <div data-mesh-id="comp-ksptwmgkinlineContent-gridContainer" data-testid="mesh-container-content">
                                                     <div id="comp-kr223smo" class="KcpHeO tz5f0K comp-kr223smo wixui-rich-text" data-testid="richTextElement">
-                                                      <p class="font_5 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span style="letter-spacing:normal;" class="wixui-rich-text__text">FRASE DE EFEITO</span></p>
+                                                      <p class="font_5 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span id="productFrase" style="letter-spacing:normal;" class="wixui-rich-text__text">FRASE DE EFEITO</span>
+                                                        <script>
+                                                          // Recupere o nome do produto do localStorage
+                                                          const fraseProduto = localStorage.getItem('productFrase');
+                                                  
+                                                          if (fraseProduto) {
+                                                              // Exiba o nome do produto em algum lugar da página
+                                                              const productFraseDiv = document.getElementById('productFrase');
+                                                              productFraseDiv.textContent = `${fraseProduto}`;
+                                                          } else {
+                                                              // Caso o nome do produto não esteja definido no localStorage
+                                                              const productFraseDiv = document.getElementById('productFrase');
+                                                              productFraseDiv.textContent = ' N/A';
+                                                          }
+                                                        </script>
+                                                      </p>
                                                     </div>
                                                     <div id="comp-kr22219f" class="KcpHeO tz5f0K comp-kr22219f wixui-rich-text" data-testid="richTextElement">
-                                                      <h1 class="font_0 wixui-rich-text__text" style="font-size:75px; line-height:normal;"><span style="letter-spacing:normal;" class="wixui-rich-text__text"><span style="font-size:75px;" class="wixui-rich-text__text">NOME DO PRODUTO</span></span>
+                                                      <h1 class="font_0 wixui-rich-text__text" style="font-size:75px; line-height:normal;"><span style="letter-spacing:normal;" class="wixui-rich-text__text"><span id="productName" style="font-size:75px;" class="wixui-rich-text__text">NOME DO PRODUTO</span>
+                                                      <script>
+                                                          // Recupere o nome do produto do localStorage
+                                                          const nomeProduto = localStorage.getItem('nomeProduto');
+                                                  
+                                                          if (nomeProduto) {
+                                                              // Exiba o nome do produto em algum lugar da página
+                                                              const productNameDiv = document.getElementById('productName');
+                                                              productNameDiv.textContent = `${nomeProduto}`;
+                                                          } else {
+                                                              // Caso o nome do produto não esteja definido no localStorage
+                                                              const productNameDiv = document.getElementById('productName');
+                                                              productNameDiv.textContent = ' N/A';
+                                                          }
+                                                      </script>
+                                                      </span>
                                                       </h1>
                                                     </div>
                                                     <div id="comp-kr222yzy" class="KcpHeO tz5f0K comp-kr222yzy wixui-rich-text" data-testid="richTextElement">
-                                                      <p class="font_6 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span style="letter-spacing:normal;" class="wixui-rich-text__text">SLOGAN</span></p>
+                                                      <p class="font_6 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span id="productSlogan" style="letter-spacing:normal;" class="wixui-rich-text__text">
+                                                        SLOGAN</span>
+                                                        <script>
+                                                            // Recupere o nome do produto do localStorage
+                                                            const sloganProduto = localStorage.getItem('productSlogan');
+                                                    
+                                                            if (sloganProduto) {
+                                                                // Exiba o nome do produto em algum lugar da página
+                                                                const productSloganDiv = document.getElementById('productSlogan');
+                                                                productSloganDiv.textContent = `${sloganProduto}`;
+                                                            } else {
+                                                                // Caso o nome do produto não esteja definido no localStorage
+                                                                const productSloganDiv = document.getElementById('productSlogan');
+                                                                productSloganDiv.textContent = ' N/A';
+                                                            }
+                                                        </script>
+                                                      </p>
                                                     </div>
                                                     <div class="comp-kr37yhpr R6ex7N" id="comp-kr37yhpr" aria-disabled="false"><a data-testid="linkElement" href="https://www.wix.com/templatespt/2964-product-landing/product-page" target="_self" class="kuTaGy wixui-button zKbzSQ" aria-disabled="false"><span class="M3I7Z2 wixui-button__label">Comprar agora</span></a>
                                                     </div>
@@ -8258,10 +8316,25 @@
                                           PRODUTO</span></h2>
                                     </div>
                                     <div id="comp-kr2428ud" class="KcpHeO tz5f0K comp-kr2428ud wixui-rich-text" data-testid="richTextElement">
-                                      <p class="font_8 wixui-rich-text__text" style="line-height:1.6em; text-align:center; font-size:17px;"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Lorem ipsum dolor
+                                      <p class="font_8 wixui-rich-text__text" style="line-height:1.6em; text-align:center; font-size:17px;"><span id="productDescricao" style="letter-spacing:normal;" class="wixui-rich-text__text">Lorem ipsum dolor
                                           sit amet, consectetur adipiscing elit. Suspendisse non turpis blandit tortor
                                           euismod ullamcorper vitae ac justo. Aenean sollicitudin nunc sed felis varius,
-                                          et pharetra turpis tincidunt.</span></p>
+                                          et pharetra turpis tincidunt.</span>
+                                        <script>
+                                            // Recupere o nome do produto do localStorage
+                                            const descProduto = localStorage.getItem('productDescricao');
+                                    
+                                            if (descProduto) {
+                                                // Exiba o nome do produto em algum lugar da página
+                                                const productDescDiv = document.getElementById('productDescricao');
+                                                productDescDiv.textContent = `${descProduto}`;
+                                            } else {
+                                                // Caso o nome do produto não esteja definido no localStorage
+                                                const productDescDiv = document.getElementById('productDescricao');
+                                                productDescDiv.textContent = ' N/A';
+                                            }
+                                          </script>
+                                      </p>
                                     </div>
                                   </div>
                                 </div>
