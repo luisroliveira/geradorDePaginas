@@ -8187,7 +8187,7 @@
                                             <img id="productImage" class="img_prod" src="./HOME_TEMPLATE2_files/produto-sem-imagem.png.webp" alt="" style="width: 548px; height: 540px; object-fit: cover;" width="548" height="540" fetchpriority="high">
                                             <script>
                                               // Recupere o nome do produto do localStorage
-                                              const imgProduto = localStorage.getItem('productImage');
+                                              const imgProduto = JSON.parse(localStorage.getItem('opcoesSelecionadas')).selectedImage;
                                       
                                               if (imgProduto) {
                                                   // Exiba o nome do produto em algum lugar da página
@@ -8223,15 +8223,12 @@
                                                     <div id="comp-kr223smo" class="KcpHeO tz5f0K comp-kr223smo wixui-rich-text" data-testid="richTextElement">
                                                       <p class="font_5 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span id="productFrase" style="letter-spacing:normal;" class="wixui-rich-text__text">FRASE DE EFEITO</span>
                                                         <script>
-                                                          // Recupere o nome do produto do localStorage
-                                                          const fraseProduto = localStorage.getItem('productFrase');
+                                                          const fraseProduto = JSON.parse(localStorage.getItem('opcoesSelecionadas')).selectedFrase;
                                                   
                                                           if (fraseProduto) {
-                                                              // Exiba o nome do produto em algum lugar da página
                                                               const productFraseDiv = document.getElementById('productFrase');
                                                               productFraseDiv.textContent = `${fraseProduto}`;
                                                           } else {
-                                                              // Caso o nome do produto não esteja definido no localStorage
                                                               const productFraseDiv = document.getElementById('productFrase');
                                                               productFraseDiv.textContent = ' N/A';
                                                           }
@@ -8242,7 +8239,8 @@
                                                       <h1 class="font_0 wixui-rich-text__text" style="font-size:75px; line-height:normal;"><span style="letter-spacing:normal;" class="wixui-rich-text__text"><span id="productName" style="font-size:75px;" class="wixui-rich-text__text">NOME DO PRODUTO</span>
                                                       <script>
                                                           // Recupere o nome do produto do localStorage
-                                                          const nomeProduto = localStorage.getItem('nomeProduto');
+                                                          const nomeProduto = JSON.parse(localStorage.getItem('dadosDoProduto')).nome;
+                                                          console.log(nomeProduto);
                                                   
                                                           if (nomeProduto) {
                                                               // Exiba o nome do produto em algum lugar da página
@@ -8262,7 +8260,8 @@
                                                         SLOGAN</span>
                                                         <script>
                                                             // Recupere o nome do produto do localStorage
-                                                            const sloganProduto = localStorage.getItem('productSlogan');
+                                                            
+                                                            const sloganProduto = JSON.parse(localStorage.getItem('opcoesSelecionadas')).selectedSlogan;
                                                     
                                                             if (sloganProduto) {
                                                                 // Exiba o nome do produto em algum lugar da página
@@ -8322,7 +8321,7 @@
                                           et pharetra turpis tincidunt.</span>
                                         <script>
                                             // Recupere o nome do produto do localStorage
-                                            const descProduto = localStorage.getItem('productDescricao');
+                                            const descProduto = JSON.parse(localStorage.getItem('opcoesSelecionadas')).selectedTexto;
                                     
                                             if (descProduto) {
                                                 // Exiba o nome do produto em algum lugar da página

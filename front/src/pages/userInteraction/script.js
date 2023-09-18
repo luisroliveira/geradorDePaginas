@@ -148,6 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
     optionsDiv.appendChild(imgOptionDiv1);
     optionsDiv.appendChild(imgOptionDiv2);
   }
+  armazenarOpcoesSelecionadas();
 })
 
 function regerarImagem() {
