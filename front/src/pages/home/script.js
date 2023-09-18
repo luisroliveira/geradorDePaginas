@@ -136,6 +136,11 @@ function makeRequests(nome, oQueEh, descricao, imageFile) {
 function submitForm(event) {
   event.preventDefault()
 
+  if (localStorage.getItem('opcoesSelecionadas')) {
+    // Se estiver, remova-o do localStorage
+    localStorage.removeItem('opcoesSelecionadas');
+  }
+
   // Obtém o formulário
   const form = document.getElementById('form')
 

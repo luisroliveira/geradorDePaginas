@@ -8186,18 +8186,31 @@
                                           <wow-image id="img_comp-kr4lgwc9" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr4lgwc9&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:548,&quot;targetHeight&quot;:540,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:7000,&quot;height&quot;:4734,&quot;uri&quot;:&quot;c837a6_8abd90a25be34a758931e215516dbd7f~mv2.png&quot;,&quot;name&quot;:&quot;new first fold.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;crop&quot;:{&quot;x&quot;:1756,&quot;y&quot;:452,&quot;width&quot;:3479,&quot;height&quot;:3461,&quot;svgId&quot;:&quot;909695c1e003409ba70b5561666c7c4d.svg&quot;}}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_8abd90a25be34a758931e215516dbd7f~mv2.png/v1/crop/x_1756,y_452,w_3479,h_3461/fill/w_548,h_540,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/new%20first%20fold.png">
                                             <img id="productImage" class="img_prod" src="./HOME_TEMPLATE2_files/produto-sem-imagem.png.webp" alt="" style="width: 548px; height: 540px; object-fit: cover;" width="548" height="540" fetchpriority="high">
                                             <script>
-                                              // Recupere o nome do produto do localStorage
-                                              const imgProduto = JSON.parse(localStorage.getItem('opcoesSelecionadas')).selectedImage;
-                                      
-                                              if (imgProduto) {
-                                                  // Exiba o nome do produto em algum lugar da página
-                                                  const productImgDiv = document.getElementById('productImage');
-                                                  productImgDiv.src = `${imgProduto}`;
-                                              } else {
-                                                  // Caso o nome do produto não esteja definido no localStorage
-                                                  const productImgDiv = document.getElementById('productImage');
+                                              function atualizarImagemProduto() {
+                                                const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                                const imgProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedImage : null;
+
+                                                const productImgDiv = document.getElementById('productImage');
+                                                if (imgProduto) {
+                                                  // Exibe a imagem do produto se estiver definida no localStorage
+                                                  productImgDiv.src = imgProduto;
+                                                } else {
+                                                  // Caso a imagem do produto não esteja definida no localStorage
                                                   productImgDiv.src = './HOME_TEMPLATE2_files/produto-sem-imagem.png.webp';
+                                                }
                                               }
+
+                                              // Chama a função ao carregar a página
+                                              window.addEventListener('load', atualizarImagemProduto);
+
+                                              // Ouvinte para eventos de alteração no localStorage
+                                              window.addEventListener('storage', function (e) {
+                                                if (e.key === 'opcoesSelecionadas') {
+                                                  // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                  // Atualize a imagem do produto
+                                                  atualizarImagemProduto();
+                                                }
+                                              });
                                             </script>
                                           </wow-image>
                                         </div>
@@ -8223,15 +8236,31 @@
                                                     <div id="comp-kr223smo" class="KcpHeO tz5f0K comp-kr223smo wixui-rich-text" data-testid="richTextElement">
                                                       <p class="font_5 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span id="productFrase" style="letter-spacing:normal;" class="wixui-rich-text__text">FRASE DE EFEITO</span>
                                                         <script>
-                                                          const fraseProduto = JSON.parse(localStorage.getItem('opcoesSelecionadas')).selectedFrase;
-                                                  
-                                                          if (fraseProduto) {
-                                                              const productFraseDiv = document.getElementById('productFrase');
+                                                          function atualizarFraseProduto() {
+                                                            const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                                            const fraseProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedFrase : null;
+
+                                                            const productFraseDiv = document.getElementById('productFrase');
+                                                            if (fraseProduto) {
+                                                              // Exibe a imagem do produto se estiver definida no localStorage
                                                               productFraseDiv.textContent = `${fraseProduto}`;
-                                                          } else {
-                                                              const productFraseDiv = document.getElementById('productFrase');
+                                                            } else {
+                                                              // Caso a imagem do produto não esteja definida no localStorage
                                                               productFraseDiv.textContent = ' N/A';
+                                                            }
                                                           }
+
+                                                          // Chama a função ao carregar a página
+                                                          window.addEventListener('load', atualizarFraseProduto);
+
+                                                          // Ouvinte para eventos de alteração no localStorage
+                                                          window.addEventListener('storage', function (e) {
+                                                            if (e.key === 'opcoesSelecionadas') {
+                                                              // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                              // Atualize a imagem do produto
+                                                              atualizarFraseProduto();
+                                                            }
+                                                          });
                                                         </script>
                                                       </p>
                                                     </div>
@@ -8259,19 +8288,31 @@
                                                       <p class="font_6 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span id="productSlogan" style="letter-spacing:normal;" class="wixui-rich-text__text">
                                                         SLOGAN</span>
                                                         <script>
-                                                            // Recupere o nome do produto do localStorage
-                                                            
-                                                            const sloganProduto = JSON.parse(localStorage.getItem('opcoesSelecionadas')).selectedSlogan;
-                                                    
-                                                            if (sloganProduto) {
-                                                                // Exiba o nome do produto em algum lugar da página
-                                                                const productSloganDiv = document.getElementById('productSlogan');
+                                                            function atualizarSloganProduto() {
+                                                              const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                                              const sloganProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedSlogan : null;
+
+                                                              const productSloganDiv = document.getElementById('productSlogan');
+                                                              if (sloganProduto) {
+                                                                // Exibe a imagem do produto se estiver definida no localStorage
                                                                 productSloganDiv.textContent = `${sloganProduto}`;
-                                                            } else {
-                                                                // Caso o nome do produto não esteja definido no localStorage
-                                                                const productSloganDiv = document.getElementById('productSlogan');
+                                                              } else {
+                                                                // Caso a imagem do produto não esteja definida no localStorage
                                                                 productSloganDiv.textContent = ' N/A';
+                                                              }
                                                             }
+
+                                                            // Chama a função ao carregar a página
+                                                            window.addEventListener('load', atualizarSloganProduto);
+
+                                                            // Ouvinte para eventos de alteração no localStorage
+                                                            window.addEventListener('storage', function (e) {
+                                                              if (e.key === 'opcoesSelecionadas') {
+                                                                // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                                // Atualize a imagem do produto
+                                                                atualizarSloganProduto();
+                                                              }
+                                                            });
                                                         </script>
                                                       </p>
                                                     </div>
@@ -8320,18 +8361,31 @@
                                           euismod ullamcorper vitae ac justo. Aenean sollicitudin nunc sed felis varius,
                                           et pharetra turpis tincidunt.</span>
                                         <script>
-                                            // Recupere o nome do produto do localStorage
-                                            const descProduto = JSON.parse(localStorage.getItem('opcoesSelecionadas')).selectedTexto;
-                                    
-                                            if (descProduto) {
-                                                // Exiba o nome do produto em algum lugar da página
-                                                const productDescDiv = document.getElementById('productDescricao');
-                                                productDescDiv.textContent = `${descProduto}`;
-                                            } else {
-                                                // Caso o nome do produto não esteja definido no localStorage
-                                                const productDescDiv = document.getElementById('productDescricao');
+                                            function atualizarTextoProduto() {
+                                              const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                              const textoProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedTexto : null;
+
+                                              const productDescDiv = document.getElementById('productDescricao');
+                                              if (textoProduto) {
+                                                // Exibe a imagem do produto se estiver definida no localStorage
+                                                productDescDiv.textContent = `${textoProduto}`;
+                                              } else {
+                                                // Caso a imagem do produto não esteja definida no localStorage
                                                 productDescDiv.textContent = ' N/A';
+                                              }
                                             }
+
+                                            // Chama a função ao carregar a página
+                                            window.addEventListener('load', atualizarTextoProduto);
+
+                                            // Ouvinte para eventos de alteração no localStorage
+                                            window.addEventListener('storage', function (e) {
+                                              if (e.key === 'opcoesSelecionadas') {
+                                                // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                // Atualize a imagem do produto
+                                                atualizarTextoProduto();
+                                              }
+                                            });
                                           </script>
                                       </p>
                                     </div>
