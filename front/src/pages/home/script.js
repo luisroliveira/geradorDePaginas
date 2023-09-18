@@ -1,12 +1,15 @@
 class ChamarServidorService {
-  constructor () {}
+  constructor () {
+    this.urlServidor = 'http://localhost:8000'
+  }
 
   enviarNomeEDescricaoProduto(nome, what, descricao) {
     const funcaoParaChamar = 'apiChatGpt' // Nome da função que você deseja chamar
     const parametro = "Nome: " + nome + "\n" + "Produto: " + what + "\n" + "Descrição: " + descricao
+    const urlServidor = this.urlServidor
 
     return new Promise((resolve, reject) => {
-      fetch('http://localhost:8000', {
+      fetch(urlServidor, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -26,24 +29,11 @@ class ChamarServidorService {
     })
   }
 
-  enviarImagem(imagem) {
-    fetch("http://localhost:8000/upload", {
-      method: "POST",
-      body: imagem,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Manipule a resposta do backend, se necessário
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Erro ao enviar imagem:", error);
-      })
-  }
-
   mudarBackground(formData) {
+    const urlServidor = this.urlServidor + '/change-background'
+
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:8000//change-background", {
+      fetch(urlServidor, {
         method: "POST",
         body: formData,
       })
@@ -52,7 +42,7 @@ class ChamarServidorService {
           if(data.image_url) {
             resolve(data.image_url)
           } else {
-            console.error("URL da imagem não encontrada na resposta.");
+            throw Error("URL da imagem não encontrada na resposta.");
           }
         })
         .catch((error) => {
@@ -64,63 +54,103 @@ class ChamarServidorService {
 }
 
 const chamarServidorService = new ChamarServidorService()
-// Get image
-const inputImage = document.getElementById('input-image')
-const selectedImage = document.getElementById('selected-image')
-inputImage.addEventListener('change', function () {
-  const file = inputImage.files[0]
-  if (file) {
-    selectedImage.src = URL.createObjectURL(file)
+
+function showImg() {
+  const inputImagem = document.getElementById('input-image');
+  const imagemPreview = document.getElementById('selected-image');
+  // Verifica se um arquivo foi selecionado
+  if (inputImagem.files && inputImagem.files[0]) {
+    const leitor = new FileReader();
+
+    // Configura um ouvinte de evento para quando o arquivo estiver pronto para ser exibido
+    leitor.onload = function(e) {
+      imagemPreview.src = e.target.result;
+      imagemPreview.style.display = 'inline-block'; // Mostra a imagem
+    };
+
+    // Lê o arquivo selecionado como uma URL de dados (data URL)
+    leitor.readAsDataURL(inputImagem.files[0]);
   }
-})
+}
 
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('form')
-  const btnAvancar = document.getElementById('btn-avancar')
+function armazenarVariaveis(nome, oQueEh, descricao) {
+  // Criar um objeto JSON com as variáveis
+  const dados = {
+    nome: nome,
+    oQueEh: oQueEh,
+    descricao: descricao
+  };
+
+  // Converter o objeto JSON para uma string JSON
+  const dadosJSON = JSON.stringify(dados);
+
+  // Armazenar a string JSON no localStorage com uma chave específica
+  localStorage.setItem('dadosDoProduto', dadosJSON);
+}
+
+function makeRequests(nome, oQueEh, descricao, imageFile) {
+  armazenarVariaveis(nome, oQueEh, descricao);
   
-  btnAvancar.addEventListener('click', function (event) {
-    event.preventDefault() // Impede o envio do formulário padrão
+  // Mostrar a sobreposição escura e o spinner
+  document.body.classList.add('overlay-visible');
 
-    // Get name, what the product is and its description
-    const inputWord = form.querySelector('#input-word')
-    const inputWhat = form.querySelector('#input-what')
-    const inputDescription = form.querySelector('#prodDescr')
+  // Criação das Promises (chamadas para o servidor)
+  chamarServidorService.enviarNomeEDescricaoProduto(nome, oQueEh, descricao)
+    .then((resultado) => {
+      const resultadoGpt = JSON.parse(resultado) || []
+      const chaves = Object.keys(resultadoGpt)
+      const descricao1 = resultadoGpt[chaves[3]][0]
+      const descricao2 = resultadoGpt[chaves[3]][1]
+      var prompt1 = descricao1
+      var prompt2 = descricao2
 
-    // Obtém os dados inseridos
-    const word = inputWord.value
-    const what = inputWhat.value
-    const description = inputDescription.value
-    const imageFile = inputImage.files[0]
+      // Cria um formData para enviar a imagem para o backend
+      var formData1 = new FormData();
+      formData1.append('image', imageFile);
+      formData1.append('prompt', prompt1);
+      // Fazer a primeira chamada de geração de imagem
+      const mudarBackgroundPromise1 = chamarServidorService.mudarBackground(formData1);
 
-    // Armazene o nome do produto no localStorage
-    localStorage.setItem('nomeProduto', word);
-    
-    // Cria um formData para enviar a imagem para o backend
-    var formData = new FormData()
-    formData.append('image', imageFile)
-    
-    // Mostrar a sobreposição escura e o spinner
-    document.body.classList.add('overlay-visible');
+      // Cria um formData para enviar a imagem para o backend
+      var formData2 = new FormData();
+      formData2.append('image', imageFile);
+      formData2.append('prompt', prompt2);
+      // Fazer a segunda chamada de geração de imagem
+      const mudarBackgroundPromise2 = chamarServidorService.mudarBackground(formData2);
 
-    // Criação das Promises (chamadas para o servidor)
-    chamarServidorService.enviarNomeEDescricaoProduto(word, what, description)
-      .then((resultado) => {
-        const resultadoGpt = JSON.parse(resultado) || []
-        const chaves = Object.keys(resultadoGpt)
-        const descricao = resultadoGpt[chaves[3]][0]
-        var prompt = descricao
-        formData.append('prompt', prompt)
-        return chamarServidorService.mudarBackground(formData)
-      })
-      .then((image_url) => {
-        // Ocultar a sobreposição escura e o spinner
-        document.body.classList.remove('overlay-visible');
-        window.location.href = `../userInteraction/userInteraction.html?image_url=${encodeURIComponent(image_url)}`
-      })
-      .catch((error) => {
-        // Ocultar a sobreposição escura e o spinner
-        document.body.classList.remove('overlay-visible');
-        console.error("Erro ao fazer chamadas ao servidor:", error)
-      })
-  })
-})
+      // Usar Promise.all para aguardar ambas as chamadas
+      return Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2]);
+    })
+    .then(([image_url1, image_url2]) => {
+      // Ocultar a sobreposição escura e o spinner
+      document.body.classList.remove('overlay-visible');
+      window.location.href = `../userInteraction/userInteraction.html?image_url1=${encodeURIComponent(image_url1)}&image_url2=${encodeURIComponent(image_url2)}`
+    })
+    .catch((error) => {
+      // Ocultar a sobreposição escura e o spinner
+      document.body.classList.remove('overlay-visible');
+      console.error("Erro ao fazer chamadas ao servidor:", error)
+    })
+}
+
+function submitForm(event) {
+  event.preventDefault()
+
+  // Obtém o formulário
+  const form = document.getElementById('form')
+
+  // Obtém os dados inseridos
+  const nome = form.querySelector('#input-word').value
+  const oQueEh = form.querySelector('#input-what').value
+  const descricao = form.querySelector('#prodDescr').value
+  const inputImage = document.getElementById('input-image');
+  const imageFile = inputImage.files[0]
+
+  // Valida os dados inseridos
+  if (nome.trim() === '' || oQueEh.trim() === '' || descricao.trim() === '' || imageFile === undefined) {
+    alert('Por favor, preencha todos os campos antes de avançar.');
+  } else {
+    // Faz as chamadas para o servidor
+    makeRequests(nome, oQueEh, descricao, imageFile)
+  }
+}

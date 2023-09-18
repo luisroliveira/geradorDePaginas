@@ -14,6 +14,6 @@ def convert_to_json(input_text):
         "Frases Persuasivas": persuasive_phrases,
         "Textos Persuasivos": persuasive_text,
         "Slogans": slogans,
-        "Descricao": ["On the wall of a house by the sea with a window nearby"]
+        "Descricao": ["On the wall of a house by the sea with a window nearby", "A product shot of Prancha+ should be on the beach at sunset with the warm lighting reflecting off the surfboard and the ocean in the background, instilling a sense of adventure and freedom."]
     }
     return json_response

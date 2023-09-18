@@ -57,7 +57,9 @@ class CriarElementos {
 }
 
 class ChamarServidorService {
-  constructor () {}
+  constructor () {
+    this.urlServidor = 'http://localhost:8000'
+  }
 
   addImageToInput (imageURL) {
     return new Promise((resolve, reject) => {
@@ -82,7 +84,9 @@ class ChamarServidorService {
   }
 
   mudarBackground(imagem) {
-    fetch("http://localhost:8000//change-background", {
+    const urlServidor = this.urlServidor + '/change-background'
+
+    fetch(urlServidor, {
       method: "POST",
       body: imagem,
     })
@@ -114,6 +118,14 @@ function selecionarOpcao(opcao, valor) {
   selectedOptions[opcao] = valor;
 }
 
+function armazenarOpcoesSelecionadas() {
+  // Converter o objeto JSON para uma string JSON
+  const dadosJSON = JSON.stringify(selectedOptions);
+
+  // Armazenar a string JSON no localStorage com uma chave específica
+  localStorage.setItem('opcoesSelecionadas', dadosJSON);
+}
+
 const chamarServidorService = new ChamarServidorService()
 const criarElementos = new CriarElementos()
 const btnAvancar = document.getElementById('btn-avancar')
@@ -122,15 +134,19 @@ const btnSelecionar = document.getElementById('btn-selecionar')
 
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
-  const imageUrl = urlParams.get("image_url");
+  const imageUrl1 = urlParams.get("image_url1");
+  const imageUrl2 = urlParams.get("image_url2");
 
-  if (imageUrl) {
-    const imgOptionDiv = criarElementos.criarDivParaImg(imageUrl);
+  if (imageUrl1 && imageUrl2) {
+    const imgOptionDiv1 = criarElementos.criarDivParaImg(imageUrl1);
+    const imgOptionDiv2 = criarElementos.criarDivParaImg(imageUrl2);
     // Selecione a div com a classe "options" para anexar a nova div
     var optionsDiv = document.querySelector(".options");
+    optionsDiv.style.flexDirection = "row";
 
     // Anexe a nova div à div "options"
-    optionsDiv.appendChild(imgOptionDiv);
+    optionsDiv.appendChild(imgOptionDiv1);
+    optionsDiv.appendChild(imgOptionDiv2);
   }
 })
 
@@ -163,7 +179,7 @@ function selecionarImagem() {
   // Selecionar a imagem
   var imageElement = document.getElementById("image");
   selecionarOpcao('selectedImage', imageElement.src);
-  localStorage.setItem('productImage', imageElement.src);
+  armazenarOpcoesSelecionadas();
 
   // Mudar o css da opção de imagem
   const selectedBox = document.getElementById("img-option");
@@ -186,6 +202,10 @@ function clearOptions() {
 function mostrarOpcoesFrases() {
   // Limpar a div de opções
   clearOptions()
+
+  // Mudar o css da div "options"
+  var optionsDiv = document.querySelector(".options");
+  optionsDiv.style.flexDirection = "column";
 
   // Pegar as frases retornadas pelo GPT
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
@@ -210,7 +230,7 @@ function escolherFraseMostrarTexto() {
   var fraseSelecionada = document.querySelector(".selected");
   if (fraseSelecionada) {
     selecionarOpcao('selectedFrase', fraseSelecionada.textContent);
-    localStorage.setItem('productFrase', fraseSelecionada.textContent);
+    armazenarOpcoesSelecionadas(); 
     mostrarTexto();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -244,7 +264,7 @@ function escolherTextoMostrarSlogan() {
   var textoSelecionado = document.querySelector(".selected");
   if (textoSelecionado) {
     selecionarOpcao('selectedTexto', textoSelecionado.textContent);
-    localStorage.setItem('productDescricao', textoSelecionado.textContent);
+    armazenarOpcoesSelecionadas();
     mostrarSlogan();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -278,7 +298,7 @@ function escolherSlogan() {
   var sloganSelecionado = document.querySelector(".selected");
   if (sloganSelecionado) {
     selecionarOpcao('selectedSlogan', sloganSelecionado.textContent);
-    localStorage.setItem('productSlogan', sloganSelecionado.textContent);
+    armazenarOpcoesSelecionadas();
     printAll();
   } else {
     alert('Selecione uma opção antes de avançar.');

@@ -81,6 +81,16 @@ body.overlay-visible {
 
 .txtInputDiv {
     display: flex;
+    position: relative;
+    margin-bottom: 20px;
+    /* Espaço entre cada grupo de entrada de texto */
+}
+
+.txtInputLabel {
+    position: absolute;
+    top: -20px;
+    /* Ajuste a distância vertical do rótulo em relação à caixa de texto */
+    left: 0;
 }
 
 input[type="text"] {
@@ -119,6 +129,7 @@ input[type="file"] {
 }
 
 #selected-image {
+    display: none;
     max-width: 100px;
     height: auto;
     margin-top: 10px;
@@ -129,6 +140,7 @@ input[type="file"] {
     color: white;
     border: none;
     padding: 10px 20px;
+    margin-top: 10px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
