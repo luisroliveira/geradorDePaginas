@@ -155,21 +155,21 @@ input[type="file"] {
 .optionDiv {
     display: inline-block;
     margin-right: 20px; /* Espaçamento entre as opções */
-  }
-  
-  /* Estilo para destacar opções selecionadas */
-  .optionLabel {
+}
+
+/* Estilo para destacar opções selecionadas */
+.optionLabel {
     border: 2px solid transparent; /* Borda inicialmente transparente */
     cursor: pointer;
-  }
-  
-  /* Estilo para imagens de opções */
-  .optionImage {
+}
+
+/* Estilo para imagens de opções */
+.optionImage {
     width: auto; /* Largura da imagem */
     height: 250px; /* Altura da imagem */
-  }
-  
-  /* Estilo para destacar opções selecionadas */
-  .optionLabel input[type="radio"]:checked + .optionImage {
+}
+
+/* Estilo para destacar opções selecionadas */
+.optionLabel input[type="radio"]:checked + .optionImage {
     border: 2px solid blue; /* Borda azul para destacar a opção selecionada */
-  }
+}

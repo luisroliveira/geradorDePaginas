@@ -8108,7 +8108,7 @@
                             </div>
                             <div data-mesh-id="comp-kr37qq7ginlineContent" data-testid="inline-content" class="">
                               <div data-mesh-id="comp-kr37qq7ginlineContent-gridContainer" data-testid="mesh-container-content">
-                                <div id="comp-kr8tvwgd" class="comp-kr8tvwgd wixui-vector-image"><a data-testid="linkElement" href="https://www.wix.com/templatespt/2964-product-landing" target="_self" class="u9k3ts">
+                                <div id="comp-kr8tvwgd" class="comp-kr8tvwgd wixui-vector-image"><a data-testid="linkElement" href="" target="_self" class="u9k3ts">
                                     <div data-testid="svgRoot-comp-kr8tvwgd" class="aizuI7 TcoJIb comp-kr8tvwgd">
                                       <!--?xml version="1.0" encoding="UTF-8"?-->
                                       <svg preserveAspectRatio="xMidYMid meet" data-bbox="19.9 19.9 160.2 160.2" viewBox="19.9 19.9 160.2 160.2" height="200" width="200" xmlns="http://www.w3.org/2000/svg" data-type="color" role="img" aria-label="Página inicial">
@@ -8157,7 +8157,7 @@
                             </div>
                             <div data-mesh-id="comp-kr37rbetinlineContent" data-testid="inline-content" class="">
                               <div data-mesh-id="comp-kr37rbetinlineContent-gridContainer" data-testid="mesh-container-content">
-                                <div class="comp-kr229ybq R6ex7N" id="comp-kr229ybq" aria-disabled="false"><a data-testid="linkElement" href="https://www.wix.com/templatespt/2964-product-landing/product-page" target="_self" class="kuTaGy wixui-button zKbzSQ" aria-disabled="false"><span class="M3I7Z2 wixui-button__label">Comprar agora</span></a></div>
+                                <div class="comp-kr229ybq R6ex7N" id="comp-kr229ybq" aria-disabled="false"><a data-testid="linkElement" href="" target="_self" class="kuTaGy wixui-button zKbzSQ" aria-disabled="false"><span class="M3I7Z2 wixui-button__label">Comprar agora</span></a></div>
                               </div>
                             </div>
                           </div>
@@ -8331,7 +8331,7 @@
                                                         </script>
                                                       </p>
                                                     </div>
-                                                    <div class="comp-kr37yhpr R6ex7N" id="comp-kr37yhpr" aria-disabled="false"><a data-testid="linkElement" href="https://www.wix.com/templatespt/2964-product-landing/product-page" target="_self" class="kuTaGy wixui-button zKbzSQ" aria-disabled="false"><span class="M3I7Z2 wixui-button__label">Comprar agora</span></a>
+                                                    <div class="comp-kr37yhpr R6ex7N" id="comp-kr37yhpr" aria-disabled="false"><a data-testid="linkElement" href="" target="_self" class="kuTaGy wixui-button zKbzSQ" aria-disabled="false"><span class="M3I7Z2 wixui-button__label">Comprar agora</span></a>
                                                     </div>
                                                   </div>
                                                 </div>
@@ -8426,7 +8426,34 @@
                                     <div id="comp-kr246gd2" class="MazNVa comp-kr246gd2 wixui-image">
                                       <div data-testid="linkElement" class="j7pOnl">
                                         <wow-image id="img_comp-kr246gd2" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr246gd2&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:953,&quot;targetHeight&quot;:694,&quot;isLQIP&quot;:true,&quot;imageData&quot;:{&quot;width&quot;:7000,&quot;height&quot;:4734,&quot;uri&quot;:&quot;c837a6_30d2bcf63656445b88de2184f0ddb170~mv2.png&quot;,&quot;name&quot;:&quot;shutterstock_1521991916 edited.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;crop&quot;:{&quot;x&quot;:250,&quot;y&quot;:0,&quot;width&quot;:6501,&quot;height&quot;:4734,&quot;svgId&quot;:&quot;909695c1e003409ba70b5561666c7c4d.svg&quot;}}}" data-bg-effect-name="" data-has-ssr-src="">
-                                          <img src="./HOME_TEMPLATE2_files/default.png" alt="" style="width: 953px; height: 694px; object-fit: cover; object-position: 50% 50%;" width="953" height="694" fetchpriority="high">
+                                          <img id="productImage2" src="./HOME_TEMPLATE2_files/default.png" alt="" style="width: 953px; height: 694px; object-fit: cover; object-position: 50% 50%;" width="953" height="694" fetchpriority="high">
+                                          <script>
+                                            function atualizarImagemProduto() {
+                                              const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                              const imgProduto2 = opcoesSelecionadas ? opcoesSelecionadas.selectedImage : null;
+
+                                              const productImg2Div = document.getElementById('productImage2');
+                                              if (imgProduto2) {
+                                                // Exibe a imagem do produto se estiver definida no localStorage
+                                                productImg2Div.src = imgProduto2;
+                                              } else {
+                                                // Caso a imagem do produto não esteja definida no localStorage
+                                                productImg2Div.src = './HOME_TEMPLATE2_files/default.png';
+                                              }
+                                            }
+
+                                            // Chama a função ao carregar a página
+                                            window.addEventListener('load', atualizarImagemProduto);
+
+                                            // Ouvinte para eventos de alteração no localStorage
+                                            window.addEventListener('storage', function (e) {
+                                              if (e.key === 'opcoesSelecionadas') {
+                                                // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                // Atualize a imagem do produto
+                                                atualizarImagemProduto();
+                                              }
+                                            });
+                                          </script>
                                         </wow-image>
                                       </div>
                                     </div>
@@ -8448,7 +8475,7 @@
                                 </div>
                                 <div data-mesh-id="comp-kr247i78inlineContent" data-testid="inline-content" class="">
                                   <div data-mesh-id="comp-kr247i78inlineContent-gridContainer" data-testid="mesh-container-content">
-                                    <div class="comp-kr2489uw R6ex7N" id="comp-kr2489uw" aria-disabled="false"><a data-testid="linkElement" href="https://www.wix.com/templatespt/2964-product-landing/product-page" target="_self" class="kuTaGy wixui-button zKbzSQ" aria-disabled="false"><span class="M3I7Z2 wixui-button__label">Comprar agora</span></a></div>
+                                    <div class="comp-kr2489uw R6ex7N" id="comp-kr2489uw" aria-disabled="false"><a data-testid="linkElement" href="" target="_self" class="kuTaGy wixui-button zKbzSQ" aria-disabled="false"><span class="M3I7Z2 wixui-button__label">Comprar agora</span></a></div>
                                   </div>
                                 </div>
                               </div>
@@ -8508,19 +8535,19 @@
                                       <div data-mesh-id="comp-kr256lr6inlineContent" data-testid="inline-content" class="">
                                         <div data-mesh-id="comp-kr256lr6inlineContent-gridContainer" data-testid="mesh-container-content">
                                           <div id="comp-kr25lcts" class="KcpHeO tz5f0K comp-kr25lcts wixui-rich-text" data-testid="richTextElement">
-                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="https://www.instagram.com/wix" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Instagram</span></a></p>
+                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Instagram</span></a></p>
                                           </div>
                                           <div id="comp-kr25lfo8" class="KcpHeO tz5f0K comp-kr25lfo8 wixui-rich-text" data-testid="richTextElement">
-                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="https://www.facebook.com/WixPortugues" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Facebook</span></a></p>
+                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Facebook</span></a></p>
                                           </div>
                                           <div id="comp-kr25l2bn" class="KcpHeO tz5f0K comp-kr25l2bn wixui-rich-text" data-testid="richTextElement">
-                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="https://twitter.com/WixBR" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Twitter</span></a></p>
+                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Twitter</span></a></p>
                                           </div>
                                           <div id="comp-kr25lkec" class="KcpHeO tz5f0K comp-kr25lkec wixui-rich-text" data-testid="richTextElement">
-                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="https://www.tiktok.com/@wix" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Tiktok</span></a></p>
+                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Tiktok</span></a></p>
                                           </div>
                                           <div id="comp-kr25nlhf" class="KcpHeO tz5f0K comp-kr25nlhf wixui-rich-text" data-testid="richTextElement">
-                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="https://www.youtube.com/c/WixPortugu%C3%AAsOficial" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">YouTube</span></a></p>
+                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; font-size:14px;"><a href="" target="_blank" rel="noreferrer noopener" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">YouTube</span></a></p>
                                           </div>
                                         </div>
                                       </div>
@@ -8533,19 +8560,19 @@
                                       <div data-mesh-id="comp-kr25jxy6inlineContent" data-testid="inline-content" class="">
                                         <div data-mesh-id="comp-kr25jxy6inlineContent-gridContainer" data-testid="mesh-container-content">
                                           <div id="comp-l0s4kmii" class="KcpHeO tz5f0K comp-l0s4kmii wixui-rich-text" data-testid="richTextElement">
-                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; text-align:right; font-size:14px;"><a href="https://www.wix.com/templatespt/2964-product-landing/pol%C3%ADtica-de-cookies" target="_self" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Política
+                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; text-align:right; font-size:14px;"><a href="" target="_self" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Política
                                                   de Cookies</span></a></p>
                                           </div>
                                           <div id="comp-kr25lheu" class="KcpHeO tz5f0K comp-kr25lheu wixui-rich-text" data-testid="richTextElement">
-                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; text-align:right; font-size:14px;"><a href="https://www.wix.com/templatespt/2964-product-landing/termos-e-condi%C3%A7%C3%B5es" target="_self" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Termos e
+                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; text-align:right; font-size:14px;"><a href="" target="_self" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Termos e
                                                   Condições</span></a></p>
                                           </div>
                                           <div id="comp-kr25o3yb" class="KcpHeO tz5f0K comp-kr25o3yb wixui-rich-text" data-testid="richTextElement">
-                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; text-align:right; font-size:14px;"><a href="https://www.wix.com/templatespt/2964-product-landing/pol%C3%ADtica-de-envio" target="_self" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Entregas
+                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; text-align:right; font-size:14px;"><a href="" target="_self" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Entregas
                                                   e Devoluções</span></a></p>
                                           </div>
                                           <div id="comp-kr25o1vp" class="KcpHeO tz5f0K comp-kr25o1vp wixui-rich-text" data-testid="richTextElement">
-                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; text-align:right; font-size:14px;"><a href="https://www.wix.com/templatespt/2964-product-landing/pol%C3%ADtica-de-privacidade" target="_self" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Política
+                                            <p class="font_9 wixui-rich-text__text" style="line-height:normal; text-align:right; font-size:14px;"><a href="" target="_self" class="wixui-rich-text__text"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Política
                                                   de Privacidade</span></a></p>
                                           </div>
                                         </div>
