@@ -217,6 +217,9 @@ function mostrarOpcoesFrases() {
   // Limpar a div de opções
   clearOptions()
 
+  var questionText = document.getElementById('textQuestion');
+  questionText.textContent = '2. Escolha a frase do seu produto';
+
   // Mudar o css da div "options"
   var optionsDiv = document.querySelector(".options");
   optionsDiv.style.flexDirection = "column";
@@ -255,6 +258,9 @@ function mostrarTexto() {
   // Limpar a div de opções
   clearOptions()
 
+  var questionText = document.getElementById('textQuestion');
+  questionText.textContent = '3. Escolha a descrição do seu produto';
+
   // Pegar os textos retornados pelo GPT
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
   const chaves = Object.keys(frasesArmazenadas)
@@ -288,6 +294,9 @@ function escolherTextoMostrarSlogan() {
 function mostrarSlogan() {
   // Limpar a div de opções
   clearOptions()
+
+  var questionText = document.getElementById('textQuestion');
+  questionText.textContent = '4. Escolha o slogan do seu produto';
 
   // Pegar os slogans retornados pelo GPT
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
