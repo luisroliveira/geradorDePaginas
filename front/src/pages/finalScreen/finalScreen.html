@@ -8,8 +8,23 @@
   </head>
   <body>
     <div class="container">
-      <h1>site-preview</h1>
-      <div id="site-preview"></div>
+      <h1>Preview do Site</h1>
+        <div class="site-preview">
+          <iframe id="templatePath" frameborder="0" class="responsive-iframe">
+          </iframe>
+            <script>
+              // Recupere o path do template
+              const templateProduto = localStorage.getItem('templatePath');
+
+              if (templateProduto) {
+                  const productTemplateDiv = document.getElementById('templatePath');
+                  productTemplateDiv.src = templateProduto;
+              } else {
+                  const productTemplateDiv = document.getElementById('templatePath');
+                  productTemplateDiv.src = '../../../assets/HOME_TEMPLATE1.html';
+              }
+          </script>
+        </div>
       <div class="buttons">
         <button id="download" class="styled-button">Download</button>
       </div>

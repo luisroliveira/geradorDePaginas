@@ -6620,16 +6620,31 @@
                   <div class="nTiihL wixui-box" data-testid="container-bg"></div>
                   <div data-mesh-id="comp-igwbrpfminlineContent" data-testid="inline-content" class="">
                     <div data-mesh-id="comp-igwbrpfminlineContent-gridContainer" data-testid="mesh-container-content"
-                      style="
-">
+                      style="">
                       <div id="comp-igwbnpf2" class="BaOVQ8 tz5f0K comp-igwbnpf2 wixui-rich-text"
                         data-testid="richTextElement">
                         <h1 style="text-align:center;line-height:1.1em;font-size:16px;"
                           class="font_0 wixui-rich-text__text"><a
                             href="https://www.wix.com/templatespt/home-tech-storept" target="undefined"
                             class="wixui-rich-text__text"><span style="letter-spacing:0.05em;"
-                              class="wixui-rich-text__text"><span style="line-height: 1.1em;"
-                                class="wixui-rich-text__text">NOME DA LOJA</span></span></a></h1>
+                              class="wixui-rich-text__text"><span id="storeName" style="line-height: 1.1em;"
+                                class="wixui-rich-text__text">NOME DA LOJA</span>
+                                <script>
+                                  // Recupere o nome do produto do localStorage
+                                  const nomeLoja = JSON.parse(localStorage.getItem('dadosDoProduto')).lojaNome;
+                                  console.log(nomeLoja);
+                          
+                                  if (nomeLoja) {
+                                      // Exiba o nome do produto em algum lugar da página
+                                      const storeNameDiv = document.getElementById('storeName');
+                                      storeNameDiv.textContent = `${nomeLoja}`;
+                                  } else {
+                                      // Caso o nome do produto não esteja definido no localStorage
+                                      const storeNameDiv = document.getElementById('storeName');
+                                      storeNameDiv.textContent = 'NOME DA LOJA';
+                                  }
+                              </script>
+                              </span></a></h1>
                       </div>
                     </div>
                   </div>
@@ -6861,7 +6876,6 @@
                                           <script>
                                             // Recupere o nome do produto do localStorage
                                             const nomeProduto = JSON.parse(localStorage.getItem('dadosDoProduto')).nome;
-                                            console.log(nomeProduto);
                                     
                                             if (nomeProduto) {
                                                 // Exiba o nome do produto em algum lugar da página

@@ -73,12 +73,13 @@ function showImg() {
   }
 }
 
-function armazenarVariaveis(nome, oQueEh, descricao) {
+function armazenarVariaveis(nome, oQueEh, descricao, lojaNome) {
   // Criar um objeto JSON com as variáveis
   const dados = {
     nome: nome,
     oQueEh: oQueEh,
-    descricao: descricao
+    descricao: descricao,
+    lojaNome: lojaNome
   };
 
   // Converter o objeto JSON para uma string JSON
@@ -88,8 +89,8 @@ function armazenarVariaveis(nome, oQueEh, descricao) {
   localStorage.setItem('dadosDoProduto', dadosJSON);
 }
 
-function makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opcao2Selecionada) {
-  armazenarVariaveis(nome, oQueEh, descricao);
+function makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opcao2Selecionada, lojaNome) {
+  armazenarVariaveis(nome, oQueEh, descricao, lojaNome);
 
   const caminhoDoArquivo = determinarCaminhoDoArquivo(opcao1Selecionada, opcao2Selecionada);
   localStorage.setItem('templatePath', caminhoDoArquivo);
@@ -148,6 +149,7 @@ function submitForm(event) {
   const form = document.getElementById('form')
 
   // Obtém os dados inseridos
+  const lojaNome = form.querySelector('#storeName').value
   const nome = form.querySelector('#input-word').value
   const oQueEh = form.querySelector('#input-what').value
   const descricao = form.querySelector('#prodDescr').value
@@ -162,7 +164,7 @@ function submitForm(event) {
     const opcao1Selecionada = document.getElementById('option1').checked;
     const opcao2Selecionada = document.getElementById('option2').checked;
     // Faz as chamadas para o servidor
-    makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opcao2Selecionada)
+    makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opcao2Selecionada, lojaNome)
   }
 }
 

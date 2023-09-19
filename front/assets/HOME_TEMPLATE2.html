@@ -8128,7 +8128,23 @@
                                   </a></div>
                                 <div id="comp-kr37vduc" class="KcpHeO tz5f0K comp-kr37vduc wixui-rich-text" data-testid="richTextElement">
                                   <p class="font_5 wixui-rich-text__text" style="line-height:normal; font-size:25px;">
-                                    <span style="letter-spacing:normal;" class="wixui-rich-text__text"><a href="" target="_self" class="wixui-rich-text__text nome_loja">NOME DA LOJA</a></span>
+                                    <span style="letter-spacing:normal;" class="wixui-rich-text__text"><a id="storeName" href="" target="_self" class="wixui-rich-text__text nome_loja"></a>
+                                      <script>
+                                        // Recupere o nome do produto do localStorage
+                                        const nomeLoja = JSON.parse(localStorage.getItem('dadosDoProduto')).lojaNome;
+                                        console.log(nomeLoja);
+                                
+                                        if (nomeLoja) {
+                                            // Exiba o nome do produto em algum lugar da página
+                                            const storeNameDiv = document.getElementById('storeName');
+                                            storeNameDiv.textContent = `${nomeLoja}`;
+                                        } else {
+                                            // Caso o nome do produto não esteja definido no localStorage
+                                            const storeNameDiv = document.getElementById('storeName');
+                                            storeNameDiv.textContent = 'NOME DA LOJA';
+                                        }
+                                    </script>
+                                    </span>
                                   </p>
                                 </div>
                               </div>
@@ -8269,7 +8285,6 @@
                                                       <script>
                                                           // Recupere o nome do produto do localStorage
                                                           const nomeProduto = JSON.parse(localStorage.getItem('dadosDoProduto')).nome;
-                                                          console.log(nomeProduto);
                                                   
                                                           if (nomeProduto) {
                                                               // Exiba o nome do produto em algum lugar da página
