@@ -21,48 +21,67 @@ class ChamarServidorService {
         console.error('Erro:', error)
       })
   }
+
+  async criarZip(nomeTemplate) {
+    const funcaoParaChamar = 'makeZip' // Nome da função que você deseja chamar
+    const parametro = nomeTemplate
+
+    return new Promise((resolve, reject) => {
+      fetch('http://localhost:8000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const resultadoJson = JSON.stringify(data.resultado) // REMOVER O STRINGIFY QUANDO FOR USAR A API
+        localStorage.setItem("ResultadoGpt", resultadoJson)
+        resolve(resultadoJson)
+      })
+      .catch(error => {
+        console.error('Erro:', error)
+        reject(error)
+      })
+    })
+  }
+
+  downloadZip() {
+    fetch("http://localhost:8000/download", {
+    method: 'GET'
+    })
+    .then(response => {
+    // Verificar se a solicitação foi bem-sucedida
+      if (response.ok) {
+        // Iniciar o download do arquivo ZIP
+        response.blob().then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'arquivo.zip'; // Nome do arquivo para download
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      } else {
+        // Lida com erros, se necessário
+        console.error('Erro ao baixar o arquivo ZIP.');
+      }
+    })
+    .catch(error => {
+      // Lida com erros de rede ou outros erros
+      console.error('Erro na solicitação: ' + error);
+    });
+  }
 }
 
-const inputImage = document.getElementById('input-image')
-const selectedImage = document.getElementById('selected-image')
+// const inputImage = document.getElementById('input-image')
+// const selectedImage = document.getElementById('selected-image')
+const botao = document.getElementById("download")
 const chamarServidorService = new ChamarServidorService()
 
-inputImage.addEventListener('change', function () {
-  const file = inputImage.files[0]
-  if (file) {
-    selectedImage.src = URL.createObjectURL(file)
-  }
-})
-
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('form')
-  const btnAvancar = document.getElementById('btn-avancar')
-  const inputWord = document.getElementById('input-word')
-
-  btnAvancar.addEventListener('click', function (event) {
-    event.preventDefault() // Impede o envio do formulário padrão
-
-    // Obtém a palavra inserida
-    const word = inputWord.value
-    const image = inputImage.value
-
-    // Função para fazer uma solicitação ao servidor
-    let string = "crie 5 frases de efeito curtas para vender " + word
-    console.log(string)
-    chamarServidorService.chamarServidor('funcao_1', word)
-
-    //   // Redireciona para a nova página, passando os dados via URL
-    //   const queryParams = new URLSearchParams(formData);
-    //   window.location.href = "outra_pagina.html?" + queryParams.toString();
-  })
-})
-
-let selectedOption = null;
-    
-function selectOption(optionNumber) {
-
-  const selectedBox = document.getElementById(`option-${optionNumber}`);
-  selectedBox.classList.add('selected');
-  
-  console.log('Opção selecionada:', optionNumber);
-}
+botao.addEventListener("click", async function() {
+  await chamarServidorService.criarZip("HOME_TEMPLATE1")
+  await chamarServidorService.downloadZip()
+});

@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, send_file
 import json
 from apiClip import apiChangeBackGround
 from apiChat import apiChatGpt
+from createZip import makeZip
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -54,6 +55,18 @@ def get_image(filename):
         print("Erro no get img")
         return jsonify({"error": str(e)}), 500
 
+# Rota para enviar o zip para o front
+@app.route("/download")
+def download():
+    arquivo_zip = "zips/arquivo.zip"  # nome do arquivo ZIP
+    return send_file(
+        arquivo_zip,
+        as_attachment=True,
+        download_name='arquivo.zip',  # O nome que o usuário verá ao baixar
+        mimetype='application/zip'
+    )
+
+
 @app.route('/', methods=['POST', 'OPTIONS'])
 def handle_request():
     if request.method == 'OPTIONS':
@@ -75,6 +88,8 @@ def handle_request():
             resultado = apiChatGpt(parametro)
         elif funcao == "funcao_1":
             resultado = funcao_1(parametro)
+        elif funcao == "makeZip":
+            resultado = makeZip(parametro)
         else:
             resultado = "Função desconhecida"
         
