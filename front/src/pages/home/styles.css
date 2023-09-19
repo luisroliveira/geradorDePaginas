@@ -6,7 +6,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 200vh;
 }
 
 .container {
@@ -14,7 +14,7 @@ body {
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    max-width: 630px;
     width: 100%;
     text-align: center;
 }
@@ -82,7 +82,9 @@ body.overlay-visible {
 .txtInputDiv {
     display: flex;
     position: relative;
-    margin-bottom: 20px;
+    padding-top: 5px;
+    margin-bottom: 25px;
+    justify-content: space-evenly;
     /* Espaço entre cada grupo de entrada de texto */
 }
 
@@ -149,3 +151,25 @@ input[type="file"] {
 .styled-button:hover {
     background-color: #2980b9;
 }
+
+.optionDiv {
+    display: inline-block;
+    margin-right: 20px; /* Espaçamento entre as opções */
+  }
+  
+  /* Estilo para destacar opções selecionadas */
+  .optionLabel {
+    border: 2px solid transparent; /* Borda inicialmente transparente */
+    cursor: pointer;
+  }
+  
+  /* Estilo para imagens de opções */
+  .optionImage {
+    width: auto; /* Largura da imagem */
+    height: 250px; /* Altura da imagem */
+  }
+  
+  /* Estilo para destacar opções selecionadas */
+  .optionLabel input[type="radio"]:checked + .optionImage {
+    border: 2px solid blue; /* Borda azul para destacar a opção selecionada */
+  }

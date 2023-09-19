@@ -88,8 +88,11 @@ function armazenarVariaveis(nome, oQueEh, descricao) {
   localStorage.setItem('dadosDoProduto', dadosJSON);
 }
 
-function makeRequests(nome, oQueEh, descricao, imageFile) {
+function makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opcao2Selecionada) {
   armazenarVariaveis(nome, oQueEh, descricao);
+
+  const caminhoDoArquivo = determinarCaminhoDoArquivo(opcao1Selecionada, opcao2Selecionada);
+  localStorage.setItem('templatePath', caminhoDoArquivo);
   
   // Mostrar a sobreposição escura e o spinner
   document.body.classList.add('overlay-visible');
@@ -155,7 +158,21 @@ function submitForm(event) {
   if (nome.trim() === '' || oQueEh.trim() === '' || descricao.trim() === '' || imageFile === undefined) {
     alert('Por favor, preencha todos os campos antes de avançar.');
   } else {
+    // Determina qual template foi escolhido
+    const opcao1Selecionada = document.getElementById('option1').checked;
+    const opcao2Selecionada = document.getElementById('option2').checked;
     // Faz as chamadas para o servidor
-    makeRequests(nome, oQueEh, descricao, imageFile)
+    makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opcao2Selecionada)
+  }
+}
+
+// Função para determinar o caminho do arquivo com base nas opções selecionadas
+function determinarCaminhoDoArquivo(opcao1Selecionada, opcao2Selecionada) {
+  if (opcao1Selecionada) {
+    return "../../../assets/HOME_TEMPLATE1.html";
+  } else if (opcao2Selecionada) {
+    return "../../../assets/HOME_TEMPLATE2.html";
+  } else {
+    return "../../../assets/HOME_TEMPLATE1.html";
   }
 }

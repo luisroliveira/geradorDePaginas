@@ -30,6 +30,23 @@
             <label for="prodDescr" class="txtInputLabel">Descrição: </label>
             <textarea id="prodDescr" cols="50" rows="10" placeholder="Ex: Cafeteira que faz café" required></textarea>
           </div>
+
+          <div id="templatesDiv" class="txtInputDiv">
+            <label for="prodTemplate" class="txtInputLabel">Templates: </label>
+            <div id="option1Div" class="optionDiv">
+              <label for="option1" class="optionLabel">
+                <input type="radio" checked="checked" name="options" id="option1" value="option1" style="display: none;" />
+                <img src="../../../assets/Template1.jpg" alt="Opção 1" class="optionImage" />
+              </label>
+            </div>
+            <div id="option2Div" class="optionDiv">
+              <label for="option2" class="optionLabel">
+                <input type="radio" name="options" id="option2" value="option2" style="display: none;" />
+                <img src="../../../assets/Template2.jpg" alt="Opção 2" class="optionImage" />
+              </label>
+            </div>
+          </div>
+
           <div id="imageDiv">
             <input type="file" id="input-image" accept="image/*" onchange="showImg()" />
             <label for="input-image" id="img-label">Selecione a imagem do produto</label>
