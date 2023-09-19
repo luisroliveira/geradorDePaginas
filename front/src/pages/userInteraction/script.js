@@ -12,10 +12,12 @@ class CriarElementos {
     imgElement.src = imageURL; // Substitua pelo caminho da sua imagem
     imgElement.alt = "Descrição da imagem";
     imgElement.id = "image";
+    imgElement.className = "optionImage"
 
     // Crie o input de arquivo
     var inputElement = document.createElement("input");
-    inputElement.type = "file";
+    inputElement.type = "radio";
+    inputElement.name = "options"
     inputElement.accept = "image/*";
     inputElement.style.display = "none";
     inputElement.id = "imageFileInput";
@@ -23,6 +25,18 @@ class CriarElementos {
     // Anexe a tag <img> à div "imgOptionDiv"
     imgOptionDiv.appendChild(inputElement);
     imgOptionDiv.appendChild(imgElement);
+
+    // Adicionar um evento de clique a cada div de opção
+    imgOptionDiv.addEventListener('click', function() {
+      // Remove a classe "selected" de todas as opções
+      var opcoesImgDivs = document.querySelectorAll('.option-box');
+      opcoesImgDivs.forEach(function(div) {
+          div.classList.remove('selected');
+      });
+
+      // Adiciona a classe "selected" à opção clicada
+      imgOptionDiv.classList.add('selected');
+    });
 
     return imgOptionDiv;
   }
@@ -181,9 +195,9 @@ function selecionarImagem() {
   selecionarOpcao('selectedImage', imageElement.src);
   armazenarOpcoesSelecionadas();
 
-  // Mudar o css da opção de imagem
-  const selectedBox = document.getElementById("img-option");
-  selectedBox.classList.add('selected');
+  // // Mudar o css da opção de imagem
+  // const selectedBox = document.getElementById("img-option");
+  // selectedBox.classList.add('selected');
 
   // Esconder o botão "Selecionar Imagem"
   btnSelecionar.style.display = "none";
