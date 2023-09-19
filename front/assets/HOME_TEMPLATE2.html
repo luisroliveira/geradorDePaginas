@@ -5248,14 +5248,12 @@
       .comp-kr36zivj .i1GPOs text {
         fill: #A238FF;
         font: normal normal normal 17px/1.4em questrial, sans-serif;
-        text-decoration: ;
         font-size: 90px
       }
 
       .comp-kr36zivj .i1GPOs .bGBBgJ {
         fill: #000000;
         font: normal normal normal 17px/1.4em questrial, sans-serif;
-        text-decoration: ;
         font-size: 90px
       }
 
@@ -8130,7 +8128,7 @@
                                   </a></div>
                                 <div id="comp-kr37vduc" class="KcpHeO tz5f0K comp-kr37vduc wixui-rich-text" data-testid="richTextElement">
                                   <p class="font_5 wixui-rich-text__text" style="line-height:normal; font-size:25px;">
-                                    <span style="letter-spacing:normal;" class="wixui-rich-text__text"><a href="https://www.wix.com/templatespt/2964-product-landing" target="_self" class="wixui-rich-text__text">NOME DA LOJA</a></span>
+                                    <span style="letter-spacing:normal;" class="wixui-rich-text__text"><a href="" target="_self" class="wixui-rich-text__text nome_loja">NOME DA LOJA</a></span>
                                   </p>
                                 </div>
                               </div>
@@ -8176,7 +8174,7 @@
                                   <div data-testid="colorUnderlay" class="LWbAav Kv1aVt"></div>
                                   <div id="bgMedia_comp-kr20xiv1" class="VgO9Yg">
                                     <wow-image id="img_comp-kr20xiv1" class="HlRz5e Kv1aVt dLPlxY mNGsUM bgImage" data-image-info="{&quot;containerId&quot;:&quot;comp-kr20xiv1&quot;,&quot;alignType&quot;:&quot;bottom&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:980,&quot;targetHeight&quot;:1081,&quot;isLQIP&quot;:true,&quot;imageData&quot;:{&quot;width&quot;:3480,&quot;height&quot;:2160,&quot;uri&quot;:&quot;c837a6_831fe7c79e9e45869554588550034ac1~mv2.jpg&quot;,&quot;name&quot;:&quot;&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_831fe7c79e9e45869554588550034ac1~mv2.jpg/v1/fill/w_1831,h_1081,al_b,q_90,usm_0.66_1.00_0.01,enc_auto/c837a6_831fe7c79e9e45869554588550034ac1~mv2.jpg">
-                                      <img src="./HOME _ TEMPLATE 2_files/c837a6_831fe7c79e9e45869554588550034ac1_mv2.jpg" alt="" style="width: 1831px; height: 1081px; object-fit: cover; object-position: 50% 100%;" width="980" height="1081" fetchpriority="high">
+                                      <img src="./HOME_TEMPLATE2_files/c837a6_831fe7c79e9e45869554588550034ac1_mv2.jpg" alt="" style="width: 1831px; height: 1081px; object-fit: cover; object-position: 50% 100%;" width="980" height="1081" fetchpriority="high">
                                     </wow-image>
                                   </div>
                                 </div>
@@ -8186,7 +8184,34 @@
                                       <div id="comp-kr4lgwc9" class="MazNVa comp-kr4lgwc9 wixui-image">
                                         <div data-testid="linkElement" class="j7pOnl">
                                           <wow-image id="img_comp-kr4lgwc9" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr4lgwc9&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:548,&quot;targetHeight&quot;:540,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:7000,&quot;height&quot;:4734,&quot;uri&quot;:&quot;c837a6_8abd90a25be34a758931e215516dbd7f~mv2.png&quot;,&quot;name&quot;:&quot;new first fold.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;crop&quot;:{&quot;x&quot;:1756,&quot;y&quot;:452,&quot;width&quot;:3479,&quot;height&quot;:3461,&quot;svgId&quot;:&quot;909695c1e003409ba70b5561666c7c4d.svg&quot;}}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_8abd90a25be34a758931e215516dbd7f~mv2.png/v1/crop/x_1756,y_452,w_3479,h_3461/fill/w_548,h_540,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/new%20first%20fold.png">
-                                            <img src="./HOME _ TEMPLATE 2_files/produto-sem-imagem.png.webp" alt="" style="width: 548px; height: 540px; object-fit: cover;" width="548" height="540" fetchpriority="high">
+                                            <img id="productImage" class="img_prod" src="./HOME_TEMPLATE2_files/produto-sem-imagem.png.webp" alt="" style="width: 548px; height: 540px; object-fit: cover;" width="548" height="540" fetchpriority="high">
+                                            <script>
+                                              function atualizarImagemProduto() {
+                                                const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                                const imgProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedImage : null;
+
+                                                const productImgDiv = document.getElementById('productImage');
+                                                if (imgProduto) {
+                                                  // Exibe a imagem do produto se estiver definida no localStorage
+                                                  productImgDiv.src = imgProduto;
+                                                } else {
+                                                  // Caso a imagem do produto não esteja definida no localStorage
+                                                  productImgDiv.src = './HOME_TEMPLATE2_files/produto-sem-imagem.png.webp';
+                                                }
+                                              }
+
+                                              // Chama a função ao carregar a página
+                                              window.addEventListener('load', atualizarImagemProduto);
+
+                                              // Ouvinte para eventos de alteração no localStorage
+                                              window.addEventListener('storage', function (e) {
+                                                if (e.key === 'opcoesSelecionadas') {
+                                                  // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                  // Atualize a imagem do produto
+                                                  atualizarImagemProduto();
+                                                }
+                                              });
+                                            </script>
                                           </wow-image>
                                         </div>
                                       </div>
@@ -8209,14 +8234,87 @@
                                                 <div data-mesh-id="comp-ksptwmgkinlineContent" data-testid="inline-content" class="">
                                                   <div data-mesh-id="comp-ksptwmgkinlineContent-gridContainer" data-testid="mesh-container-content">
                                                     <div id="comp-kr223smo" class="KcpHeO tz5f0K comp-kr223smo wixui-rich-text" data-testid="richTextElement">
-                                                      <p class="font_5 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span style="letter-spacing:normal;" class="wixui-rich-text__text">FRASE DE EFEITO</span></p>
+                                                      <p class="font_5 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span id="productFrase" style="letter-spacing:normal;" class="wixui-rich-text__text">FRASE DE EFEITO</span>
+                                                        <script>
+                                                          function atualizarFraseProduto() {
+                                                            const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                                            const fraseProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedFrase : null;
+
+                                                            const productFraseDiv = document.getElementById('productFrase');
+                                                            if (fraseProduto) {
+                                                              // Exibe a imagem do produto se estiver definida no localStorage
+                                                              productFraseDiv.textContent = `${fraseProduto}`;
+                                                            } else {
+                                                              // Caso a imagem do produto não esteja definida no localStorage
+                                                              productFraseDiv.textContent = ' N/A';
+                                                            }
+                                                          }
+
+                                                          // Chama a função ao carregar a página
+                                                          window.addEventListener('load', atualizarFraseProduto);
+
+                                                          // Ouvinte para eventos de alteração no localStorage
+                                                          window.addEventListener('storage', function (e) {
+                                                            if (e.key === 'opcoesSelecionadas') {
+                                                              // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                              // Atualize a imagem do produto
+                                                              atualizarFraseProduto();
+                                                            }
+                                                          });
+                                                        </script>
+                                                      </p>
                                                     </div>
                                                     <div id="comp-kr22219f" class="KcpHeO tz5f0K comp-kr22219f wixui-rich-text" data-testid="richTextElement">
-                                                      <h1 class="font_0 wixui-rich-text__text" style="font-size:75px; line-height:normal;"><span style="letter-spacing:normal;" class="wixui-rich-text__text"><span style="font-size:75px;" class="wixui-rich-text__text">NOME DO PRODUTO</span></span>
+                                                      <h1 class="font_0 wixui-rich-text__text" style="font-size:75px; line-height:normal;"><span style="letter-spacing:normal;" class="wixui-rich-text__text"><span id="productName" style="font-size:75px;" class="wixui-rich-text__text">NOME DO PRODUTO</span>
+                                                      <script>
+                                                          // Recupere o nome do produto do localStorage
+                                                          const nomeProduto = JSON.parse(localStorage.getItem('dadosDoProduto')).nome;
+                                                          console.log(nomeProduto);
+                                                  
+                                                          if (nomeProduto) {
+                                                              // Exiba o nome do produto em algum lugar da página
+                                                              const productNameDiv = document.getElementById('productName');
+                                                              productNameDiv.textContent = `${nomeProduto}`;
+                                                          } else {
+                                                              // Caso o nome do produto não esteja definido no localStorage
+                                                              const productNameDiv = document.getElementById('productName');
+                                                              productNameDiv.textContent = ' N/A';
+                                                          }
+                                                      </script>
+                                                      </span>
                                                       </h1>
                                                     </div>
                                                     <div id="comp-kr222yzy" class="KcpHeO tz5f0K comp-kr222yzy wixui-rich-text" data-testid="richTextElement">
-                                                      <p class="font_6 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span style="letter-spacing:normal;" class="wixui-rich-text__text">SLOGAN</span></p>
+                                                      <p class="font_6 wixui-rich-text__text" style="line-height:normal; font-size:25px;"><span id="productSlogan" style="letter-spacing:normal;" class="wixui-rich-text__text">
+                                                        SLOGAN</span>
+                                                        <script>
+                                                            function atualizarSloganProduto() {
+                                                              const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                                              const sloganProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedSlogan : null;
+
+                                                              const productSloganDiv = document.getElementById('productSlogan');
+                                                              if (sloganProduto) {
+                                                                // Exibe a imagem do produto se estiver definida no localStorage
+                                                                productSloganDiv.textContent = `${sloganProduto}`;
+                                                              } else {
+                                                                // Caso a imagem do produto não esteja definida no localStorage
+                                                                productSloganDiv.textContent = ' N/A';
+                                                              }
+                                                            }
+
+                                                            // Chama a função ao carregar a página
+                                                            window.addEventListener('load', atualizarSloganProduto);
+
+                                                            // Ouvinte para eventos de alteração no localStorage
+                                                            window.addEventListener('storage', function (e) {
+                                                              if (e.key === 'opcoesSelecionadas') {
+                                                                // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                                // Atualize a imagem do produto
+                                                                atualizarSloganProduto();
+                                                              }
+                                                            });
+                                                        </script>
+                                                      </p>
                                                     </div>
                                                     <div class="comp-kr37yhpr R6ex7N" id="comp-kr37yhpr" aria-disabled="false"><a data-testid="linkElement" href="https://www.wix.com/templatespt/2964-product-landing/product-page" target="_self" class="kuTaGy wixui-button zKbzSQ" aria-disabled="false"><span class="M3I7Z2 wixui-button__label">Comprar agora</span></a>
                                                     </div>
@@ -8249,7 +8347,7 @@
                                     <div id="comp-kr242wx7" class="MazNVa comp-kr242wx7 wixui-image">
                                       <div data-testid="linkElement" class="j7pOnl">
                                         <wow-image id="img_comp-kr242wx7" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr242wx7&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:70,&quot;targetHeight&quot;:70,&quot;isLQIP&quot;:true,&quot;imageData&quot;:{&quot;width&quot;:336,&quot;height&quot;:336,&quot;uri&quot;:&quot;c837a6_712e7109c7f845ef9bff5bb34cccff37~mv2.png&quot;,&quot;name&quot;:&quot;icon 3.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_712e7109c7f845ef9bff5bb34cccff37~mv2.png/v1/fill/w_70,h_70,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/icon%203.png">
-                                          <img src="./HOME _ TEMPLATE 2_files/icon 3.png" alt="" style="width: 70px; height: 70px; object-fit: cover; object-position: 50% 50%;" width="70" height="70" fetchpriority="high">
+                                          <img src="./HOME_TEMPLATE2_files/icon 3.png" alt="" style="width: 70px; height: 70px; object-fit: cover; object-position: 50% 50%;" width="70" height="70" fetchpriority="high">
                                         </wow-image>
                                       </div>
                                     </div>
@@ -8258,10 +8356,38 @@
                                           PRODUTO</span></h2>
                                     </div>
                                     <div id="comp-kr2428ud" class="KcpHeO tz5f0K comp-kr2428ud wixui-rich-text" data-testid="richTextElement">
-                                      <p class="font_8 wixui-rich-text__text" style="line-height:1.6em; text-align:center; font-size:17px;"><span style="letter-spacing:normal;" class="wixui-rich-text__text">Lorem ipsum dolor
+                                      <p class="font_8 wixui-rich-text__text" style="line-height:1.6em; text-align:center; font-size:17px;"><span id="productDescricao" style="letter-spacing:normal;" class="wixui-rich-text__text">Lorem ipsum dolor
                                           sit amet, consectetur adipiscing elit. Suspendisse non turpis blandit tortor
                                           euismod ullamcorper vitae ac justo. Aenean sollicitudin nunc sed felis varius,
-                                          et pharetra turpis tincidunt.</span></p>
+                                          et pharetra turpis tincidunt.</span>
+                                        <script>
+                                            function atualizarTextoProduto() {
+                                              const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                              const textoProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedTexto : null;
+
+                                              const productDescDiv = document.getElementById('productDescricao');
+                                              if (textoProduto) {
+                                                // Exibe a imagem do produto se estiver definida no localStorage
+                                                productDescDiv.textContent = `${textoProduto}`;
+                                              } else {
+                                                // Caso a imagem do produto não esteja definida no localStorage
+                                                productDescDiv.textContent = ' N/A';
+                                              }
+                                            }
+
+                                            // Chama a função ao carregar a página
+                                            window.addEventListener('load', atualizarTextoProduto);
+
+                                            // Ouvinte para eventos de alteração no localStorage
+                                            window.addEventListener('storage', function (e) {
+                                              if (e.key === 'opcoesSelecionadas') {
+                                                // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                // Atualize a imagem do produto
+                                                atualizarTextoProduto();
+                                              }
+                                            });
+                                          </script>
+                                      </p>
                                     </div>
                                   </div>
                                 </div>
@@ -8279,7 +8405,7 @@
                                   <div data-testid="colorUnderlay" class="LWbAav Kv1aVt"></div>
                                   <wix-bg-media id="bgMedia_comp-kr2440sb" class="SUz0WK" data-container-id="comp-kr2440sb" data-container-size="0, 0" data-page-id="c1dmp" data-bg-effect-name="BgSkew" style="width: 1831px; height: 1410.43px; left: 0px; top: -333.215px; transform: translate3d(0px, 0px, 0px) skew(0deg, 20deg);">
                                     <wow-image id="img_comp-kr2440sb" class="HlRz5e Kv1aVt dLPlxY mNGsUM bgImage" data-image-info="{&quot;containerId&quot;:&quot;comp-kr2440sb&quot;,&quot;alignType&quot;:&quot;center&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:980,&quot;targetHeight&quot;:744,&quot;isLQIP&quot;:true,&quot;imageData&quot;:{&quot;width&quot;:7680,&quot;height&quot;:4320,&quot;uri&quot;:&quot;c837a6_f9e52562144944449741488bfd2681f4~mv2.png&quot;,&quot;name&quot;:&quot;&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="BgSkew" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_f9e52562144944449741488bfd2681f4~mv2.png/v1/fill/w_1831,h_1410,al_c,q_95,usm_0.66_1.00_0.01,enc_auto/c837a6_f9e52562144944449741488bfd2681f4~mv2.png">
-                                      <img src="./HOME _ TEMPLATE 2_files/c837a6_f9e52562144944449741488bfd2681f4_mv2.png" alt="" style="width: 1831px; height: 1410.43px; object-fit: cover; object-position: 50% 50%;" width="980" height="744" fetchpriority="high">
+                                      <img src="./HOME_TEMPLATE2_files/c837a6_f9e52562144944449741488bfd2681f4_mv2.png" alt="" style="width: 1831px; height: 1410.43px; object-fit: cover; object-position: 50% 50%;" width="980" height="744" fetchpriority="high">
                                     </wow-image>
                                   </wix-bg-media>
                                 </div>
@@ -8288,7 +8414,7 @@
                                     <div id="comp-kr246gd2" class="MazNVa comp-kr246gd2 wixui-image">
                                       <div data-testid="linkElement" class="j7pOnl">
                                         <wow-image id="img_comp-kr246gd2" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr246gd2&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:953,&quot;targetHeight&quot;:694,&quot;isLQIP&quot;:true,&quot;imageData&quot;:{&quot;width&quot;:7000,&quot;height&quot;:4734,&quot;uri&quot;:&quot;c837a6_30d2bcf63656445b88de2184f0ddb170~mv2.png&quot;,&quot;name&quot;:&quot;shutterstock_1521991916 edited.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;crop&quot;:{&quot;x&quot;:250,&quot;y&quot;:0,&quot;width&quot;:6501,&quot;height&quot;:4734,&quot;svgId&quot;:&quot;909695c1e003409ba70b5561666c7c4d.svg&quot;}}}" data-bg-effect-name="" data-has-ssr-src="">
-                                          <img src="./HOME _ TEMPLATE 2_files/default.png" alt="" style="width: 953px; height: 694px; object-fit: cover; object-position: 50% 50%;" width="953" height="694" fetchpriority="high">
+                                          <img src="./HOME_TEMPLATE2_files/default.png" alt="" style="width: 953px; height: 694px; object-fit: cover; object-position: 50% 50%;" width="953" height="694" fetchpriority="high">
                                         </wow-image>
                                       </div>
                                     </div>
@@ -8350,7 +8476,7 @@
                               <div data-testid="colorUnderlay" class="LWbAav Kv1aVt"></div>
                               <div id="bgMedia_comp-kr25fih7" class="VgO9Yg">
                                 <wow-image id="img_comp-kr25fih7" class="HlRz5e Kv1aVt dLPlxY mNGsUM bgImage" data-image-info="{&quot;containerId&quot;:&quot;comp-kr25fih7&quot;,&quot;alignType&quot;:&quot;bottom&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:980,&quot;targetHeight&quot;:404,&quot;isLQIP&quot;:true,&quot;imageData&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080,&quot;uri&quot;:&quot;84770f_3eb255885dbb486790bc704b248e6860~mv2.jpg&quot;,&quot;name&quot;:&quot;&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="">
-                                  <img src="./HOME _ TEMPLATE 2_files/84770f_3eb255885dbb486790bc704b248e6860_mv2.jpg" alt="" style="width: 1831px; height: 422px; object-fit: cover; object-position: 50% 100%;" width="980" height="404" fetchpriority="high">
+                                  <img src="./HOME_TEMPLATE2_files/84770f_3eb255885dbb486790bc704b248e6860_mv2.jpg" alt="" style="width: 1831px; height: 422px; object-fit: cover; object-position: 50% 100%;" width="980" height="404" fetchpriority="high">
                                 </wow-image>
                               </div>
                             </div>
@@ -8446,56 +8572,56 @@
                                           <div id="comp-kr25ps1a" class="MazNVa comp-kr25ps1a wixui-image">
                                             <div data-testid="linkElement" class="j7pOnl">
                                               <wow-image id="img_comp-kr25ps1a" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr25ps1a&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:43,&quot;targetHeight&quot;:24,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:176,&quot;height&quot;:112,&quot;uri&quot;:&quot;c837a6_0c038d1905244309869036f4b2a87fba~mv2.png&quot;,&quot;name&quot;:&quot;Visa.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_0c038d1905244309869036f4b2a87fba~mv2.png/v1/fill/w_43,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Visa.png">
-                                                <img src="./HOME _ TEMPLATE 2_files/Visa.png" alt="Visa" style="width: 43px; height: 24px; object-fit: cover;" width="43" height="24" srcset="https://static.wixstatic.com/media/c837a6_0c038d1905244309869036f4b2a87fba~mv2.png/v1/fill/w_43,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Visa.png" fetchpriority="high">
+                                                <img src="./HOME_TEMPLATE2_files/Visa.png" alt="Visa" style="width: 43px; height: 24px; object-fit: cover;" width="43" height="24" srcset="https://static.wixstatic.com/media/c837a6_0c038d1905244309869036f4b2a87fba~mv2.png/v1/fill/w_43,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Visa.png" fetchpriority="high">
                                               </wow-image>
                                             </div>
                                           </div>
                                           <div id="comp-kr25ps16" class="MazNVa comp-kr25ps16 wixui-image">
                                             <div data-testid="linkElement" class="j7pOnl">
                                               <wow-image id="img_comp-kr25ps16" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr25ps16&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:43,&quot;targetHeight&quot;:24,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:132,&quot;height&quot;:84,&quot;uri&quot;:&quot;c837a6_24b45424cb584c759d470b3ab5bd6ee8~mv2.png&quot;,&quot;name&quot;:&quot;brand-mastercard_3x.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_24b45424cb584c759d470b3ab5bd6ee8~mv2.png/v1/fill/w_43,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/brand-mastercard_3x.png">
-                                                <img src="./HOME _ TEMPLATE 2_files/brand-mastercard_3x.png" alt="mastercard" style="width: 43px; height: 24px; object-fit: cover;" width="43" height="24" srcset="https://static.wixstatic.com/media/c837a6_24b45424cb584c759d470b3ab5bd6ee8~mv2.png/v1/fill/w_43,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/brand-mastercard_3x.png" fetchpriority="high">
+                                                <img src="./HOME_TEMPLATE2_files/brand-mastercard_3x.png" alt="mastercard" style="width: 43px; height: 24px; object-fit: cover;" width="43" height="24" srcset="https://static.wixstatic.com/media/c837a6_24b45424cb584c759d470b3ab5bd6ee8~mv2.png/v1/fill/w_43,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/brand-mastercard_3x.png" fetchpriority="high">
                                               </wow-image>
                                             </div>
                                           </div>
                                           <div id="comp-kr25ps1c" class="MazNVa comp-kr25ps1c wixui-image">
                                             <div data-testid="linkElement" class="j7pOnl">
                                               <wow-image id="img_comp-kr25ps1c" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr25ps1c&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:44,&quot;targetHeight&quot;:24,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:132,&quot;height&quot;:84,&quot;uri&quot;:&quot;c837a6_240e03fc0ff340c7b76226c536a43614~mv2.png&quot;,&quot;name&quot;:&quot;brand-chinaunionpay_3x.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_240e03fc0ff340c7b76226c536a43614~mv2.png/v1/fill/w_44,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/brand-chinaunionpay_3x.png">
-                                                <img src="./HOME _ TEMPLATE 2_files/brand-chinaunionpay_3x.png" alt="China union pay" style="width: 44px; height: 24px; object-fit: cover;" width="44" height="24" srcset="https://static.wixstatic.com/media/c837a6_240e03fc0ff340c7b76226c536a43614~mv2.png/v1/fill/w_44,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/brand-chinaunionpay_3x.png" fetchpriority="high">
+                                                <img src="./HOME_TEMPLATE2_files/brand-chinaunionpay_3x.png" alt="China union pay" style="width: 44px; height: 24px; object-fit: cover;" width="44" height="24" srcset="https://static.wixstatic.com/media/c837a6_240e03fc0ff340c7b76226c536a43614~mv2.png/v1/fill/w_44,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/brand-chinaunionpay_3x.png" fetchpriority="high">
                                               </wow-image>
                                             </div>
                                           </div>
                                           <div id="comp-kr25ps1c1" class="MazNVa comp-kr25ps1c1 wixui-image">
                                             <div data-testid="linkElement" class="j7pOnl">
                                               <wow-image id="img_comp-kr25ps1c1" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr25ps1c1&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:50,&quot;targetHeight&quot;:24,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:132,&quot;height&quot;:84,&quot;uri&quot;:&quot;c837a6_6dedb38a1d3b430ca7518edc51aef96f~mv2.png&quot;,&quot;name&quot;:&quot;brand-jcb_3x.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_6dedb38a1d3b430ca7518edc51aef96f~mv2.png/v1/fill/w_50,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/brand-jcb_3x.png">
-                                                <img src="./HOME _ TEMPLATE 2_files/brand-jcb_3x.png" alt="jcb" style="width: 50px; height: 24px; object-fit: cover;" width="50" height="24" srcset="https://static.wixstatic.com/media/c837a6_6dedb38a1d3b430ca7518edc51aef96f~mv2.png/v1/fill/w_50,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/brand-jcb_3x.png" fetchpriority="high">
+                                                <img src="./HOME_TEMPLATE2_files/brand-jcb_3x.png" alt="jcb" style="width: 50px; height: 24px; object-fit: cover;" width="50" height="24" srcset="https://static.wixstatic.com/media/c837a6_6dedb38a1d3b430ca7518edc51aef96f~mv2.png/v1/fill/w_50,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/brand-jcb_3x.png" fetchpriority="high">
                                               </wow-image>
                                             </div>
                                           </div>
                                           <div id="comp-kr25ps19" class="MazNVa comp-kr25ps19 wixui-image">
                                             <div data-testid="linkElement" class="j7pOnl">
                                               <wow-image id="img_comp-kr25ps19" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr25ps19&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:44,&quot;targetHeight&quot;:24,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:132,&quot;height&quot;:84,&quot;uri&quot;:&quot;c837a6_c2b8bb51f9ea4214a3dde0df612a7322~mv2.png&quot;,&quot;name&quot;:&quot;brand-amex_3x.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="">
-                                                <img src="./HOME _ TEMPLATE 2_files/brand-amex_3x.png" alt="american express" style="width: 44px; height: 24px; object-fit: cover;" width="44" height="24" fetchpriority="high">
+                                                <img src="./HOME_TEMPLATE2_files/brand-amex_3x.png" alt="american express" style="width: 44px; height: 24px; object-fit: cover;" width="44" height="24" fetchpriority="high">
                                               </wow-image>
                                             </div>
                                           </div>
                                           <div id="comp-kr25ps1a1" class="MazNVa comp-kr25ps1a1 wixui-image">
                                             <div data-testid="linkElement" class="j7pOnl">
                                               <wow-image id="img_comp-kr25ps1a1" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr25ps1a1&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:44,&quot;targetHeight&quot;:24,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:176,&quot;height&quot;:112,&quot;uri&quot;:&quot;c837a6_3bd26f0fc46543128309cbbd71f8a5e3~mv2.png&quot;,&quot;name&quot;:&quot;Discover.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_3bd26f0fc46543128309cbbd71f8a5e3~mv2.png/v1/fill/w_44,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Discover.png">
-                                                <img src="./HOME _ TEMPLATE 2_files/Discover.png" alt="Discover" style="width: 44px; height: 24px; object-fit: cover;" width="44" height="24" srcset="https://static.wixstatic.com/media/c837a6_3bd26f0fc46543128309cbbd71f8a5e3~mv2.png/v1/fill/w_44,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Discover.png" fetchpriority="high">
+                                                <img src="./HOME_TEMPLATE2_files/Discover.png" alt="Discover" style="width: 44px; height: 24px; object-fit: cover;" width="44" height="24" srcset="https://static.wixstatic.com/media/c837a6_3bd26f0fc46543128309cbbd71f8a5e3~mv2.png/v1/fill/w_44,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Discover.png" fetchpriority="high">
                                               </wow-image>
                                             </div>
                                           </div>
                                           <div id="comp-kr25ps1b" class="MazNVa comp-kr25ps1b wixui-image">
                                             <div data-testid="linkElement" class="j7pOnl">
                                               <wow-image id="img_comp-kr25ps1b" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr25ps1b&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:34,&quot;targetHeight&quot;:24,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:150,&quot;height&quot;:110,&quot;uri&quot;:&quot;c837a6_c948fcfd7a7d4f8bb8b80c76565f9738~mv2.png&quot;,&quot;name&quot;:&quot;Diners.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_c948fcfd7a7d4f8bb8b80c76565f9738~mv2.png/v1/fill/w_34,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Diners.png">
-                                                <img src="./HOME _ TEMPLATE 2_files/Diners.png" alt="Diners club" style="width: 34px; height: 24px; object-fit: cover;" width="34" height="24" srcset="https://static.wixstatic.com/media/c837a6_c948fcfd7a7d4f8bb8b80c76565f9738~mv2.png/v1/fill/w_34,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Diners.png" fetchpriority="high">
+                                                <img src="./HOME_TEMPLATE2_files/Diners.png" alt="Diners club" style="width: 34px; height: 24px; object-fit: cover;" width="34" height="24" srcset="https://static.wixstatic.com/media/c837a6_c948fcfd7a7d4f8bb8b80c76565f9738~mv2.png/v1/fill/w_34,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Diners.png" fetchpriority="high">
                                               </wow-image>
                                             </div>
                                           </div>
                                           <div id="comp-kr25ps1b1" class="MazNVa comp-kr25ps1b1 wixui-image">
                                             <div data-testid="linkElement" class="j7pOnl">
                                               <wow-image id="img_comp-kr25ps1b1" class="HlRz5e BI8PVQ" data-image-info="{&quot;containerId&quot;:&quot;comp-kr25ps1b1&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;targetWidth&quot;:38,&quot;targetHeight&quot;:24,&quot;isLQIP&quot;:false,&quot;imageData&quot;:{&quot;width&quot;:176,&quot;height&quot;:112,&quot;uri&quot;:&quot;c837a6_e124e91ed49541508b0a0b63f6490d1c~mv2.png&quot;,&quot;name&quot;:&quot;PayPal.png&quot;,&quot;displayMode&quot;:&quot;fill&quot;}}" data-bg-effect-name="" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/c837a6_e124e91ed49541508b0a0b63f6490d1c~mv2.png/v1/fill/w_38,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/PayPal.png">
-                                                <img src="./HOME _ TEMPLATE 2_files/PayPal.png" alt="PayPal" style="width: 38px; height: 24px; object-fit: cover;" width="38" height="24" srcset="https://static.wixstatic.com/media/c837a6_e124e91ed49541508b0a0b63f6490d1c~mv2.png/v1/fill/w_38,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/PayPal.png" fetchpriority="high">
+                                                <img src="./HOME_TEMPLATE2_files/PayPal.png" alt="PayPal" style="width: 38px; height: 24px; object-fit: cover;" width="38" height="24" srcset="https://static.wixstatic.com/media/c837a6_e124e91ed49541508b0a0b63f6490d1c~mv2.png/v1/fill/w_38,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/PayPal.png" fetchpriority="high">
                                               </wow-image>
                                             </div>
                                           </div>

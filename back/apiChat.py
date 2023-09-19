@@ -13,7 +13,7 @@ def apiChatGpt(textoEntrada):
     #     "messages": [
     #         {
     #             "role": "system",
-    #             "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Seu objetivo é gerar 5 frases persuasivas, 2 textos persuasivos e 3 slogans que eu possa colocar em uma landing page de vendas. Além disso, tenho uma imagem do produto e quero mudar o background dela. Descreva em detalhes como deve ser o background para a imagem considerando o contexto de uso do produto. Mantenha as frases concisas. Cada texto deve possuir 1 parágrafo e ser feito para retratar a situação de uso do produto e sua proposta de valor. Além disso, não comece o texto pedindo para imaginar algo. Os slogans devem ser feitos de forma bem criativa. As descrições de background devem ser feitas em inglês, limitadas a 1 frase e deve conter: Local onde o produto deve estar, características desse local, tipo de iluminação e sentimento que a imagem deve passar. 
+    #             "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Seu objetivo é gerar 4 frases persuasivas, 2 textos persuasivos e 4 slogans que eu possa colocar em uma landing page de vendas. Além disso, tenho uma imagem do produto e quero mudar o background dela. Dê 4 descrições em detalhes sobre como deve ser o background para a imagem considerando o contexto de uso do produto. Mantenha as frases concisas. Cada texto deve possuir 1 parágrafo e ser feito para retratar a situação de uso do produto e sua proposta de valor. Além disso, não comece o texto pedindo para imaginar algo. Os slogans devem ser feitos de forma bem criativa. As descrições de background devem ser feitas em inglês, limitadas a 1 frase e deve conter: Local onde o produto deve estar, características desse local, tipo de iluminação e sentimento que a imagem deve passar. 
     #             Responda no seguinte template JSON:
     #             {
     #             "Frases Persuasivas": ["Frase  1"],
@@ -35,6 +35,7 @@ def apiChatGpt(textoEntrada):
     # requisicao = requests.post(link, headers=headers, data=body_mensagem)
     # resposta = requisicao.json()
     # mensagem = resposta["choices"][0]["message"]["content"]
+    # return mensagem
     mensagem = """
     "Frases Persuasivas:
     1. "Com o barber+, fazer a barba nunca foi tão fácil e confortável."

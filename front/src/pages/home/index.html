@@ -19,20 +19,23 @@
         <h1>Formulário do produto</h1>
         <form id="form">
           <div id="nameDiv" class="txtInputDiv">
+            <label for="input-word" class="txtInputLabel">Nome:</label>
             <input type="text" placeholder="Ex: Café+" id="input-word" required/>
           </div>
           <div id="whatIsDiv" class="txtInputDiv">
+            <label for="input-what" class="txtInputLabel">O que é o produto?</label>
             <input type="text" placeholder="Ex: Cafeteira" id="input-what" required/>
           </div>
           <div id="descriptionDiv" class="txtInputDiv">
+            <label for="prodDescr" class="txtInputLabel">Descrição: </label>
             <textarea id="prodDescr" cols="50" rows="10" placeholder="Ex: Cafeteira que faz café" required></textarea>
           </div>
           <div id="imageDiv">
-            <input type="file" id="input-image" accept="image/*" />
+            <input type="file" id="input-image" accept="image/*" onchange="showImg()" />
             <label for="input-image" id="img-label">Selecione a imagem do produto</label>
-            <img id="selected-image" src="#" alt="Imagem selecionada" />
+            <img id="selected-image" src="#" alt="Imagem selecionada"/>
           </div>
-          <button id="btn-avancar" class="styled-button">Avançar</button>
+          <button id="btn-avancar" class="styled-button" onclick="submitForm(event)">Avançar</button>
         </form>
       </div>
     </div>
