@@ -3,6 +3,7 @@ import json
 from apiClip import apiChangeBackGround
 from apiChat import apiChatGpt
 from createZip import makeZip
+from changeHtml import chngHtml
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -90,6 +91,8 @@ def handle_request():
             resultado = funcao_1(parametro)
         elif funcao == "makeZip":
             resultado = makeZip(parametro)
+        elif funcao == "chngHtml":
+            resultado = chngHtml(parametro)
         else:
             resultado = "Função desconhecida"
         

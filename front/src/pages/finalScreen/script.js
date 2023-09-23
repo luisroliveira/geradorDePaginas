@@ -47,6 +47,56 @@ class ChamarServidorService {
     })
   }
 
+  async criarZip(nomeTemplate, nomeImg1, nomeImg2) {
+    const funcaoParaChamar = 'makeZip' // Nome da função que você deseja chamar
+    const parametro = nomeTemplate + ";" + nomeImg1 + ";" + nomeImg2
+    console.log(parametro)
+    return new Promise((resolve, reject) => {
+      fetch('http://localhost:8000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const resultadoJson = JSON.stringify(data.resultado) // REMOVER O STRINGIFY QUANDO FOR USAR A API
+        localStorage.setItem("ResultadoGpt", resultadoJson)
+        resolve(resultadoJson)
+      })
+      .catch(error => {
+        console.error('Erro:', error)
+        reject(error)
+      })
+    })
+  }
+
+  async criarTemplate(nomeTemplate, slogan, nomeLoja, nomeProduto, texto, frase, nomeImg1, nomeimg2) {
+
+    const funcaoParaChamar = 'chngHtml' // Nome da função que você deseja chamar
+    const parametro = nomeTemplate + ";" +  slogan + ";" + nomeLoja + ";" + nomeProduto + ";" + texto + ";" + frase + ";" + nomeImg1 +  ";" + nomeimg2
+    return new Promise((resolve, reject) => {
+      fetch('http://localhost:8000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const resultadoJson = JSON.stringify(data.resultado) // REMOVER O STRINGIFY QUANDO FOR USAR A API
+        localStorage.setItem("ResultadoGpt", resultadoJson)
+        resolve(resultadoJson)
+      })
+      .catch(error => {
+        console.error('Erro:', error)
+        reject(error)
+      })
+    })
+  }
+
   downloadZip() {
     fetch("http://localhost:8000/download", {
     method: 'GET'
@@ -76,12 +126,45 @@ class ChamarServidorService {
   }
 }
 
+function getnome(nome) {
+  nome = nome.split("/")
+  nome = nome.pop()
+  nome = nome.split(".")
+  return nome[0]
+}
+
+function getnomeImg(nome) {
+  nome = nome.split("/")
+  nome = nome.pop()
+  return nome
+}
+
 // const inputImage = document.getElementById('input-image')
 // const selectedImage = document.getElementById('selected-image')
 const botao = document.getElementById("download")
 const chamarServidorService = new ChamarServidorService()
 
 botao.addEventListener("click", async function() {
-  await chamarServidorService.criarZip("HOME_TEMPLATE1")
+  const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+  const imgProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedImage : null;
+  const frase = opcoesSelecionadas ? opcoesSelecionadas.selectedFrase : null;
+  const slogan = opcoesSelecionadas ? opcoesSelecionadas.selectedSlogan : null;
+  const texto = opcoesSelecionadas ? opcoesSelecionadas.selectedTexto : null;
+
+  const dadosDoProduto = JSON.parse(localStorage.getItem('dadosDoProduto'));
+  const nomeProduto = dadosDoProduto ? dadosDoProduto.nome : null;
+  const nomeLoja = dadosDoProduto ? dadosDoProduto.lojaNome : null;
+
+  const nomeImg = getnomeImg(imgProduto)
+  const nomeImg1 = nomeImg
+  const nomeImg2 = nomeImg
+  let nomeTemplate = localStorage.getItem("templatePath")
+  nomeTemplate = getnome(nomeTemplate)
+  console.log(nomeImg)
+  console.log(nomeImg1)
+  console.log(nomeImg2)
+  console.log(nomeTemplate)
+  await chamarServidorService.criarTemplate(nomeTemplate, slogan, nomeLoja, nomeProduto, texto, frase, nomeImg1, nomeImg2)
+  await chamarServidorService.criarZip(nomeTemplate, nomeImg1, nomeImg2)
   await chamarServidorService.downloadZip()
 });
