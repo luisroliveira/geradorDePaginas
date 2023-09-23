@@ -158,7 +158,9 @@ function submitForm(event) {
 
   // Valida os dados inseridos
   if (nome.trim() === '' || oQueEh.trim() === '' || descricao.trim() === '' || imageFile === undefined) {
-    alert('Por favor, preencha todos os campos antes de avançar.');
+  alert('Por favor, preencha todos os campos antes de avançar.');
+  } else if (imageFile.size > 3 * 1024 * 1024) { // Limite de 3 MB
+  alert('A imagem selecionada é muito grande. Selecione uma imagem menor (limite de 3 MB).'); 
   } else {
     // Determina qual template foi escolhido
     const opcao1Selecionada = document.getElementById('option1').checked;
