@@ -72,7 +72,7 @@ class CriarElementos {
 
 class ChamarServidorService {
   constructor () {
-    this.urlServidor = 'http://localhost:8000'
+    this.urlServidor = 'https://geradordepaginas.onrender.com/'
   }
 
   addImageToInput (imageURL) {

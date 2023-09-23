@@ -1,11 +1,13 @@
 class ChamarServidorService {
-  constructor () {}
+  constructor () {
+    this.urlServidor = 'https://geradordepaginas.onrender.com/'
+  }
 
   chamarServidor(nomeFuncao, nomeParametro) {
     const funcaoParaChamar = nomeFuncao // Nome da função que você deseja chamar
     const parametro = nomeParametro
   
-    fetch('http://localhost:8000', {
+    fetch(this.urlServidor, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -27,7 +29,7 @@ class ChamarServidorService {
     const parametro = nomeTemplate
 
     return new Promise((resolve, reject) => {
-      fetch('http://localhost:8000', {
+      fetch(this.urlServidor, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -98,7 +100,8 @@ class ChamarServidorService {
   }
 
   downloadZip() {
-    fetch("http://localhost:8000/download", {
+    const serverUrl = this.urlServidor + "/download"
+    fetch(serverUrl, {
     method: 'GET'
     })
     .then(response => {

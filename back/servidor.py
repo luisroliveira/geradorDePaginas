@@ -10,6 +10,7 @@ app = Flask(__name__)
 CORS(app)
 UPLOAD_FOLDER = 'imagensBackground/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+urlServidor = 'https://geradordepaginas.onrender.com'
 
 def funcao_1(parametro):
     resultado = f"Olá da Função 1, {parametro}!"
@@ -39,7 +40,7 @@ def change_img_bg():
             # Por exemplo, para salvar a imagem em um diretório chamado "uploads":
             pathImagem = apiChangeBackGround(image_file, prompt, app.config['UPLOAD_FOLDER'])
             # URL da imagem
-            image_url = f"http://localhost:8000/change-background/{pathImagem}"
+            image_url = f"{urlServidor}/change-background/{pathImagem}"
             return jsonify({"message": "Imagem enviada com sucesso!", "image_url": image_url})
         else:
             return jsonify({"error": "Nenhum arquivo de imagem recebido"}), 400
