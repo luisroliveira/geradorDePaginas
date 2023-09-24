@@ -6851,14 +6851,40 @@
                                           class="M3I7Z2 wixui-button__label">COMPRAR</span></a></div>
                                     <div id="comp-ih3hrpn3" class="BaOVQ8 tz5f0K comp-ih3hrpn3 wixui-rich-text"
                                       data-testid="richTextElement">
-                                      <p style="line-height:1.4em; font-size:15px;"
+                                      <p style="line-height:1.4em; font-size:15px; font-weight: bold;"
                                         class="font_8 wixui-rich-text__text"><span style="letter-spacing:0.05em;"
-                                          class="wixui-rich-text__text"><span style="text-decoration:underline;"
-                                            class="wixui-rich-text__text"><span style="line-height:1.4em;"
-                                              class="wixui-rich-text__text"><a
+                                          class="wixui-rich-text__text"><span class="wixui-rich-text__text"><span style="line-height:1.4em;"
+                                              class="wixui-rich-text__text"><a id="productSlogan"
                                                 target="_self"
                                                 data-anchor-comp-id="comp-ihxcnxti" data-anchor="dataItem-ihxcnxtj"
-                                                class="wixui-rich-text__text">SLOGAN</a></span></span></span></p>
+                                                class="wixui-rich-text__text">SLOGAN</a>
+                                                <script>
+                                                  function atualizarSloganProduto() {
+                                                    const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
+                                                    const sloganProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedSlogan : null;
+
+                                                    const productSloganDiv = document.getElementById('productSlogan');
+                                                    if (sloganProduto) {
+                                                      // Exibe a imagem do produto se estiver definida no localStorage
+                                                      productSloganDiv.textContent = `${sloganProduto}`;
+                                                    } else {
+                                                      // Caso a imagem do produto não esteja definida no localStorage
+                                                      productSloganDiv.textContent = 'SLOGAN';
+                                                    }
+                                                  }
+
+                                                  // Chama a função ao carregar a página
+                                                  window.addEventListener('load', atualizarSloganProduto);
+
+                                                  // Ouvinte para eventos de alteração no localStorage
+                                                  window.addEventListener('storage', function (e) {
+                                                    if (e.key === 'opcoesSelecionadas') {
+                                                      // O item 'opcoesSelecionadas' no localStorage foi modificado
+                                                      // Atualize a imagem do produto
+                                                      atualizarSloganProduto();
+                                                    }
+                                                  });
+                                              </script></span></span></span></p>
                                     </div>
                                     <div id="comp-ih3hrpmz" class="BaOVQ8 tz5f0K comp-ih3hrpmz wixui-rich-text"
                                       data-testid="richTextElement">

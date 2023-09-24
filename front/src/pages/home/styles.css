@@ -6,7 +6,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200vh;
+    height: 270vh;
 }
 
 .container {
@@ -21,6 +21,24 @@ body {
 
 h1 {
     margin-top: 0;
+}
+
+h2 {
+    text-align: justify;
+    padding: 0 1.5em;
+}
+
+.siteDesc {
+    margin: 0px 10px;
+    text-align: justify;
+    padding: 10px;
+}
+
+.item-tutorial {
+    margin: 0 10px;
+    padding: 2px 10px;
+    text-align: justify;
+    font-size: 14px;
 }
 
 .overlay {
