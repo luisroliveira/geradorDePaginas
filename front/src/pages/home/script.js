@@ -7,6 +7,7 @@ class ChamarServidorService {
     const funcaoParaChamar = 'apiChatGpt' // Nome da função que você deseja chamar
     const parametro = "Nome: " + nome + "\n" + "Produto: " + what + "\n" + "Descrição: " + descricao
     const urlServidor = this.urlServidor
+    const apiKey = localStorage.getItem('openAIKey');
 
     return new Promise((resolve, reject) => {
       fetch(urlServidor, {
@@ -14,11 +15,11 @@ class ChamarServidorService {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
+        body: JSON.stringify({ funcao: funcaoParaChamar, parametro, apiKey })
       })
       .then(response => response.json())
       .then(data => {
-          const resultadoJson = JSON.stringify(data.resultado) // REMOVER O STRINGIFY QUANDO FOR USAR A API
+          const resultadoJson = data.resultado // REMOVER O STRINGIFY QUANDO FOR USAR A API
           localStorage.setItem("ResultadoGpt", resultadoJson)
           resolve(resultadoJson)
         })
@@ -82,6 +83,11 @@ function showImg() {
   }
 }
 
+function armazenarKey() {
+  const openAIKey = document.getElementById('keyOpenAI').value;
+  localStorage.setItem('openAIKey', openAIKey);
+}
+
 function armazenarVariaveis(nome, oQueEh, descricao, lojaNome, imageFile) {
   // Criar um objeto JSON com as variáveis
   const dados = {
@@ -110,6 +116,7 @@ function armazenarVariaveis(nome, oQueEh, descricao, lojaNome, imageFile) {
 
 function makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opcao2Selecionada, lojaNome) {
   armazenarVariaveis(nome, oQueEh, descricao, lojaNome, imageFile);
+  armazenarKey();
 
   const caminhoDoArquivo = determinarCaminhoDoArquivo(opcao1Selecionada, opcao2Selecionada);
   localStorage.setItem('templatePath', caminhoDoArquivo);

@@ -70,17 +70,19 @@ class ChamarServidorService {
   }
 
   requisitarGPTBase(urlServidor, funcaoParaChamar, parametro, campoLocalStorage) {
+    const apiKey = localStorage.getItem('openAIKey');
+
     return new Promise((resolve, reject) => {
       fetch(urlServidor, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
+        body: JSON.stringify({ funcao: funcaoParaChamar, parametro, apiKey })
       })
       .then(response => response.json())
       .then(data => {
-          const resultadoJson = data.resultado // COLOCAR JSON.PARSE QUANDO FOR USAR A API
+          const resultadoJson = JSON.parse(data.resultado) // COLOCAR JSON.PARSE QUANDO FOR USAR A API
           const objetoArmazenado = JSON.parse(localStorage.getItem("ResultadoGpt")) || [];
           objetoArmazenado[campoLocalStorage] = resultadoJson["result"];
           localStorage.setItem('ResultadoGpt', JSON.stringify(objetoArmazenado));

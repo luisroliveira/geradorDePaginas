@@ -85,15 +85,16 @@ def handle_request():
         data = request.get_json()
         funcao = data.get('funcao')
         parametro = data.get('parametro')
+        apiKey = data.get('apiKey')
         
         if funcao == "apiChatGpt":
-            resultado = apiChatGpt(parametro)
+            resultado = apiChatGpt(parametro, apiKey)
         elif funcao == "gerarFrase":
-            resultado = gerarFrase(parametro)
+            resultado = gerarFrase(parametro, apiKey)
         elif funcao == "gerarTexto":
-            resultado = gerarTexto(parametro)
+            resultado = gerarTexto(parametro, apiKey)
         elif funcao == "gerarSlogan":
-            resultado = gerarSlogan(parametro)
+            resultado = gerarSlogan(parametro, apiKey)
         elif funcao == "makeZip":
             resultado = makeZip(parametro)
         elif funcao == "chngHtml":
