@@ -38,8 +38,7 @@ class ChamarServidorService {
       })
       .then(response => response.json())
       .then(data => {
-        const resultadoJson = JSON.stringify(data.resultado) // REMOVER O STRINGIFY QUANDO FOR USAR A API
-        localStorage.setItem("ResultadoGpt", resultadoJson)
+        const resultadoJson = JSON.stringify(data.resultado)
         resolve(resultadoJson)
       })
       .catch(error => {
@@ -54,7 +53,7 @@ class ChamarServidorService {
     const parametro = nomeTemplate + ";" + nomeImg1 + ";" + nomeImg2
     console.log(parametro)
     return new Promise((resolve, reject) => {
-      fetch('http://localhost:8000', {
+      fetch(this.urlServidor, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -63,8 +62,7 @@ class ChamarServidorService {
       })
       .then(response => response.json())
       .then(data => {
-        const resultadoJson = JSON.stringify(data.resultado) // REMOVER O STRINGIFY QUANDO FOR USAR A API
-        localStorage.setItem("ResultadoGpt", resultadoJson)
+        const resultadoJson = JSON.stringify(data.resultado)
         resolve(resultadoJson)
       })
       .catch(error => {
@@ -79,7 +77,7 @@ class ChamarServidorService {
     const funcaoParaChamar = 'chngHtml' // Nome da função que você deseja chamar
     const parametro = nomeTemplate + ";" +  slogan + ";" + nomeLoja + ";" + nomeProduto + ";" + texto + ";" + frase + ";" + nomeImg1 +  ";" + nomeimg2
     return new Promise((resolve, reject) => {
-      fetch('http://localhost:8000', {
+      fetch(this.urlServidor, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -88,8 +86,7 @@ class ChamarServidorService {
       })
       .then(response => response.json())
       .then(data => {
-        const resultadoJson = JSON.stringify(data.resultado) // REMOVER O STRINGIFY QUANDO FOR USAR A API
-        localStorage.setItem("ResultadoGpt", resultadoJson)
+        const resultadoJson = JSON.stringify(data.resultado)
         resolve(resultadoJson)
       })
       .catch(error => {
