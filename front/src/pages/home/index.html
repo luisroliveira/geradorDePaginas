@@ -17,16 +17,21 @@
         <p class="siteDesc">O iNOVE é uma ferramenta que permite aos usuários criar páginas de produtos personalizadas de forma fácil e intuitiva. Com essa ferramenta, você pode criar páginas de produtos atraentes e informativas para promover seus produtos ou serviços. A ferramenta oferece uma interface simples e flexível, permitindo que você insira informações sobre seu produto, imagens e escolha entre diferentes modelos de página.</p>
         <h2>Tutorial de Uso:</h2>
         <ol>
+          <li class="item-tutorial"><strong>Adicione a chave da API da OpenAI</strong></li>
           <li class="item-tutorial"><strong>Preencha os Detalhes do Produto:</strong> Nome da loja, nome do produto, o que é o produto e uma descrição dele.</li>
           <li class="item-tutorial"><strong>Escolha um Modelo de Página:</strong> Escolha entres os templates disponiveis qual é o mais idela para seu produto.</li>
           <li class="item-tutorial"><strong>Adicione uma Imagem do Produto:</strong> Tire uma boa foto do produto ou um de um modelo do seu produto e dê o upload dela (o arquivo dever ter menos de 3MB). Para um bom resultado certifique-se que o seu produto está centralizado na imagem e que ela tenha uma proporção de 3:2 e uma qualidade razoável.</li>
-          <li class="item-tutorial"><strong>Personalize a Página:</strong> Selecione entre as sugestões as imagens com planos de fundo diferentes, um slogan, uma frase e uma descrição do seu produto para por no site e caso não goste de alguma das sugestões você pode gerar novamente. A cada etapa você pode visualizar o preview do site que está personalizando.</li>
+          <li class="item-tutorial"><strong>Personalize a Página:</strong> Selecione entre as sugestões as imagens com planos de fundo diferentes, um slogan, uma frase e uma descrição do seu produto para por no site e caso não goste de alguma das sugestões você pode gerar novamente. A cada etapa você pode visualizar a preview do site que está personalizando.</li>
           <li class="item-tutorial"><strong>Baixe a Página:</strong> Após a conclusão, você terá a opção de baixa a página para uso posterior.</li>
         </ol>
       </div>
       <div id="formDiv">
         <h1>Formulário do produto</h1>
         <form id="form">
+          <div id="keyDiv" class="txtInputDiv">
+            <label for="keyOpenAI" class="txtInputLabel">Chave da API da OpenAI:</label>
+            <input type="text" placeholder="Key" id="keyOpenAI" required/>
+          </div>
           <div id="storeDiv" class="txtInputDiv">
             <label for="storeName" class="txtInputLabel">Nome da loja:</label>
             <input type="text" placeholder="Ex: União" id="storeName" required/>
