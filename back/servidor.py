@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory, send_file
 import json
 from apiClip import apiChangeBackGround
-from apiChat import apiChatGpt
+from apiChat import apiChatGpt, gerarFrase, gerarTexto, gerarSlogan
 from createZip import makeZip
 from changeHtml import chngHtml
 from flask_cors import CORS
@@ -88,8 +88,12 @@ def handle_request():
         
         if funcao == "apiChatGpt":
             resultado = apiChatGpt(parametro)
-        elif funcao == "funcao_1":
-            resultado = funcao_1(parametro)
+        elif funcao == "gerarFrase":
+            resultado = gerarFrase(parametro)
+        elif funcao == "gerarTexto":
+            resultado = gerarTexto(parametro)
+        elif funcao == "gerarSlogan":
+            resultado = gerarSlogan(parametro)
         elif funcao == "makeZip":
             resultado = makeZip(parametro)
         elif funcao == "chngHtml":

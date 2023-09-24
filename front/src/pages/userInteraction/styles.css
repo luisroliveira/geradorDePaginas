@@ -26,6 +26,33 @@ body {
     margin-right: auto;
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    /* Cor de fundo escura com opacidade */
+    display: none;
+    /* Inicialmente, a sobreposição está oculta */
+    z-index: 9999;
+    /* Z-index alto para garantir que esteja acima de outros elementos */
+}
+
+/* Estilos adicionais para evitar que o usuário clique em elementos abaixo da sobreposição */
+body.overlay-visible {
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.overlay-visible .overlay {
+    display: flex;
+    /* Mostra a sobreposição quando a classe overlay-visible está presente */
+    align-items: center;
+    justify-content: center;
+}
+
 .option-box {
     margin: 10px;
     border: 2px solid #000;
@@ -138,7 +165,7 @@ h1 {
     height: 100%;
     display: block;
 }
-  
+
 .responsive-iframe iframe {
     position: absolute;
     top: 100px;
@@ -147,8 +174,10 @@ h1 {
     height: 100%;
 }
 
-  /* Estilo para imagens de opções */
+/* Estilo para imagens de opções */
 .optionImage {
-    width: auto; /* Largura da imagem */
-    height: 250px; /* Altura da imagem */
+    width: auto;
+    /* Largura da imagem */
+    height: 250px;
+    /* Altura da imagem */
 }

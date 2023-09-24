@@ -1,6 +1,6 @@
 class ChamarServidorService {
   constructor () {
-    this.urlServidor = 'https://geradordepaginas.onrender.com/'
+    this.urlServidor = 'http://localhost:8000'
   }
 
   enviarNomeEDescricaoProduto(nome, what, descricao) {
@@ -55,6 +55,15 @@ class ChamarServidorService {
 
 const chamarServidorService = new ChamarServidorService()
 
+// Resetar a página caso o usuário volte para ela
+window.addEventListener('pageshow', function(event) {
+  // Verifique se a origem do evento é a página 1 (use a URL da página para isso)
+  if (event.target.location.href.includes('index.html')) {
+    // Limpe o formulário da página 1
+    document.getElementById('form').reset();
+  }
+});
+
 function showImg() {
   const inputImagem = document.getElementById('input-image');
   const imagemPreview = document.getElementById('selected-image');
@@ -73,7 +82,7 @@ function showImg() {
   }
 }
 
-function armazenarVariaveis(nome, oQueEh, descricao, lojaNome) {
+function armazenarVariaveis(nome, oQueEh, descricao, lojaNome, imageFile) {
   // Criar um objeto JSON com as variáveis
   const dados = {
     nome: nome,
@@ -87,10 +96,20 @@ function armazenarVariaveis(nome, oQueEh, descricao, lojaNome) {
 
   // Armazenar a string JSON no localStorage com uma chave específica
   localStorage.setItem('dadosDoProduto', dadosJSON);
+
+  const reader = new FileReader();
+
+  reader.addEventListener('load', () => {
+    localStorage.setItem('imagemProduto', reader.result);
+  });
+
+  if (imageFile) {
+    reader.readAsDataURL(imageFile);
+  }
 }
 
 function makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opcao2Selecionada, lojaNome) {
-  armazenarVariaveis(nome, oQueEh, descricao, lojaNome);
+  armazenarVariaveis(nome, oQueEh, descricao, lojaNome, imageFile);
 
   const caminhoDoArquivo = determinarCaminhoDoArquivo(opcao1Selecionada, opcao2Selecionada);
   localStorage.setItem('templatePath', caminhoDoArquivo);

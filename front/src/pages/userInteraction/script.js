@@ -1,7 +1,8 @@
+// CLASSE PARA CRIAR ELEMENTOS HTML
 class CriarElementos {
   constructor () {}
 
-  criarDivParaImg (imageURL) {
+  criarDivParaImg (imageURL, imgId) {
     // Crie a div com a classe "option-box" e atributos correspondentes
     var imgOptionDiv = document.createElement("div");
     imgOptionDiv.className = "option-box";
@@ -11,19 +12,10 @@ class CriarElementos {
     var imgElement = document.createElement("img");
     imgElement.src = imageURL; // Substitua pelo caminho da sua imagem
     imgElement.alt = "Descrição da imagem";
-    imgElement.id = "image";
+    imgElement.id = "image-" + imgId;
     imgElement.className = "optionImage"
 
-    // Crie o input de arquivo
-    var inputElement = document.createElement("input");
-    inputElement.type = "radio";
-    inputElement.name = "options"
-    inputElement.accept = "image/*";
-    inputElement.style.display = "none";
-    inputElement.id = "imageFileInput";
-
     // Anexe a tag <img> à div "imgOptionDiv"
-    imgOptionDiv.appendChild(inputElement);
     imgOptionDiv.appendChild(imgElement);
 
     // Adicionar um evento de clique a cada div de opção
@@ -70,57 +62,95 @@ class CriarElementos {
   }
 }
 
+
+// CLASSE PARA SE COMUNICAR COM O SERVIDOR
 class ChamarServidorService {
   constructor () {
-    this.urlServidor = 'https://geradordepaginas.onrender.com/'
+    this.urlServidor = 'http://localhost:8000'
   }
 
-  addImageToInput (imageURL) {
+  requisitarGPTBase(urlServidor, funcaoParaChamar, parametro, campoLocalStorage) {
     return new Promise((resolve, reject) => {
-      fetch(imageURL)
-        .then(function(response) {
-          return response.blob();
+      fetch(urlServidor, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
+      })
+      .then(response => response.json())
+      .then(data => {
+          const resultadoJson = data.resultado // COLOCAR JSON.PARSE QUANDO FOR USAR A API
+          const objetoArmazenado = JSON.parse(localStorage.getItem("ResultadoGpt")) || [];
+          objetoArmazenado[campoLocalStorage] = resultadoJson["result"];
+          localStorage.setItem('ResultadoGpt', JSON.stringify(objetoArmazenado));
+          resolve(resultadoJson)
         })
-        .then(function(blob) {
-          var file = new File([blob], "imagem.jpg", { type: "image/jpeg" });
-          
-          var inputImagem = document.getElementById("imageFileInput");
-          var fileList = new DataTransfer()
-          fileList.items.add(file)
-          inputImagem.files = fileList.files
-          resolve(inputImagem)
-        })
-        .catch(function(error) {
-          console.error("Erro ao carregar a imagem:", error);
+        .catch(error => {
+          console.error('Erro:', error)
           reject(error)
-        });
+        })
     })
   }
 
-  mudarBackground(imagem) {
+  enviarNomeEDescricaoProduto(funcao) {
+    const funcaoParaChamar = funcao // Nome da função que você deseja chamar
+    const dadosDoProduto = JSON.parse(localStorage.getItem("dadosDoProduto"));
+    const nome = dadosDoProduto['nome'];
+    const what = dadosDoProduto['oQueEh'];
+    const descricao = dadosDoProduto['descricao'];
+    const parametro = "Nome: " + nome + "\n" + "Produto: " + what + "\n" + "Descrição: " + descricao
+    const urlServidor = this.urlServidor
+
+    var campoLocalStorage = null;
+    
+    if (funcao == 'gerarFrase') {
+      campoLocalStorage = 'Frases Persuasivas';
+    } else if (funcao == 'gerarTexto') {
+      campoLocalStorage = 'Textos Persuasivos';
+    } else {
+      campoLocalStorage = 'Slogans';
+    }
+
+    return this.requisitarGPTBase(urlServidor, funcaoParaChamar, parametro, campoLocalStorage)
+  }
+
+  mudarBackground(formData) {
     const urlServidor = this.urlServidor + '/change-background'
 
-    fetch(urlServidor, {
-      method: "POST",
-      body: imagem,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if(data.image_url) {
-          var imageElement = document.getElementById("image");
-          if (imageElement) {
-            imageElement.src = data.image_url;
+    return new Promise((resolve, reject) => {
+      fetch(urlServidor, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.image_url) {
+            resolve(data.image_url)
+          } else {
+            throw Error("URL da imagem não encontrada na resposta.");
           }
-        } else {
-          console.error("URL da imagem não encontrada na resposta.");
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao enviar imagem:", error);
-      })
+        })
+        .catch((error) => {
+          console.error("Erro ao enviar imagem:", error);
+          reject(error)
+        })
+    })
   }
 }
 
+
+// ENUM PARA OS ESTADOS DA PÁGINA
+const States = Object.freeze({
+  IMAGE: 0,
+  FRASE: 1,
+  TEXTO: 2,
+  SLOGAN: 3  
+});
+var pageState = null;
+
+
+// OBJETO PARA ARMAZENAR AS OPÇÕES SELECIONADAS
 var selectedOptions = {
   selectedImage: null,
   selectedFrase: null,
@@ -128,6 +158,8 @@ var selectedOptions = {
   selectedSlogan: null
 };
 
+
+// FUNÇÕES AUXILIARES PARA ARMAZENAR AS OPÇÕES SELECIONADAS
 function selecionarOpcao(opcao, valor) {
   selectedOptions[opcao] = valor;
 }
@@ -140,20 +172,25 @@ function armazenarOpcoesSelecionadas() {
   localStorage.setItem('opcoesSelecionadas', dadosJSON);
 }
 
+
+// CRIAÇÃO DE OBJETOS E VARIÁVEIS GLOBAIS
 const chamarServidorService = new ChamarServidorService()
 const criarElementos = new CriarElementos()
 const btnAvancar = document.getElementById('btn-avancar')
 const btnRegerar = document.getElementById('btn-regerar')
 const btnSelecionar = document.getElementById('btn-selecionar')
 
+
+// O QUE FAZER QUANDO A PÁGINA CARREGAR
 document.addEventListener("DOMContentLoaded", function () {
+  pageState = States.IMAGE;
   const urlParams = new URLSearchParams(window.location.search);
   const imageUrl1 = urlParams.get("image_url1");
   const imageUrl2 = urlParams.get("image_url2");
 
   if (imageUrl1 && imageUrl2) {
-    const imgOptionDiv1 = criarElementos.criarDivParaImg(imageUrl1);
-    const imgOptionDiv2 = criarElementos.criarDivParaImg(imageUrl2);
+    const imgOptionDiv1 = criarElementos.criarDivParaImg(imageUrl1, 1);
+    const imgOptionDiv2 = criarElementos.criarDivParaImg(imageUrl2, 2);
     // Selecione a div com a classe "options" para anexar a nova div
     var optionsDiv = document.querySelector(".options");
     optionsDiv.style.flexDirection = "row";
@@ -164,46 +201,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 })
 
-function regerarImagem() {
-  // Adicionar a imagem na tag de input
-  var imageElement = document.getElementById("image");
-  if (imageElement) {
-    var imageURL = imageElement.src;
-    chamarServidorService.addImageToInput(imageURL)
-      .then(function() {
-        // Pegar a imagem do input
-        const inputImage = document.getElementById('imageFileInput')
-        const imageFile = inputImage.files[0]
-        // Cria um formData para enviar a imagem para o backend
-        var formData = new FormData()
-        formData.append('image', imageFile)
-        // Enviar imagem para o servidor
-        return chamarServidorService.mudarBackground(formData)
-      })
-      .then(function() {
-        console.log("Operação concluída com sucesso!")
-      })
-      .catch(function(error) {
-        console.error("Erro: " + error)
-      })
-  }
-}
 
-function selecionarImagem() {
+
+// FUNÇÕES PARA O PIPELINE DE GERAÇÃO DE SITE
+function selecionarImagemMostrarFrase() {
   // Selecionar a imagem
-  var imageElement = document.getElementById("image");
-  selecionarOpcao('selectedImage', imageElement.src);
-  armazenarOpcoesSelecionadas();
-
-  // // Mudar o css da opção de imagem
-  // const selectedBox = document.getElementById("img-option");
-  // selectedBox.classList.add('selected');
-
-  // Esconder o botão "Selecionar Imagem"
-  btnSelecionar.style.display = "none";
-
-  // Mostrar o botão "Avançar"
-  btnAvancar.style.display = "inline";
+  var selectedImgDiv = document.querySelector(".selected");
+  if (selectedImgDiv) {
+    var imageElement = selectedImgDiv.querySelector("img");
+    selecionarOpcao('selectedImage', imageElement.src);
+    armazenarOpcoesSelecionadas();
+    mostrarOpcoesFrases();
+  } else {
+    alert('Selecione uma opção antes de avançar.');
+  }
 }
 
 function clearOptions() {
@@ -214,6 +225,7 @@ function clearOptions() {
 }
 
 function mostrarOpcoesFrases() {
+  pageState = States.FRASE;
   // Limpar a div de opções
   clearOptions()
 
@@ -247,7 +259,7 @@ function escolherFraseMostrarTexto() {
   var fraseSelecionada = document.querySelector(".selected");
   if (fraseSelecionada) {
     selecionarOpcao('selectedFrase', fraseSelecionada.textContent);
-    armazenarOpcoesSelecionadas(); 
+    armazenarOpcoesSelecionadas();
     mostrarTexto();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -255,6 +267,7 @@ function escolherFraseMostrarTexto() {
 }
 
 function mostrarTexto() {
+  pageState = States.TEXTO;
   // Limpar a div de opções
   clearOptions()
 
@@ -292,6 +305,7 @@ function escolherTextoMostrarSlogan() {
 }
 
 function mostrarSlogan() {
+  pageState = States.SLOGAN;
   // Limpar a div de opções
   clearOptions()
 
@@ -323,6 +337,7 @@ function escolherSlogan() {
     selecionarOpcao('selectedSlogan', sloganSelecionado.textContent);
     armazenarOpcoesSelecionadas();
     printAll();
+    window.location.href = `../finalScreen/finalScreen.html`;
   } else {
     alert('Selecione uma opção antes de avançar.');
   }
@@ -330,4 +345,142 @@ function escolherSlogan() {
 
 function printAll() {
   console.log(selectedOptions);
+}
+
+
+// FUNÇÕES PARA REGERAR OPÇÕES
+function refazerRequisicaoImagem(imageBlob) {
+  const resultadoGpt = JSON.parse(localStorage.getItem('ResultadoGpt')) || []
+  const chaves = Object.keys(resultadoGpt)
+  const descricao1 = resultadoGpt[chaves[3]][0]
+  const descricao2 = resultadoGpt[chaves[3]][1]
+  var prompt1 = descricao1
+  var prompt2 = descricao2
+
+  // Cria um formData para enviar a imagem para o backend
+  var formData1 = new FormData();
+  formData1.append('image', imageBlob);
+  formData1.append('prompt', prompt1);
+  // Fazer a primeira chamada de geração de imagem
+  const mudarBackgroundPromise1 = chamarServidorService.mudarBackground(formData1);
+
+  // Cria um formData para enviar a imagem para o backend
+  var formData2 = new FormData();
+  formData2.append('image', imageBlob);
+  formData2.append('prompt', prompt2);
+  // Fazer a segunda chamada de geração de imagem
+  const mudarBackgroundPromise2 = chamarServidorService.mudarBackground(formData2);
+
+  return new Promise((resolve, reject) => {
+    Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2])
+    .then(([image_url1, image_url2]) => {
+      var imgOptionDiv1 = document.getElementById('image-1');
+      var imgOptionDiv2 = document.getElementById('image-2');
+  
+      imgOptionDiv1.src = image_url1;
+      imgOptionDiv2.src = image_url2;
+      console.log("operação concluída com sucesso!")
+      resolve();
+    })
+    .catch((error) => {
+      console.error("Erro ao fazer chamadas ao servidor:", error)
+      reject(error);
+    })
+  })
+}
+
+function regerarImagem() {
+  const imageFile = localStorage.getItem('imagemProduto');
+  return new Promise((resolve, reject) => {
+    fetch(imageFile)
+      .then((res) => {
+        return res.blob();
+      })
+      .then((blob) => {
+        return refazerRequisicaoImagem(blob);
+      })
+      .then(()=> {
+        resolve();
+      })
+      .catch((error) => {
+        console.error(error + " deu erro no blob")
+        reject(error);
+      })
+  })
+}
+
+function regerarFrases() {
+  return new Promise((resolve, reject) => {
+    chamarServidorService.enviarNomeEDescricaoProduto('gerarFrase')
+    .then(() => {
+      mostrarOpcoesFrases();
+      resolve();
+    })
+    .catch((error) => {
+      console.error(error + " ERRO NA GERAÇÃO DE FRASES");
+      reject(error);
+    })
+  })
+}
+
+function regerarTextos() {
+  return new Promise((resolve, reject) => {
+    chamarServidorService.enviarNomeEDescricaoProduto('gerarTexto')
+    .then(() => {
+      mostrarTexto();
+      resolve();
+    })
+    .catch((error) => {
+      console.error(error + " ERRO NA GERAÇÃO DE TEXTOS");
+      reject(error);
+    })
+  })
+}
+
+function regerarSlogans() {
+  return new Promise((resolve, reject) => {
+    chamarServidorService.enviarNomeEDescricaoProduto('gerarSlogan')
+    .then(() => {
+      mostrarSlogan();
+      resolve();
+    })
+    .catch((error) => {
+      console.error(error + " ERRO NA GERAÇÃO DE SLOGANS");
+      reject(error);
+    })
+  })
+}
+
+
+function regerarOpcoes() {
+  // Mostrar a sobreposição escura e o spinner
+  document.body.classList.add('overlay-visible');
+
+  if (pageState == States.IMAGE) {
+    regerarImagem().then(() => {
+        document.body.classList.remove('overlay-visible');  
+      }).catch((error) => {
+        console.error(error + " ERRO NA GERAÇÃO DE IMAGENS");
+      })
+  } else if (pageState == States.FRASE) {
+    regerarFrases().then(() => {
+        document.body.classList.remove('overlay-visible'); 
+      }).catch((error) => {
+        console.error(error + " ERRO NA GERAÇÃO DE FRASES");
+      })
+  } else if (pageState == States.TEXTO) {
+    regerarTextos().then(() => {
+        document.body.classList.remove('overlay-visible'); 
+      }).catch((error) => {
+        console.error(error + " ERRO NA GERAÇÃO DE TEXTOS");
+      })
+  } else if (pageState == States.SLOGAN) {
+    regerarSlogans().then(() => {
+        document.body.classList.remove('overlay-visible'); 
+      }).catch((error) => {
+        console.error(error + " ERRO NA GERAÇÃO DE SLOGANS");
+      })
+  } else {
+    console.log("no state")
+  }
 }
