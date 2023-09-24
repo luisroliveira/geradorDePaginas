@@ -124,8 +124,12 @@ function makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opc
       const chaves = Object.keys(resultadoGpt)
       const descricao1 = resultadoGpt[chaves[3]][0]
       const descricao2 = resultadoGpt[chaves[3]][1]
+      const descricao3 = resultadoGpt[chaves[3]][2]
+      const descricao4 = resultadoGpt[chaves[3]][3]
       var prompt1 = descricao1
       var prompt2 = descricao2
+      var prompt3 = descricao3
+      var prompt4 = descricao4
 
       // Cria um formData para enviar a imagem para o backend
       var formData1 = new FormData();
@@ -141,12 +145,28 @@ function makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opc
       // Fazer a segunda chamada de geração de imagem
       const mudarBackgroundPromise2 = chamarServidorService.mudarBackground(formData2);
 
+      // Cria um formData para enviar a imagem para o backend
+      var formData3 = new FormData();
+      formData3.append('image', imageFile);
+      formData3.append('prompt', prompt3);
+      // Fazer a segunda chamada de geração de imagem
+      const mudarBackgroundPromise3 = chamarServidorService.mudarBackground(formData3);
+
+      // Cria um formData para enviar a imagem para o backend
+      var formData4 = new FormData();
+      formData4.append('image', imageFile);
+      formData4.append('prompt', prompt4);
+      // Fazer a segunda chamada de geração de imagem
+      const mudarBackgroundPromise4 = chamarServidorService.mudarBackground(formData4);
+
       // Usar Promise.all para aguardar ambas as chamadas
-      return Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2]);
+      return Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2, mudarBackgroundPromise3, mudarBackgroundPromise4]);
     })
-    .then(([image_url1, image_url2]) => {
+    .then(([image_url1, image_url2, image_url3, image_url4]) => {
       // Ocultar a sobreposição escura e o spinner
       document.body.classList.remove('overlay-visible');
+      const urls = JSON.stringify({"imagesUrl": [image_url1, image_url2, image_url3, image_url4]});
+      localStorage.setItem('imagesUrl', urls);
       window.location.href = `../userInteraction/userInteraction.html?image_url1=${encodeURIComponent(image_url1)}&image_url2=${encodeURIComponent(image_url2)}`
     })
     .catch((error) => {

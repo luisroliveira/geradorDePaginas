@@ -142,17 +142,19 @@ class ChamarServidorService {
 
 // ENUM PARA OS ESTADOS DA PÁGINA
 const States = Object.freeze({
-  IMAGE: 0,
-  FRASE: 1,
-  TEXTO: 2,
-  SLOGAN: 3  
+  IMAGE1: 0,
+  IMAGE2: 1,
+  FRASE: 2,
+  TEXTO: 3,
+  SLOGAN: 4  
 });
 var pageState = null;
 
 
 // OBJETO PARA ARMAZENAR AS OPÇÕES SELECIONADAS
 var selectedOptions = {
-  selectedImage: null,
+  selectedImage1: null,
+  selectedImage2: null,
   selectedFrase: null,
   selectedTexto: null,
   selectedSlogan: null
@@ -183,7 +185,7 @@ const btnSelecionar = document.getElementById('btn-selecionar')
 
 // O QUE FAZER QUANDO A PÁGINA CARREGAR
 document.addEventListener("DOMContentLoaded", function () {
-  pageState = States.IMAGE;
+  pageState = States.IMAGE1;
   const urlParams = new URLSearchParams(window.location.search);
   const imageUrl1 = urlParams.get("image_url1");
   const imageUrl2 = urlParams.get("image_url2");
@@ -204,14 +206,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // FUNÇÕES PARA O PIPELINE DE GERAÇÃO DE SITE
-function selecionarImagemMostrarFrase() {
+function escolherImg1MostrarImg2() {
   // Selecionar a imagem
   var selectedImgDiv = document.querySelector(".selected");
   if (selectedImgDiv) {
     var imageElement = selectedImgDiv.querySelector("img");
-    selecionarOpcao('selectedImage', imageElement.src);
+    selecionarOpcao('selectedImage1', imageElement.src);
     armazenarOpcoesSelecionadas();
-    mostrarOpcoesFrases();
+    mostrarOpcoesImg2();
   } else {
     alert('Selecione uma opção antes de avançar.');
   }
@@ -224,13 +226,55 @@ function clearOptions() {
   }
 }
 
+function mostrarOpcoesImg2() {
+  pageState = States.IMAGE2;
+  // Limpar a div de opções
+  clearOptions()
+
+  var questionText = document.getElementById('textQuestion');
+  questionText.textContent = '2. Escolha a segunda imagem do seu produto';
+
+  // Mudar o css da div "options"
+  var optionsDiv = document.querySelector(".options");
+  optionsDiv.style.flexDirection = "row";
+
+  // Pegar as imagens geradas
+  const imagesUrl = JSON.parse(localStorage.getItem("imagesUrl"))["imagesUrl"] || [];
+  const url3 = imagesUrl[2]
+  const url4 = imagesUrl[3]
+
+  // Criar as divs de opção para cada frase
+  const imgOptionDiv1 = criarElementos.criarDivParaImg(url3, 1);
+  const imgOptionDiv2 = criarElementos.criarDivParaImg(url4, 2);
+
+  // Anexar as divs de opção à div "options"
+  optionsDiv.appendChild(imgOptionDiv1);
+  optionsDiv.appendChild(imgOptionDiv2);
+
+  // Mudar a função chamada no botão Avançar
+  document.getElementById('btn-avancar').setAttribute('onclick', 'escolherImg2MostrarFrase()');
+}
+
+function escolherImg2MostrarFrase() {
+  // Selecionar a imagem
+  var selectedImgDiv = document.querySelector(".selected");
+  if (selectedImgDiv) {
+    var imageElement = selectedImgDiv.querySelector("img");
+    selecionarOpcao('selectedImage2', imageElement.src);
+    armazenarOpcoesSelecionadas();
+    mostrarOpcoesFrases();
+  } else {
+    alert('Selecione uma opção antes de avançar.');
+  }
+}
+
 function mostrarOpcoesFrases() {
   pageState = States.FRASE;
   // Limpar a div de opções
   clearOptions()
 
   var questionText = document.getElementById('textQuestion');
-  questionText.textContent = '2. Escolha a frase do seu produto';
+  questionText.textContent = '3. Escolha a frase do seu produto';
 
   // Mudar o css da div "options"
   var optionsDiv = document.querySelector(".options");
@@ -272,7 +316,7 @@ function mostrarTexto() {
   clearOptions()
 
   var questionText = document.getElementById('textQuestion');
-  questionText.textContent = '3. Escolha a descrição do seu produto';
+  questionText.textContent = '4. Escolha a descrição do seu produto';
 
   // Pegar os textos retornados pelo GPT
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
@@ -310,7 +354,7 @@ function mostrarSlogan() {
   clearOptions()
 
   var questionText = document.getElementById('textQuestion');
-  questionText.textContent = '4. Escolha o slogan do seu produto';
+  questionText.textContent = '5. Escolha o slogan do seu produto';
 
   // Pegar os slogans retornados pelo GPT
   const frasesArmazenadas = JSON.parse(localStorage.getItem("ResultadoGpt")) || []
@@ -349,11 +393,11 @@ function printAll() {
 
 
 // FUNÇÕES PARA REGERAR OPÇÕES
-function refazerRequisicaoImagem(imageBlob) {
+function refazerRequisicaoImagem(imageBlob, idxImg1, idxImg2) {
   const resultadoGpt = JSON.parse(localStorage.getItem('ResultadoGpt')) || []
   const chaves = Object.keys(resultadoGpt)
-  const descricao1 = resultadoGpt[chaves[3]][0]
-  const descricao2 = resultadoGpt[chaves[3]][1]
+  const descricao1 = resultadoGpt[chaves[3]][idxImg1]
+  const descricao2 = resultadoGpt[chaves[3]][idxImg2]
   var prompt1 = descricao1
   var prompt2 = descricao2
 
@@ -389,7 +433,7 @@ function refazerRequisicaoImagem(imageBlob) {
   })
 }
 
-function regerarImagem() {
+function regerarImagem(idxImg1, idxImg2) {
   const imageFile = localStorage.getItem('imagemProduto');
   return new Promise((resolve, reject) => {
     fetch(imageFile)
@@ -397,7 +441,7 @@ function regerarImagem() {
         return res.blob();
       })
       .then((blob) => {
-        return refazerRequisicaoImagem(blob);
+        return refazerRequisicaoImagem(blob, idxImg1, idxImg2);
       })
       .then(()=> {
         resolve();
@@ -456,8 +500,14 @@ function regerarOpcoes() {
   // Mostrar a sobreposição escura e o spinner
   document.body.classList.add('overlay-visible');
 
-  if (pageState == States.IMAGE) {
-    regerarImagem().then(() => {
+  if (pageState == States.IMAGE1) {
+    regerarImagem(0, 1).then(() => {
+        document.body.classList.remove('overlay-visible');  
+      }).catch((error) => {
+        console.error(error + " ERRO NA GERAÇÃO DE IMAGENS");
+      })
+  } else if (pageState == States.IMAGE2) {
+    regerarImagem(2, 3).then(() => {
         document.body.classList.remove('overlay-visible');  
       }).catch((error) => {
         console.error(error + " ERRO NA GERAÇÃO DE IMAGENS");

@@ -146,7 +146,8 @@ const chamarServidorService = new ChamarServidorService()
 
 botao.addEventListener("click", async function() {
   const opcoesSelecionadas = JSON.parse(localStorage.getItem('opcoesSelecionadas'));
-  const imgProduto = opcoesSelecionadas ? opcoesSelecionadas.selectedImage : null;
+  const imgProduto1 = opcoesSelecionadas ? opcoesSelecionadas.selectedImage1 : null;
+  const imgProduto2 = opcoesSelecionadas ? opcoesSelecionadas.selectedImage2 : null;
   const frase = opcoesSelecionadas ? opcoesSelecionadas.selectedFrase : null;
   const slogan = opcoesSelecionadas ? opcoesSelecionadas.selectedSlogan : null;
   const texto = opcoesSelecionadas ? opcoesSelecionadas.selectedTexto : null;
@@ -155,12 +156,10 @@ botao.addEventListener("click", async function() {
   const nomeProduto = dadosDoProduto ? dadosDoProduto.nome : null;
   const nomeLoja = dadosDoProduto ? dadosDoProduto.lojaNome : null;
 
-  const nomeImg = getnomeImg(imgProduto)
-  const nomeImg1 = nomeImg
-  const nomeImg2 = nomeImg
+  const nomeImg1 = getnomeImg(imgProduto1)
+  const nomeImg2 = getnomeImg(imgProduto2)
   let nomeTemplate = localStorage.getItem("templatePath")
   nomeTemplate = getnome(nomeTemplate)
-  console.log(nomeImg)
   console.log(nomeImg1)
   console.log(nomeImg2)
   console.log(nomeTemplate)
