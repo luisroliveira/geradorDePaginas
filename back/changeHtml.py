@@ -20,7 +20,7 @@ def chngHtml(stringAtributos):
 
     urlTemplateSaida = "./assets/templateFinal/" + nomeTemplate + ".html" 
     # Salve o HTML renderizado em um arquivo de saída
-    with open(urlTemplateSaida, 'w') as arquivo_saida:
+    with open(urlTemplateSaida, 'w', encoding="utf-8") as arquivo_saida:
         arquivo_saida.write(html_renderizado)
 
 # chngHtml("HOME_TEMPLATE1", "SLOGAM TESTE", "NOMELOJA", "NOMEPRODUTO", "TEXTO", "FRASE", "prancha.jpeg")
