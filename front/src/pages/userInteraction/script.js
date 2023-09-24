@@ -1,7 +1,7 @@
 class CriarElementos {
   constructor () {}
 
-  criarDivParaImg (imageURL) {
+  criarDivParaImg (imageURL, imgId) {
     // Crie a div com a classe "option-box" e atributos correspondentes
     var imgOptionDiv = document.createElement("div");
     imgOptionDiv.className = "option-box";
@@ -11,19 +11,10 @@ class CriarElementos {
     var imgElement = document.createElement("img");
     imgElement.src = imageURL; // Substitua pelo caminho da sua imagem
     imgElement.alt = "Descrição da imagem";
-    imgElement.id = "image";
+    imgElement.id = "image-" + imgId;
     imgElement.className = "optionImage"
 
-    // Crie o input de arquivo
-    var inputElement = document.createElement("input");
-    inputElement.type = "radio";
-    inputElement.name = "options"
-    inputElement.accept = "image/*";
-    inputElement.style.display = "none";
-    inputElement.id = "imageFileInput";
-
     // Anexe a tag <img> à div "imgOptionDiv"
-    imgOptionDiv.appendChild(inputElement);
     imgOptionDiv.appendChild(imgElement);
 
     // Adicionar um evento de clique a cada div de opção
@@ -72,52 +63,30 @@ class CriarElementos {
 
 class ChamarServidorService {
   constructor () {
-    this.urlServidor = 'https://geradordepaginas.onrender.com/'
+    this.urlServidor = 'http://localhost:8000'
   }
 
-  addImageToInput (imageURL) {
-    return new Promise((resolve, reject) => {
-      fetch(imageURL)
-        .then(function(response) {
-          return response.blob();
-        })
-        .then(function(blob) {
-          var file = new File([blob], "imagem.jpg", { type: "image/jpeg" });
-          
-          var inputImagem = document.getElementById("imageFileInput");
-          var fileList = new DataTransfer()
-          fileList.items.add(file)
-          inputImagem.files = fileList.files
-          resolve(inputImagem)
-        })
-        .catch(function(error) {
-          console.error("Erro ao carregar a imagem:", error);
-          reject(error)
-        });
-    })
-  }
-
-  mudarBackground(imagem) {
+  mudarBackground(formData) {
     const urlServidor = this.urlServidor + '/change-background'
 
-    fetch(urlServidor, {
-      method: "POST",
-      body: imagem,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if(data.image_url) {
-          var imageElement = document.getElementById("image");
-          if (imageElement) {
-            imageElement.src = data.image_url;
+    return new Promise((resolve, reject) => {
+      fetch(urlServidor, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.image_url) {
+            resolve(data.image_url)
+          } else {
+            throw Error("URL da imagem não encontrada na resposta.");
           }
-        } else {
-          console.error("URL da imagem não encontrada na resposta.");
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao enviar imagem:", error);
-      })
+        })
+        .catch((error) => {
+          console.error("Erro ao enviar imagem:", error);
+          reject(error)
+        })
+    })
   }
 }
 
@@ -152,8 +121,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const imageUrl2 = urlParams.get("image_url2");
 
   if (imageUrl1 && imageUrl2) {
-    const imgOptionDiv1 = criarElementos.criarDivParaImg(imageUrl1);
-    const imgOptionDiv2 = criarElementos.criarDivParaImg(imageUrl2);
+    const imgOptionDiv1 = criarElementos.criarDivParaImg(imageUrl1, 1);
+    const imgOptionDiv2 = criarElementos.criarDivParaImg(imageUrl2, 2);
     // Selecione a div com a classe "options" para anexar a nova div
     var optionsDiv = document.querySelector(".options");
     optionsDiv.style.flexDirection = "row";
@@ -164,34 +133,60 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 })
 
+function refazerRequisicaoImagem(imageBlob) {
+  const resultadoGpt = JSON.parse(localStorage.getItem('ResultadoGpt')) || []
+  const chaves = Object.keys(resultadoGpt)
+  const descricao1 = resultadoGpt[chaves[3]][0]
+  const descricao2 = resultadoGpt[chaves[3]][1]
+  var prompt1 = descricao1
+  var prompt2 = descricao2
+
+  // Cria um formData para enviar a imagem para o backend
+  var formData1 = new FormData();
+  formData1.append('image', imageBlob);
+  formData1.append('prompt', prompt1);
+  // Fazer a primeira chamada de geração de imagem
+  const mudarBackgroundPromise1 = chamarServidorService.mudarBackground(formData1);
+
+  // Cria um formData para enviar a imagem para o backend
+  var formData2 = new FormData();
+  formData2.append('image', imageBlob);
+  formData2.append('prompt', prompt2);
+  // Fazer a segunda chamada de geração de imagem
+  const mudarBackgroundPromise2 = chamarServidorService.mudarBackground(formData2);
+
+  Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2])
+  .then(([image_url1, image_url2]) => {
+    var imgOptionDiv1 = document.getElementById('image-1');
+    var imgOptionDiv2 = document.getElementById('image-2');
+
+    imgOptionDiv1.src = image_url1;
+    imgOptionDiv2.src = image_url2;
+    console.log("operação concluída com sucesso!")
+  })
+  .catch((error) => {
+    console.error("Erro ao fazer chamadas ao servidor:", error)
+  })
+}
+
 function regerarImagem() {
-  // Adicionar a imagem na tag de input
-  var imageElement = document.getElementById("image");
-  if (imageElement) {
-    var imageURL = imageElement.src;
-    chamarServidorService.addImageToInput(imageURL)
-      .then(function() {
-        // Pegar a imagem do input
-        const inputImage = document.getElementById('imageFileInput')
-        const imageFile = inputImage.files[0]
-        // Cria um formData para enviar a imagem para o backend
-        var formData = new FormData()
-        formData.append('image', imageFile)
-        // Enviar imagem para o servidor
-        return chamarServidorService.mudarBackground(formData)
-      })
-      .then(function() {
-        console.log("Operação concluída com sucesso!")
-      })
-      .catch(function(error) {
-        console.error("Erro: " + error)
-      })
-  }
+  const imageFile = localStorage.getItem('imagemProduto');
+  fetch(imageFile)
+    .then((res) => {
+      return res.blob();
+    })
+    .then((blob) => {
+      refazerRequisicaoImagem(blob);
+    })
+    .catch((error) => {
+      console.error(error + " deu erro no blob")
+    })
 }
 
 function selecionarImagem() {
   // Selecionar a imagem
-  var imageElement = document.getElementById("image");
+  var selectedImgDiv = document.querySelector(".selected");
+  var imageElement = selectedImgDiv.querySelector("img");
   selecionarOpcao('selectedImage', imageElement.src);
   armazenarOpcoesSelecionadas();
 

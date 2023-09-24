@@ -1,6 +1,6 @@
 class ChamarServidorService {
   constructor () {
-    this.urlServidor = 'https://geradordepaginas.onrender.com/'
+    this.urlServidor = 'http://localhost:8000'
   }
 
   enviarNomeEDescricaoProduto(nome, what, descricao) {
@@ -73,7 +73,7 @@ function showImg() {
   }
 }
 
-function armazenarVariaveis(nome, oQueEh, descricao, lojaNome) {
+function armazenarVariaveis(nome, oQueEh, descricao, lojaNome, imageFile) {
   // Criar um objeto JSON com as variáveis
   const dados = {
     nome: nome,
@@ -87,10 +87,20 @@ function armazenarVariaveis(nome, oQueEh, descricao, lojaNome) {
 
   // Armazenar a string JSON no localStorage com uma chave específica
   localStorage.setItem('dadosDoProduto', dadosJSON);
+
+  const reader = new FileReader();
+
+  reader.addEventListener('load', () => {
+    localStorage.setItem('imagemProduto', reader.result);
+  });
+
+  if (imageFile) {
+    reader.readAsDataURL(imageFile);
+  }
 }
 
 function makeRequests(nome, oQueEh, descricao, imageFile, opcao1Selecionada, opcao2Selecionada, lojaNome) {
-  armazenarVariaveis(nome, oQueEh, descricao, lojaNome);
+  armazenarVariaveis(nome, oQueEh, descricao, lojaNome, imageFile);
 
   const caminhoDoArquivo = determinarCaminhoDoArquivo(opcao1Selecionada, opcao2Selecionada);
   localStorage.setItem('templatePath', caminhoDoArquivo);
