@@ -387,6 +387,7 @@ function escolherSlogan() {
     selecionarOpcao('selectedSlogan', sloganSelecionado.textContent);
     armazenarOpcoesSelecionadas();
     printAll();
+    window.location.href = `../finalScreen/finalScreen.html`;
   } else {
     alert('Selecione uma opção antes de avançar.');
   }
