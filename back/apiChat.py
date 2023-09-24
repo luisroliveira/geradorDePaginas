@@ -58,6 +58,23 @@ def apiChatGpt(textoEntrada):
 
     return json_msg
 
+def gerarFrase(textoEntrada):
+    json_response = {
+        "result": ["Com o barber+, fazer a barba nunca foi tão fácil e confortável.", "Experimente a sensação suave e sem irritações que só nosso barber+ pode oferecer.", "Não perca mais tempo! Com o barber+, obtenha um corte rápido e preciso para se manter sempre bem aparentado.", "Desfrute de uma experiência de barbear luxuosa com o nosso inovador barber+."]
+    }
+    return json_response
+
+def gerarTexto(textoEntrada):
+    json_response = {
+        "result": ["1Não há nada como começar o dia com uma cara fresca e limpa, é por isso que apresentamos o Barber+. Este barbeador premium não é apenas um produto, mas sim um investimento em sua aparência pessoal. Fácil de usar, rápido no corte e suave na pele, você sentirá a diferença desde o primeiro uso. Com o Barber+ você estará sempre pronto para encarar seu dia da melhor maneira possível!", "1O Barber+ redefine o ato de fazer a barba. Diga adeus às lâminas antigas que puxam e irritam a pele. Nosso barbeador dá-lhe um corte suave e perfeito todas as vezes, tornando sua rotina matinal mais rápida e menos dolorosa. Agora você pode ter uma barba bem feita e sem esforço, deixando mais tempo para as coisas que realmente importam."]
+    }
+    return json_response
+
+def gerarSlogan(textoEntrada):
+    json_response = {
+        "result": ["1Barber+: Sua melhor imagem começa aqui.", "1Alcance a perfeição em cada corte com Barber+.", "1Barber+, elevando sua experiência de barbear ao máximo."]
+    }
+    return json_response
 
 # texto = "crie 5 frases de efeito curtas para vender bolsa"
 # textoSaida =  apiChatGpt(texto)

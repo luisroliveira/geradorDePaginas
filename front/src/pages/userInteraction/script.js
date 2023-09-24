@@ -66,6 +66,52 @@ class ChamarServidorService {
     this.urlServidor = 'http://localhost:8000'
   }
 
+  requisitarGPTBase(urlServidor, funcaoParaChamar, parametro, campoLocalStorage) {
+    return new Promise((resolve, reject) => {
+      fetch(urlServidor, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ funcao: funcaoParaChamar, parametro })
+      })
+      .then(response => response.json())
+      .then(data => {
+          const resultadoJson = data.resultado // REMOVER O STRINGIFY QUANDO FOR USAR A API
+          const objetoArmazenado = JSON.parse(localStorage.getItem("ResultadoGpt")) || [];
+          objetoArmazenado[campoLocalStorage] = resultadoJson["result"];
+          localStorage.setItem('ResultadoGpt', JSON.stringify(objetoArmazenado));
+          resolve(resultadoJson)
+        })
+        .catch(error => {
+          console.error('Erro:', error)
+          reject(error)
+        })
+    })
+  }
+
+  enviarNomeEDescricaoProduto(funcao) {
+    const funcaoParaChamar = funcao // Nome da função que você deseja chamar
+    const dadosDoProduto = JSON.parse(localStorage.getItem("dadosDoProduto"));
+    const nome = dadosDoProduto['nome'];
+    const what = dadosDoProduto['oQueEh'];
+    const descricao = dadosDoProduto['descricao'];
+    const parametro = "Nome: " + nome + "\n" + "Produto: " + what + "\n" + "Descrição: " + descricao
+    const urlServidor = this.urlServidor
+
+    var campoLocalStorage = null;
+    
+    if (funcao == 'gerarFrase') {
+      campoLocalStorage = 'Frases Persuasivas';
+    } else if (funcao == 'gerarTexto') {
+      campoLocalStorage = 'Textos Persuasivos';
+    } else {
+      campoLocalStorage = 'Slogans';
+    }
+
+    return this.requisitarGPTBase(urlServidor, funcaoParaChamar, parametro, campoLocalStorage)
+  }
+
   mudarBackground(formData) {
     const urlServidor = this.urlServidor + '/change-background'
 
@@ -89,6 +135,15 @@ class ChamarServidorService {
     })
   }
 }
+
+const States = Object.freeze({
+  IMAGE: 0,
+  FRASE: 1,
+  TEXTO: 2,
+  SLOGAN: 3  
+});
+
+var pageState = null;
 
 var selectedOptions = {
   selectedImage: null,
@@ -116,6 +171,7 @@ const btnRegerar = document.getElementById('btn-regerar')
 const btnSelecionar = document.getElementById('btn-selecionar')
 
 document.addEventListener("DOMContentLoaded", function () {
+  pageState = States.IMAGE;
   const urlParams = new URLSearchParams(window.location.search);
   const imageUrl1 = urlParams.get("image_url1");
   const imageUrl2 = urlParams.get("image_url2");
@@ -209,6 +265,7 @@ function clearOptions() {
 }
 
 function mostrarOpcoesFrases() {
+  pageState = States.FRASE;
   // Limpar a div de opções
   clearOptions()
 
@@ -242,7 +299,7 @@ function escolherFraseMostrarTexto() {
   var fraseSelecionada = document.querySelector(".selected");
   if (fraseSelecionada) {
     selecionarOpcao('selectedFrase', fraseSelecionada.textContent);
-    armazenarOpcoesSelecionadas(); 
+    armazenarOpcoesSelecionadas();
     mostrarTexto();
   } else {
     alert('Selecione uma opção antes de avançar.');
@@ -250,6 +307,7 @@ function escolherFraseMostrarTexto() {
 }
 
 function mostrarTexto() {
+  pageState = States.TEXTO;
   // Limpar a div de opções
   clearOptions()
 
@@ -287,6 +345,7 @@ function escolherTextoMostrarSlogan() {
 }
 
 function mostrarSlogan() {
+  pageState = States.SLOGAN;
   // Limpar a div de opções
   clearOptions()
 
@@ -325,4 +384,52 @@ function escolherSlogan() {
 
 function printAll() {
   console.log(selectedOptions);
+}
+
+function regerarFrases() {
+  chamarServidorService.enviarNomeEDescricaoProduto('gerarFrase')
+  .then(() => {
+    mostrarOpcoesFrases();
+  })
+  .catch((error) => {
+    console.error(error + " ERRO NA GERAÇÃO DE FRASES");
+  })
+}
+
+function regerarTextos() {
+  chamarServidorService.enviarNomeEDescricaoProduto('gerarTexto')
+  .then(() => {
+    mostrarTexto();
+  })
+  .catch((error) => {
+    console.error(error + " ERRO NA GERAÇÃO DE TEXTOS");
+  })
+}
+
+function regerarSlogans() {
+  chamarServidorService.enviarNomeEDescricaoProduto('gerarSlogan')
+  .then(() => {
+    mostrarSlogan();
+  })
+  .catch((error) => {
+    console.error(error + " ERRO NA GERAÇÃO DE SLOGANS");
+  })
+}
+
+
+function regerarOpcoes() {
+  if (pageState == States.IMAGE) {
+    regerarImagem();
+  } else if (pageState == States.FRASE) {
+    console.log("frase")
+    regerarFrases();
+  } else if (pageState == States.TEXTO) {
+    console.log("texto")
+    regerarTextos();
+  } else if (pageState == States.SLOGAN) {
+    console.log("slogan")
+    regerarSlogans();
+  } else {
+    console.log("no state")
+  }
 }
