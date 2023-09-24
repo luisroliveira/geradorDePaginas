@@ -16,10 +16,10 @@ def apiChatGpt(textoEntrada):
     #             "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Seu objetivo é gerar 4 frases persuasivas, 2 textos persuasivos e 4 slogans que eu possa colocar em uma landing page de vendas. Além disso, tenho uma imagem do produto e quero mudar o background dela. Dê 4 descrições em detalhes sobre como deve ser o background para a imagem considerando o contexto de uso do produto. Mantenha as frases concisas. Cada texto deve possuir 1 parágrafo e ser feito para retratar a situação de uso do produto e sua proposta de valor. Além disso, não comece o texto pedindo para imaginar algo. Os slogans devem ser feitos de forma bem criativa. As descrições de background devem ser feitas em inglês, limitadas a 1 frase e deve conter: Local onde o produto deve estar, características desse local, tipo de iluminação e sentimento que a imagem deve passar. 
     #             Responda no seguinte template JSON:
     #             {
-    #             "Frases Persuasivas": ["Frase  1"],
-    #             "Texto Persuasivo": ["Texto 1"],
-    #             "Slogan": ["Slogan 1"],
-    #             "Descricao": ["Description 1"]
+    #             "Frases Persuasivas": ["Frase"],
+    #             "Textos Persuasivos": ["Texto"],
+    #             "Slogans": ["Slogan"],
+    #             "Descricao": ["Description"]
     #             }
     #             """
     #         },
@@ -71,7 +71,7 @@ def gerarFrase(textoEntrada):
     #             "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Seu objetivo é gerar 4 frases persuasivas que eu possa colocar em uma landing page de vendas. Mantenha as frases concisas. 
     #             Responda no seguinte template JSON:
     #             {
-    #             "result": ["Frase  1"]
+    #             "result": ["Frase"]
     #             }
     #             """
     #         },
@@ -107,7 +107,7 @@ def gerarTexto(textoEntrada):
     #             "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Seu objetivo é gerar 2 textos persuasivos que eu possa colocar em uma landing page de vendas. Cada texto deve possuir 1 parágrafo e ser feito para retratar a situação de uso do produto e sua proposta de valor. Além disso, não comece o texto pedindo para imaginar algo. 
     #             Responda no seguinte template JSON:
     #             {
-    #             "result": ["Texto  1"]
+    #             "result": ["Texto"]
     #             }
     #             """
     #         },
@@ -143,7 +143,7 @@ def gerarSlogan(textoEntrada):
     #             "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Seu objetivo é gerar 4 slogans que eu possa colocar em uma landing page de vendas. Os slogans devem ser feitos de forma bem criativa. 
     #             Responda no seguinte template JSON:
     #             {
-    #             "result": ["Slogan  1"]
+    #             "result": ["Slogan"]
     #             }
     #             """
     #         },

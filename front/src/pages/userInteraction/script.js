@@ -1,3 +1,4 @@
+// CLASSE PARA CRIAR ELEMENTOS HTML
 class CriarElementos {
   constructor () {}
 
@@ -61,6 +62,8 @@ class CriarElementos {
   }
 }
 
+
+// CLASSE PARA SE COMUNICAR COM O SERVIDOR
 class ChamarServidorService {
   constructor () {
     this.urlServidor = 'http://localhost:8000'
@@ -77,7 +80,7 @@ class ChamarServidorService {
       })
       .then(response => response.json())
       .then(data => {
-          const resultadoJson = data.resultado // REMOVER O STRINGIFY QUANDO FOR USAR A API
+          const resultadoJson = data.resultado // COLOCAR JSON.PARSE QUANDO FOR USAR A API
           const objetoArmazenado = JSON.parse(localStorage.getItem("ResultadoGpt")) || [];
           objetoArmazenado[campoLocalStorage] = resultadoJson["result"];
           localStorage.setItem('ResultadoGpt', JSON.stringify(objetoArmazenado));
@@ -136,15 +139,18 @@ class ChamarServidorService {
   }
 }
 
+
+// ENUM PARA OS ESTADOS DA PÁGINA
 const States = Object.freeze({
   IMAGE: 0,
   FRASE: 1,
   TEXTO: 2,
   SLOGAN: 3  
 });
-
 var pageState = null;
 
+
+// OBJETO PARA ARMAZENAR AS OPÇÕES SELECIONADAS
 var selectedOptions = {
   selectedImage: null,
   selectedFrase: null,
@@ -152,6 +158,8 @@ var selectedOptions = {
   selectedSlogan: null
 };
 
+
+// FUNÇÕES AUXILIARES PARA ARMAZENAR AS OPÇÕES SELECIONADAS
 function selecionarOpcao(opcao, valor) {
   selectedOptions[opcao] = valor;
 }
@@ -164,12 +172,16 @@ function armazenarOpcoesSelecionadas() {
   localStorage.setItem('opcoesSelecionadas', dadosJSON);
 }
 
+
+// CRIAÇÃO DE OBJETOS E VARIÁVEIS GLOBAIS
 const chamarServidorService = new ChamarServidorService()
 const criarElementos = new CriarElementos()
 const btnAvancar = document.getElementById('btn-avancar')
 const btnRegerar = document.getElementById('btn-regerar')
 const btnSelecionar = document.getElementById('btn-selecionar')
 
+
+// O QUE FAZER QUANDO A PÁGINA CARREGAR
 document.addEventListener("DOMContentLoaded", function () {
   pageState = States.IMAGE;
   const urlParams = new URLSearchParams(window.location.search);
@@ -189,82 +201,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 })
 
-function refazerRequisicaoImagem(imageBlob) {
-  const resultadoGpt = JSON.parse(localStorage.getItem('ResultadoGpt')) || []
-  const chaves = Object.keys(resultadoGpt)
-  const descricao1 = resultadoGpt[chaves[3]][0]
-  const descricao2 = resultadoGpt[chaves[3]][1]
-  var prompt1 = descricao1
-  var prompt2 = descricao2
 
-  // Cria um formData para enviar a imagem para o backend
-  var formData1 = new FormData();
-  formData1.append('image', imageBlob);
-  formData1.append('prompt', prompt1);
-  // Fazer a primeira chamada de geração de imagem
-  const mudarBackgroundPromise1 = chamarServidorService.mudarBackground(formData1);
 
-  // Cria um formData para enviar a imagem para o backend
-  var formData2 = new FormData();
-  formData2.append('image', imageBlob);
-  formData2.append('prompt', prompt2);
-  // Fazer a segunda chamada de geração de imagem
-  const mudarBackgroundPromise2 = chamarServidorService.mudarBackground(formData2);
-
-  return new Promise((resolve, reject) => {
-    Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2])
-    .then(([image_url1, image_url2]) => {
-      var imgOptionDiv1 = document.getElementById('image-1');
-      var imgOptionDiv2 = document.getElementById('image-2');
-  
-      imgOptionDiv1.src = image_url1;
-      imgOptionDiv2.src = image_url2;
-      console.log("operação concluída com sucesso!")
-      resolve();
-    })
-    .catch((error) => {
-      console.error("Erro ao fazer chamadas ao servidor:", error)
-      reject(error);
-    })
-  })
-}
-
-function regerarImagem() {
-  const imageFile = localStorage.getItem('imagemProduto');
-  return new Promise((resolve, reject) => {
-    fetch(imageFile)
-      .then((res) => {
-        return res.blob();
-      })
-      .then((blob) => {
-        return refazerRequisicaoImagem(blob);
-      })
-      .then(()=> {
-        resolve();
-      })
-      .catch((error) => {
-        console.error(error + " deu erro no blob")
-        reject(error);
-      })
-  })
-}
-
-function selecionarImagem() {
+// FUNÇÕES PARA O PIPELINE DE GERAÇÃO DE SITE
+function selecionarImagemMostrarFrase() {
   // Selecionar a imagem
   var selectedImgDiv = document.querySelector(".selected");
-  var imageElement = selectedImgDiv.querySelector("img");
-  selecionarOpcao('selectedImage', imageElement.src);
-  armazenarOpcoesSelecionadas();
-
-  // // Mudar o css da opção de imagem
-  // const selectedBox = document.getElementById("img-option");
-  // selectedBox.classList.add('selected');
-
-  // Esconder o botão "Selecionar Imagem"
-  btnSelecionar.style.display = "none";
-
-  // Mostrar o botão "Avançar"
-  btnAvancar.style.display = "inline";
+  if (selectedImgDiv) {
+    var imageElement = selectedImgDiv.querySelector("img");
+    selecionarOpcao('selectedImage', imageElement.src);
+    armazenarOpcoesSelecionadas();
+    mostrarOpcoesFrases();
+  } else {
+    alert('Selecione uma opção antes de avançar.');
+  }
 }
 
 function clearOptions() {
@@ -397,6 +347,68 @@ function printAll() {
   console.log(selectedOptions);
 }
 
+
+// FUNÇÕES PARA REGERAR OPÇÕES
+function refazerRequisicaoImagem(imageBlob) {
+  const resultadoGpt = JSON.parse(localStorage.getItem('ResultadoGpt')) || []
+  const chaves = Object.keys(resultadoGpt)
+  const descricao1 = resultadoGpt[chaves[3]][0]
+  const descricao2 = resultadoGpt[chaves[3]][1]
+  var prompt1 = descricao1
+  var prompt2 = descricao2
+
+  // Cria um formData para enviar a imagem para o backend
+  var formData1 = new FormData();
+  formData1.append('image', imageBlob);
+  formData1.append('prompt', prompt1);
+  // Fazer a primeira chamada de geração de imagem
+  const mudarBackgroundPromise1 = chamarServidorService.mudarBackground(formData1);
+
+  // Cria um formData para enviar a imagem para o backend
+  var formData2 = new FormData();
+  formData2.append('image', imageBlob);
+  formData2.append('prompt', prompt2);
+  // Fazer a segunda chamada de geração de imagem
+  const mudarBackgroundPromise2 = chamarServidorService.mudarBackground(formData2);
+
+  return new Promise((resolve, reject) => {
+    Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2])
+    .then(([image_url1, image_url2]) => {
+      var imgOptionDiv1 = document.getElementById('image-1');
+      var imgOptionDiv2 = document.getElementById('image-2');
+  
+      imgOptionDiv1.src = image_url1;
+      imgOptionDiv2.src = image_url2;
+      console.log("operação concluída com sucesso!")
+      resolve();
+    })
+    .catch((error) => {
+      console.error("Erro ao fazer chamadas ao servidor:", error)
+      reject(error);
+    })
+  })
+}
+
+function regerarImagem() {
+  const imageFile = localStorage.getItem('imagemProduto');
+  return new Promise((resolve, reject) => {
+    fetch(imageFile)
+      .then((res) => {
+        return res.blob();
+      })
+      .then((blob) => {
+        return refazerRequisicaoImagem(blob);
+      })
+      .then(()=> {
+        resolve();
+      })
+      .catch((error) => {
+        console.error(error + " deu erro no blob")
+        reject(error);
+      })
+  })
+}
+
 function regerarFrases() {
   return new Promise((resolve, reject) => {
     chamarServidorService.enviarNomeEDescricaoProduto('gerarFrase')
@@ -451,21 +463,18 @@ function regerarOpcoes() {
         console.error(error + " ERRO NA GERAÇÃO DE IMAGENS");
       })
   } else if (pageState == States.FRASE) {
-    console.log("frase")
     regerarFrases().then(() => {
         document.body.classList.remove('overlay-visible'); 
       }).catch((error) => {
         console.error(error + " ERRO NA GERAÇÃO DE FRASES");
       })
   } else if (pageState == States.TEXTO) {
-    console.log("texto")
     regerarTextos().then(() => {
         document.body.classList.remove('overlay-visible'); 
       }).catch((error) => {
         console.error(error + " ERRO NA GERAÇÃO DE TEXTOS");
       })
   } else if (pageState == States.SLOGAN) {
-    console.log("slogan")
     regerarSlogans().then(() => {
         document.body.classList.remove('overlay-visible'); 
       }).catch((error) => {

@@ -55,6 +55,15 @@ class ChamarServidorService {
 
 const chamarServidorService = new ChamarServidorService()
 
+// Resetar a página caso o usuário volte para ela
+window.addEventListener('pageshow', function(event) {
+  // Verifique se a origem do evento é a página 1 (use a URL da página para isso)
+  if (event.target.location.href.includes('index.html')) {
+    // Limpe o formulário da página 1
+    document.getElementById('form').reset();
+  }
+});
+
 function showImg() {
   const inputImagem = document.getElementById('input-image');
   const imagemPreview = document.getElementById('selected-image');
