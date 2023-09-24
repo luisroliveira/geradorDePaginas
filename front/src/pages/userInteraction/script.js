@@ -211,32 +211,42 @@ function refazerRequisicaoImagem(imageBlob) {
   // Fazer a segunda chamada de geração de imagem
   const mudarBackgroundPromise2 = chamarServidorService.mudarBackground(formData2);
 
-  Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2])
-  .then(([image_url1, image_url2]) => {
-    var imgOptionDiv1 = document.getElementById('image-1');
-    var imgOptionDiv2 = document.getElementById('image-2');
-
-    imgOptionDiv1.src = image_url1;
-    imgOptionDiv2.src = image_url2;
-    console.log("operação concluída com sucesso!")
-  })
-  .catch((error) => {
-    console.error("Erro ao fazer chamadas ao servidor:", error)
+  return new Promise((resolve, reject) => {
+    Promise.all([mudarBackgroundPromise1, mudarBackgroundPromise2])
+    .then(([image_url1, image_url2]) => {
+      var imgOptionDiv1 = document.getElementById('image-1');
+      var imgOptionDiv2 = document.getElementById('image-2');
+  
+      imgOptionDiv1.src = image_url1;
+      imgOptionDiv2.src = image_url2;
+      console.log("operação concluída com sucesso!")
+      resolve();
+    })
+    .catch((error) => {
+      console.error("Erro ao fazer chamadas ao servidor:", error)
+      reject(error);
+    })
   })
 }
 
 function regerarImagem() {
   const imageFile = localStorage.getItem('imagemProduto');
-  fetch(imageFile)
-    .then((res) => {
-      return res.blob();
-    })
-    .then((blob) => {
-      refazerRequisicaoImagem(blob);
-    })
-    .catch((error) => {
-      console.error(error + " deu erro no blob")
-    })
+  return new Promise((resolve, reject) => {
+    fetch(imageFile)
+      .then((res) => {
+        return res.blob();
+      })
+      .then((blob) => {
+        return refazerRequisicaoImagem(blob);
+      })
+      .then(()=> {
+        resolve();
+      })
+      .catch((error) => {
+        console.error(error + " deu erro no blob")
+        reject(error);
+      })
+  })
 }
 
 function selecionarImagem() {
@@ -387,48 +397,79 @@ function printAll() {
 }
 
 function regerarFrases() {
-  chamarServidorService.enviarNomeEDescricaoProduto('gerarFrase')
-  .then(() => {
-    mostrarOpcoesFrases();
-  })
-  .catch((error) => {
-    console.error(error + " ERRO NA GERAÇÃO DE FRASES");
+  return new Promise((resolve, reject) => {
+    chamarServidorService.enviarNomeEDescricaoProduto('gerarFrase')
+    .then(() => {
+      mostrarOpcoesFrases();
+      resolve();
+    })
+    .catch((error) => {
+      console.error(error + " ERRO NA GERAÇÃO DE FRASES");
+      reject(error);
+    })
   })
 }
 
 function regerarTextos() {
-  chamarServidorService.enviarNomeEDescricaoProduto('gerarTexto')
-  .then(() => {
-    mostrarTexto();
-  })
-  .catch((error) => {
-    console.error(error + " ERRO NA GERAÇÃO DE TEXTOS");
+  return new Promise((resolve, reject) => {
+    chamarServidorService.enviarNomeEDescricaoProduto('gerarTexto')
+    .then(() => {
+      mostrarTexto();
+      resolve();
+    })
+    .catch((error) => {
+      console.error(error + " ERRO NA GERAÇÃO DE TEXTOS");
+      reject(error);
+    })
   })
 }
 
 function regerarSlogans() {
-  chamarServidorService.enviarNomeEDescricaoProduto('gerarSlogan')
-  .then(() => {
-    mostrarSlogan();
-  })
-  .catch((error) => {
-    console.error(error + " ERRO NA GERAÇÃO DE SLOGANS");
+  return new Promise((resolve, reject) => {
+    chamarServidorService.enviarNomeEDescricaoProduto('gerarSlogan')
+    .then(() => {
+      mostrarSlogan();
+      resolve();
+    })
+    .catch((error) => {
+      console.error(error + " ERRO NA GERAÇÃO DE SLOGANS");
+      reject(error);
+    })
   })
 }
 
 
 function regerarOpcoes() {
+  // Mostrar a sobreposição escura e o spinner
+  document.body.classList.add('overlay-visible');
+
   if (pageState == States.IMAGE) {
-    regerarImagem();
+    regerarImagem().then(() => {
+        document.body.classList.remove('overlay-visible');  
+      }).catch((error) => {
+        console.error(error + " ERRO NA GERAÇÃO DE IMAGENS");
+      })
   } else if (pageState == States.FRASE) {
     console.log("frase")
-    regerarFrases();
+    regerarFrases().then(() => {
+        document.body.classList.remove('overlay-visible'); 
+      }).catch((error) => {
+        console.error(error + " ERRO NA GERAÇÃO DE FRASES");
+      })
   } else if (pageState == States.TEXTO) {
     console.log("texto")
-    regerarTextos();
+    regerarTextos().then(() => {
+        document.body.classList.remove('overlay-visible'); 
+      }).catch((error) => {
+        console.error(error + " ERRO NA GERAÇÃO DE TEXTOS");
+      })
   } else if (pageState == States.SLOGAN) {
     console.log("slogan")
-    regerarSlogans();
+    regerarSlogans().then(() => {
+        document.body.classList.remove('overlay-visible'); 
+      }).catch((error) => {
+        console.error(error + " ERRO NA GERAÇÃO DE SLOGANS");
+      })
   } else {
     console.log("no state")
   }
