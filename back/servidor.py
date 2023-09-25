@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 UPLOAD_FOLDER = 'imagensBackground/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-urlServidor = 'http://localhost:8000'
+urlServidor = 'https://geradordepaginas.onrender.com'
 
 def funcao_1(parametro):
     resultado = f"Olá da Função 1, {parametro}!"
