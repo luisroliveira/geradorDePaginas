@@ -1,6 +1,6 @@
 class ChamarServidorService {
   constructor () {
-    this.urlServidor = 'https://geradordepaginas.onrender.com'
+    this.urlServidor = 'http://localhost:8000'
   }
 
   chamarServidor(nomeFuncao, nomeParametro) {

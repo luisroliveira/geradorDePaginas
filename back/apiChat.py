@@ -34,7 +34,9 @@ def apiChatGpt(textoEntrada, apiKey):
     requisicao = requests.post(link, headers=headers, data=body_mensagem)
     resposta = requisicao.json()
     mensagem = resposta["choices"][0]["message"]["content"]
-    return mensagem
+    texto_limpo = mensagem.split('{', 1)
+    texto_limpo = "{" + texto_limpo[1]
+    return texto_limpo
     # mensagem = """
     # "Frases Persuasivas:
     # 1. "Com o barber+, fazer a barba nunca foi tão fácil e confortável."
@@ -86,7 +88,9 @@ def gerarFrase(textoEntrada, apiKey):
     requisicao = requests.post(link, headers=headers, data=body_mensagem)
     resposta = requisicao.json()
     mensagem = resposta["choices"][0]["message"]["content"]
-    return mensagem
+    texto_limpo = mensagem.split('{', 1)
+    texto_limpo = "{" + texto_limpo[1]
+    return texto_limpo
 
     # json_response = {
     #     "result": ["Com o barber+, fazer a barba nunca foi tão fácil e confortável.", "Experimente a sensação suave e sem irritações que só nosso barber+ pode oferecer.", "Não perca mais tempo! Com o barber+, obtenha um corte rápido e preciso para se manter sempre bem aparentado.", "Desfrute de uma experiência de barbear luxuosa com o nosso inovador barber+."]
@@ -122,7 +126,9 @@ def gerarTexto(textoEntrada, apiKey):
     requisicao = requests.post(link, headers=headers, data=body_mensagem)
     resposta = requisicao.json()
     mensagem = resposta["choices"][0]["message"]["content"]
-    return mensagem
+    texto_limpo = mensagem.split('{', 1)
+    texto_limpo = "{" + texto_limpo[1]
+    return texto_limpo
 
     # json_response = {
     #     "result": ["1Não há nada como começar o dia com uma cara fresca e limpa, é por isso que apresentamos o Barber+. Este barbeador premium não é apenas um produto, mas sim um investimento em sua aparência pessoal. Fácil de usar, rápido no corte e suave na pele, você sentirá a diferença desde o primeiro uso. Com o Barber+ você estará sempre pronto para encarar seu dia da melhor maneira possível!", "1O Barber+ redefine o ato de fazer a barba. Diga adeus às lâminas antigas que puxam e irritam a pele. Nosso barbeador dá-lhe um corte suave e perfeito todas as vezes, tornando sua rotina matinal mais rápida e menos dolorosa. Agora você pode ter uma barba bem feita e sem esforço, deixando mais tempo para as coisas que realmente importam."]
@@ -158,7 +164,9 @@ def gerarSlogan(textoEntrada, apiKey):
     requisicao = requests.post(link, headers=headers, data=body_mensagem)
     resposta = requisicao.json()
     mensagem = resposta["choices"][0]["message"]["content"]
-    return mensagem
+    texto_limpo = mensagem.split('{', 1)
+    texto_limpo = "{" + texto_limpo[1]
+    return texto_limpo
 
     # json_response = {
     #     "result": ["1Barber+: Sua melhor imagem começa aqui.", "1Alcance a perfeição em cada corte com Barber+.", "1Barber+, elevando sua experiência de barbear ao máximo."]
@@ -194,7 +202,9 @@ def gerarDescricao(textoEntrada, apiKey):
     requisicao = requests.post(link, headers=headers, data=body_mensagem)
     resposta = requisicao.json()
     mensagem = resposta["choices"][0]["message"]["content"]
-    return mensagem
+    texto_limpo = mensagem.split('{', 1)
+    texto_limpo = "{" + texto_limpo[1]
+    return texto_limpo
 
     # json_response = {
     #     "result": ["A classy barbershop setting, boasting a vintage appeal with polished wooden countertops, under the soft yet focused light that casts an inviting and professional ambiance.", "A minimalist bathroom setup, drenched in soft white light that highlights the product, creating a sense of cleanliness and sophistication.", "An outdoor setup during golden hour with the product placed on a rustic wooden table, creating a sense of adventure and independence.", "A close-up shot against a black textured background under focused studio lights, highlighting the sleek design of the razor, evoking a sense of luxury and precision."]

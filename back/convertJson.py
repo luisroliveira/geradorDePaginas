@@ -14,6 +14,6 @@ def convert_to_json(input_text):
         "Frases Persuasivas": persuasive_phrases,
         "Textos Persuasivos": persuasive_text,
         "Slogans": slogans,
-        "Descricao": ["On the wall of a house by the sea with a window nearby", "A product shot of Prancha+ should be on the beach at sunset with the warm lighting reflecting off the surfboard and the ocean in the background, instilling a sense of adventure and freedom."]
+        "Descricao": ["A classy barbershop setting, boasting a vintage appeal with polished wooden countertops, under the soft yet focused light that casts an inviting and professional ambiance.", "A minimalist bathroom setup, drenched in soft white light that highlights the product, creating a sense of cleanliness and sophistication.", "An outdoor setup during golden hour with the product placed on a rustic wooden table, creating a sense of adventure and independence.", "A close-up shot against a black textured background under focused studio lights, highlighting the sleek design of the razor, evoking a sense of luxury and precision."]
     }
     return json_response

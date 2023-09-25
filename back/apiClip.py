@@ -42,7 +42,7 @@ def apiChangeBackGround(image_file, prompt, saveDirectory):
     extension = ".jpeg"
     nomeArquivo = generate_unique_filename(saveDirectory, extension)
 
-    # Para rodar fazendo a chamada para a API, comentar as 3 linhas abaixo e descomentar as outras
+    # # Para rodar fazendo a chamada para a API, comentar as 3 linhas abaixo e descomentar as outras
     # pathSaida = saveDirectory + nomeArquivo
     # image_file.save(pathSaida)
     # return nomeArquivo
