@@ -7,7 +7,14 @@ from changeHtml import chngHtml
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "https://main--tranquil-belekoy-f3ab6a.netlify.app/"}})
+
+api_v1_cors_config = {
+    "origins": ["*"]
+}
+
+CORS(app, resources={
+    r"/*": api_v1_cors_config
+})
 UPLOAD_FOLDER = 'imagensBackground/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 urlServidor = 'https://geradordepaginas.onrender.com'
@@ -17,7 +24,6 @@ def funcao_1(parametro):
     return resultado
 
 @app.route("/upload", methods=["POST"])
-@cross_origin()
 def upload_image():
     try:
         image_file = request.files["image"]  # Obtém o arquivo de imagem do formulário
@@ -31,16 +37,16 @@ def upload_image():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/change-background", methods=["POST"])
-@cross_origin()
 def change_img_bg():
     try:
         image_file = request.files["image"]  # Obtém o arquivo de imagem do formulário
         prompt = request.form["prompt"]  # Obtém o texto do formulário
+        apiKey = request.form["apiKey"]
 
         if image_file:
             # Faça algo com o arquivo de imagem, como salvar no servidor
             # Por exemplo, para salvar a imagem em um diretório chamado "uploads":
-            pathImagem = apiChangeBackGround(image_file, prompt, app.config['UPLOAD_FOLDER'])
+            pathImagem = apiChangeBackGround(image_file, prompt, app.config['UPLOAD_FOLDER'], apiKey)
             # URL da imagem
             image_url = f"{urlServidor}/change-background/{pathImagem}"
             return jsonify({"message": "Imagem enviada com sucesso!", "image_url": image_url})
@@ -52,7 +58,6 @@ def change_img_bg():
 
 # Rota para acessar a imagem
 @app.route("/change-background/<filename>", methods=["GET"])
-@cross_origin()
 def get_image(filename):
     try:
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
@@ -74,7 +79,6 @@ def download():
 
 
 @app.route('/', methods=['POST', 'OPTIONS'])
-@cross_origin()
 def handle_request():
     if request.method == 'OPTIONS':
         response = app.response_class(

@@ -1,4 +1,3 @@
-from senhaClip import API_KEY
 import requests
 import os
 import uuid
@@ -38,7 +37,7 @@ def apiChangeBackGroundTest(nomeArquivo, prompt):
     # else:
     #     r.raise_for_status()
 
-def apiChangeBackGround(image_file, prompt, saveDirectory):
+def apiChangeBackGround(image_file, prompt, saveDirectory, apiKey):
     extension = ".jpeg"
     nomeArquivo = generate_unique_filename(saveDirectory, extension)
 
@@ -59,7 +58,7 @@ def apiChangeBackGround(image_file, prompt, saveDirectory):
         'image_file': ('teste.jpg', image_data, 'image/jpeg'),
         },
     data = {'prompt': prompt},
-    headers = { 'x-api-key': API_KEY}
+    headers = { 'x-api-key': apiKey}
     )
 
     # Caso ocorra tudo certo, a imagem será salva na pasta imagensSaida
@@ -73,7 +72,7 @@ def apiChangeBackGround(image_file, prompt, saveDirectory):
         r.raise_for_status()
 
 
-def apiRemoveBackGroundTest(nomeArquivo): 
+def apiRemoveBackGroundTest(nomeArquivo, apiKey): 
     # Link da API
     link = "https://clipdrop-api.co/remove-background/v1"
     pathImagem = "imagensEntrada/" + nomeArquivo  
@@ -87,7 +86,7 @@ def apiRemoveBackGroundTest(nomeArquivo):
     files = {
         'image_file': ('teste.jpg', image_data, 'image/jpeg'),
         },
-    headers = { 'x-api-key': API_KEY}
+    headers = { 'x-api-key': apiKey}
     )
 
     # Caso ocorra tudo certo, a imagem será salva na pasta imagensSaida

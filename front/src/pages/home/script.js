@@ -32,6 +32,8 @@ class ChamarServidorService {
 
   mudarBackground(formData) {
     const urlServidor = this.urlServidor + '/change-background'
+    const apiKey = localStorage.getItem('keyClipdrop');
+    formData.append('apiKey', apiKey);
 
     return new Promise((resolve, reject) => {
       fetch(urlServidor, {
@@ -86,6 +88,8 @@ function showImg() {
 function armazenarKey() {
   const openAIKey = document.getElementById('keyOpenAI').value;
   localStorage.setItem('openAIKey', openAIKey);
+  const keyClipdrop = document.getElementById('keyClipdrop').value;
+  localStorage.setItem('keyClipdrop', keyClipdrop);
 }
 
 function armazenarVariaveis(nome, oQueEh, descricao, lojaNome, imageFile) {
