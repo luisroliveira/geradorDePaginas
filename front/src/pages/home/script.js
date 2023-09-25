@@ -199,11 +199,12 @@ function submitForm(event) {
   const nome = form.querySelector('#input-word').value
   const oQueEh = form.querySelector('#input-what').value
   const descricao = form.querySelector('#prodDescr').value
+  const openAIKey = document.getElementById('keyOpenAI').value;
   const inputImage = document.getElementById('input-image');
   const imageFile = inputImage.files[0]
 
   // Valida os dados inseridos
-  if (nome.trim() === '' || oQueEh.trim() === '' || descricao.trim() === '' || imageFile === undefined) {
+  if (nome.trim() === '' || oQueEh.trim() === '' || descricao.trim() === '' || imageFile === undefined || openAIKey.trim() === '') {
   alert('Por favor, preencha todos os campos antes de avançar.');
   } else if (imageFile.size > 3 * 1024 * 1024) { // Limite de 3 MB
   alert('A imagem selecionada é muito grande. Selecione uma imagem menor (limite de 3 MB).'); 

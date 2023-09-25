@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory, send_file
 import json
 from apiClip import apiChangeBackGround
-from apiChat import apiChatGpt, gerarFrase, gerarTexto, gerarSlogan
+from apiChat import apiChatGpt, gerarFrase, gerarTexto, gerarSlogan, gerarDescricao
 from createZip import makeZip
 from changeHtml import chngHtml
 from flask_cors import CORS
@@ -95,6 +95,8 @@ def handle_request():
             resultado = gerarTexto(parametro, apiKey)
         elif funcao == "gerarSlogan":
             resultado = gerarSlogan(parametro, apiKey)
+        elif funcao == "gerarDescricao":
+            resultado = gerarDescricao(parametro, apiKey)
         elif funcao == "makeZip":
             resultado = makeZip(parametro)
         elif funcao == "chngHtml":

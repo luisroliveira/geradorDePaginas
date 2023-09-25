@@ -1,4 +1,3 @@
-from senhaChat import API_KEY
 import requests
 import json
 from convertJson import convert_to_json
@@ -163,6 +162,42 @@ def gerarSlogan(textoEntrada, apiKey):
 
     # json_response = {
     #     "result": ["1Barber+: Sua melhor imagem começa aqui.", "1Alcance a perfeição em cada corte com Barber+.", "1Barber+, elevando sua experiência de barbear ao máximo."]
+    # }
+    # return json_response
+
+def gerarDescricao(textoEntrada, apiKey):
+    headers = {"Authorization": f"Bearer {apiKey}", "Content-Type":"application/json"}
+    link = "https://api.openai.com/v1/chat/completions"
+    id_modelo = "gpt-4"
+
+    body_mensagem = {
+        "model": id_modelo,
+        "messages": [
+            {
+                "role": "system",
+                "content": """Você é um ótimo vendedor, alguém que conhece muito sobre publicidade e que consegue convencer qualquer pessoa a realizar uma compra. Vou te dar o nome do produto, o que é o produto e uma breve descrição, nessa ordem. Tenho uma imagem do produto e quero mudar o background dela. Seu objetivo é gerar 4 descrições em detalhes sobre como deve ser o background para a imagem considerando o contexto de uso do produto. As descrições de background devem ser feitas em inglês, limitadas a 1 frase e deve conter: Local onde o produto deve estar, características desse local, tipo de iluminação e sentimento que a imagem deve passar. 
+                Responda no seguinte template JSON:
+                {
+                "result": ["Description"]
+                }
+                """
+            },
+            {
+                "role": "user", 
+                "content": textoEntrada
+            }
+        ]
+    }
+
+    body_mensagem = json.dumps(body_mensagem)
+
+    requisicao = requests.post(link, headers=headers, data=body_mensagem)
+    resposta = requisicao.json()
+    mensagem = resposta["choices"][0]["message"]["content"]
+    return mensagem
+
+    # json_response = {
+    #     "result": ["A classy barbershop setting, boasting a vintage appeal with polished wooden countertops, under the soft yet focused light that casts an inviting and professional ambiance.", "A minimalist bathroom setup, drenched in soft white light that highlights the product, creating a sense of cleanliness and sophistication.", "An outdoor setup during golden hour with the product placed on a rustic wooden table, creating a sense of adventure and independence.", "A close-up shot against a black textured background under focused studio lights, highlighting the sleek design of the razor, evoking a sense of luxury and precision."]
     # }
     # return json_response
 

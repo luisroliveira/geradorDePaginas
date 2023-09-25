@@ -110,8 +110,10 @@ class ChamarServidorService {
       campoLocalStorage = 'Frases Persuasivas';
     } else if (funcao == 'gerarTexto') {
       campoLocalStorage = 'Textos Persuasivos';
-    } else {
+    } else if (funcao == 'gerarSlogan') {
       campoLocalStorage = 'Slogans';
+    } else {
+      campoLocalStorage = 'Descricao';
     }
 
     return this.requisitarGPTBase(urlServidor, funcaoParaChamar, parametro, campoLocalStorage)
@@ -438,20 +440,22 @@ function refazerRequisicaoImagem(imageBlob, idxImg1, idxImg2) {
 function regerarImagem(idxImg1, idxImg2) {
   const imageFile = localStorage.getItem('imagemProduto');
   return new Promise((resolve, reject) => {
-    fetch(imageFile)
-      .then((res) => {
-        return res.blob();
-      })
-      .then((blob) => {
-        return refazerRequisicaoImagem(blob, idxImg1, idxImg2);
-      })
-      .then(()=> {
+    chamarServidorService.enviarNomeEDescricaoProduto("gerarDescricao")
+    .then(async () => {
+      try {
+        const res = await fetch(imageFile);
+        const blob = await res.blob();
+        await refazerRequisicaoImagem(blob, idxImg1, idxImg2);
         resolve();
-      })
-      .catch((error) => {
-        console.error(error + " deu erro no blob")
+      } catch (error) {
+        console.error(error + " deu erro no blob");
         reject(error);
-      })
+      }
+    })
+    .catch((error) => {
+      console.error(error + " deu erro no gpt");
+      reject(error);
+    })
   })
 }
 
