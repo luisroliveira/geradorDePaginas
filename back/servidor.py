@@ -4,10 +4,10 @@ from apiClip import apiChangeBackGround
 from apiChat import apiChatGpt, gerarFrase, gerarTexto, gerarSlogan, gerarDescricao
 from createZip import makeZip
 from changeHtml import chngHtml
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "https://main--tranquil-belekoy-f3ab6a.netlify.app/"}})
 UPLOAD_FOLDER = 'imagensBackground/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 urlServidor = 'https://geradordepaginas.onrender.com'
@@ -17,6 +17,7 @@ def funcao_1(parametro):
     return resultado
 
 @app.route("/upload", methods=["POST"])
+@cross_origin()
 def upload_image():
     try:
         image_file = request.files["image"]  # Obtém o arquivo de imagem do formulário
@@ -30,6 +31,7 @@ def upload_image():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/change-background", methods=["POST"])
+@cross_origin()
 def change_img_bg():
     try:
         image_file = request.files["image"]  # Obtém o arquivo de imagem do formulário
@@ -50,6 +52,7 @@ def change_img_bg():
 
 # Rota para acessar a imagem
 @app.route("/change-background/<filename>", methods=["GET"])
+@cross_origin()
 def get_image(filename):
     try:
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
@@ -59,6 +62,7 @@ def get_image(filename):
 
 # Rota para enviar o zip para o front
 @app.route("/download")
+@cross_origin()
 def download():
     arquivo_zip = "zips/arquivo.zip"  # nome do arquivo ZIP
     return send_file(
@@ -70,6 +74,7 @@ def download():
 
 
 @app.route('/', methods=['POST', 'OPTIONS'])
+@cross_origin()
 def handle_request():
     if request.method == 'OPTIONS':
         response = app.response_class(
