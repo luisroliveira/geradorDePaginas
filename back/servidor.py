@@ -9,7 +9,7 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 
 api_v1_cors_config = {
-    "origins": ["*"],
+    "origins": "*",
     "methods": ["OPTIONS", "GET", "POST", "DELETE", "PUT"],
     "allow_headers": ["Authorization", "Content-Type"]
 }
@@ -69,7 +69,6 @@ def get_image(filename):
 
 # Rota para enviar o zip para o front
 @app.route("/download")
-@cross_origin()
 def download():
     arquivo_zip = "zips/arquivo.zip"  # nome do arquivo ZIP
     return send_file(
@@ -98,30 +97,32 @@ def handle_request():
         parametro = data.get('parametro')
         apiKey = data.get('apiKey')
         
-        if funcao == "apiChatGpt":
-            resultado = apiChatGpt(parametro, apiKey)
-        elif funcao == "gerarFrase":
-            resultado = gerarFrase(parametro, apiKey)
-        elif funcao == "gerarTexto":
-            resultado = gerarTexto(parametro, apiKey)
-        elif funcao == "gerarSlogan":
-            resultado = gerarSlogan(parametro, apiKey)
-        elif funcao == "gerarDescricao":
-            resultado = gerarDescricao(parametro, apiKey)
-        elif funcao == "makeZip":
-            resultado = makeZip(parametro)
-        elif funcao == "chngHtml":
-            resultado = chngHtml(parametro)
-        else:
-            resultado = "Função desconhecida"
-        
-        response = app.response_class(
-            response=json.dumps({'resultado': resultado}),
-            status=200,
-            mimetype='application/json'
-        )
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        return response
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+        try:
+            if funcao == "apiChatGpt":
+                resultado = apiChatGpt(parametro, apiKey)
+            elif funcao == "gerarFrase":
+                resultado = gerarFrase(parametro, apiKey)
+            elif funcao == "gerarTexto":
+                resultado = gerarTexto(parametro, apiKey)
+            elif funcao == "gerarSlogan":
+                resultado = gerarSlogan(parametro, apiKey)
+            elif funcao == "gerarDescricao":
+                resultado = gerarDescricao(parametro, apiKey)
+            elif funcao == "makeZip":
+                resultado = makeZip(parametro)
+            elif funcao == "chngHtml":
+                resultado = chngHtml(parametro)
+            else:
+                resultado = "Função desconhecida"
+            
+            response = app.response_class(
+                response=json.dumps({'resultado': resultado}),
+                status=200,
+                mimetype='application/json'
+            )
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
+        except Exception as e:
+            print("Erro no servidor")
+            print(e)
+            return jsonify({"error": str(e)}), 500
